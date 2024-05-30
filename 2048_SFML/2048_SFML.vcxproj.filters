@@ -72,5 +72,8 @@
     <Image Include="resources\background.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="resources\StartMenu.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>
