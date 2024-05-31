@@ -160,6 +160,7 @@
   <ItemGroup>
     <Image Include="resources\appIcon.png" />
     <Image Include="resources\background.png" />
+    <Image Include="resources\border.png" />
     <Image Include="resources\tile.png" />
     <Image Include="resources\StartMenu.png" />
   </ItemGroup>
