@@ -52,7 +52,7 @@ void TextField::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     t.setFont(font);
     t.setString(text);
     t.setOutlineThickness(0.1f);
-	t.setPosition(rect.getPosition());
+	t.setPosition(rect.getPosition() + sf::Vector2f(7.f, 0.f));
 	t.setCharacterSize(25);
 	t.setFillColor(sf::Color::Black);
 	target.draw(t, states);

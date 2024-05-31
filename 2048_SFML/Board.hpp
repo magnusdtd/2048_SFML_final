@@ -3,27 +3,27 @@
 
 #include <SFML/Graphics.hpp>
 #include <iostream>
-#include "Game.hpp"
 #include "Cell.hpp"
 
-constexpr float PRESS_DELAY = 0.5f;
 
 class Board : public sf::Drawable {
 private:
-	u32 size = 5;
 	Cell **cells;
 	sf::Font font;
 
 	u64 score = 0;
 
+	const float PRESS_DELAY = 0.5f;
 	float pressTime;
 
 	sf::VertexArray border;
 	float size_of_each_cell = 70.f;
-	float distance_of_each_cell = 20.f;
+	float distance_of_each_cell = 10.f;
 	float distance_between_cell_and_border = 10.f;
+
+	u32 size = 5;
 public:
-	Board();
+	Board(u32 width, u32 height);
 	~Board();
 	/*bool isGameOver();
 	void MoveCheck();

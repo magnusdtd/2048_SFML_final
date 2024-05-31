@@ -5,9 +5,6 @@
 #include <SFML/Window.hpp>
 
 #include "Game.hpp"
-#include "Board.hpp"
-#include "UI.hpp"
-#include "TextField.hpp"
 
 int main() {
     // Window property
@@ -27,26 +24,9 @@ int main() {
     sf::Clock clock;
 
     // Game objects
-    Board board;
+    Board board(Game::GAME_WIDTH, Game::GAME_HEIGHT);
     UI ui;
-
-    // Test
     TextField tf(20, 500.f, 30.f);
-    tf.setPosition(Game::GAME_WIDTH / 2.f - 500.f / 2.f, Game::GAME_HEIGHT / 2.f - 30.f / 2.f);
-
-    sf::Texture backgroundTexture;
-    sf::Sprite background;
-    backgroundTexture.loadFromFile("resources/StartMenu.png");
-    background.setTexture(backgroundTexture);
-    background.setPosition(0.f, 0.f);
-
-    /*sf::Font font;
-    if (!font.loadFromFile("resources/font.ttf"))
-        std::cout << "Error loading font\n";
-    Cell c;
-    c.init(0.f, 0.f, font, 800.f);*/
-
-    // Test
     
     // Game loop
     while (window.isOpen()) {
@@ -63,32 +43,20 @@ int main() {
                 tf.setFocus(false);
                 if (tf.contains(sf::Vector2f(pos)))
                     tf.setFocus(true);
-				/*else
-					tf.setFocus(false);*/
             }
-            else {
+            else if (event.type == sf::Event::TextEntered)
                 tf.handleInput(event);
-            }
         }
 
         // Update
-        window.clear(sf::Color::White);
-
-        board.update(deltaTime);
-        ui.update(deltaTime, board.getScore());
-
-        // Render
-        window.draw(ui);
-        window.draw(board);
-
-        /*window.draw(background);
-        window.draw(tf);*/
-        /*std::cout << tf.getText().size() << ": " << tf.getText() << "\n";*/
-        /*window.draw(c);*/
-
+        if (Game::state == Game::State::START_MENU)
+            Game::StartGame(window);
+        else if (Game::state == Game::State::REGISTER)
+            Game::Register(window, tf);
+        else if (Game::state == Game::State::PLAYING)
+            Game::PlayGame(window, deltaTime, board, ui);
 
         window.display(); // Tell app that window is done drawing
     }
-
     return 0;
 }

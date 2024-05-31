@@ -1,6 +1,6 @@
 #include "Board.hpp"
 
-Board::Board(): border(sf::LinesStrip, 5) {
+Board::Board(u32 width, u32 height): border(sf::LinesStrip, 5) {
 	pressTime = 0.0f;
 
 	if (!font.loadFromFile("resources/font.ttf"))
@@ -9,7 +9,7 @@ Board::Board(): border(sf::LinesStrip, 5) {
 	// Fomula
 	float w = size * size_of_each_cell + distance_of_each_cell * (size - 1) + distance_between_cell_and_border;
 	float h = size * size_of_each_cell + distance_of_each_cell * (size - 1) + distance_between_cell_and_border;
-	float x0 = Game::GAME_HEIGHT / 2.f, y0 = Game::GAME_HEIGHT / 2.f;
+	float x0 = height / 2.f, y0 = height / 2.f;
 	x0 -= size / 2.f * size_of_each_cell + 0.5f * (size - 1) * distance_of_each_cell;
 	y0 -= size / 2.f * size_of_each_cell + 0.5f * (size - 1) * distance_of_each_cell;
 

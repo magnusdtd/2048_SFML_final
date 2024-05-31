@@ -4,7 +4,6 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include "Loader.hpp"
-#include "Game.hpp"
 
 class UI : public sf::Drawable {
 private:
