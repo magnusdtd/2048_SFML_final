@@ -31,8 +31,8 @@ int main() {
     UI ui;
 
     // Test
-    TextField tf(20, 600.f, 30.f);
-    tf.setPosition(Game::GAME_WIDTH / 2.f - 600.f / 2.f, Game::GAME_HEIGHT / 2.f - 30.f / 2.f);
+    TextField tf(20, 500.f, 30.f);
+    tf.setPosition(Game::GAME_WIDTH / 2.f - 500.f / 2.f, Game::GAME_HEIGHT / 2.f - 30.f / 2.f);
 
     sf::Texture backgroundTexture;
     sf::Sprite background;

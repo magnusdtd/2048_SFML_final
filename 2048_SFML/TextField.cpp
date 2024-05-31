@@ -2,10 +2,10 @@
 
 TextField::TextField(unsigned int maxChars, float width, float height) :
     size(maxChars),
-    rect(sf::Vector2f(width, height)), // 15 pixels per char, 20 pixels height
+    rect(sf::Vector2f(width, height)),
     hasfocus(false)
 {
-    if (!font.loadFromFile("resources/font.ttf"))
+    if (!font.loadFromFile("resources/arial.ttf"))
         std::cout << "Error loading font\n";
     rect.setOutlineThickness(2);
     rect.setFillColor(sf::Color::White);
@@ -31,7 +31,7 @@ void TextField::setFocus(bool focus) {
     if (focus)
         rect.setOutlineColor(sf::Color::Blue);
     else
-        rect.setOutlineColor(sf::Color(127, 127, 127)); // Gray color
+        rect.setOutlineColor(sf::Color(127, 127, 127));
 }
 
 void TextField::handleInput(sf::Event event) {
@@ -45,8 +45,12 @@ void TextField::handleInput(sf::Event event) {
 }
 
 void TextField::draw(sf::RenderTarget& target, sf::RenderStates states) const {
-	target.draw(rect, states);
-	sf::Text t(text, font);
+	target.draw(rect, states); // Draw box
+
+    /* Draw text */
+    sf::Text t;
+    t.setFont(font);
+    t.setString(text);
     t.setOutlineThickness(0.1f);
 	t.setPosition(rect.getPosition());
 	t.setCharacterSize(25);
