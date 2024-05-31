@@ -10,7 +10,8 @@ class Cell : public sf::Drawable {
 private:
 	u64 value;
 	sf::Text text;
-	sf::RectangleShape rect;
+	sf::Texture texture;
+	sf::Sprite sprite;
 	const sf::Color colors[12] = { sf::Color(102,102,102),
 									sf::Color(255,166,0),
 									sf::Color(245,151,245),

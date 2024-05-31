@@ -39,6 +39,14 @@ int main() {
     backgroundTexture.loadFromFile("resources/StartMenu.png");
     background.setTexture(backgroundTexture);
     background.setPosition(0.f, 0.f);
+
+    /*sf::Font font;
+    if (!font.loadFromFile("resources/font.ttf"))
+        std::cout << "Error loading font\n";
+    Cell c;
+    c.init(0.f, 0.f, font, 800.f);*/
+
+    // Test
     
     // Game loop
     while (window.isOpen()) {
@@ -66,16 +74,19 @@ int main() {
         // Update
         window.clear(sf::Color::White);
 
-        /*board.update(deltaTime);
-        ui.update(deltaTime, board.getScore());*/
+        board.update(deltaTime);
+        ui.update(deltaTime, board.getScore());
 
         // Render
-        /*window.draw(ui);
-        window.draw(board);*/
+        window.draw(ui);
+        window.draw(board);
 
-        window.draw(background);
-        window.draw(tf);
-        std::cout << tf.getText().size() << ": " << tf.getText() << "\n";
+        /*window.draw(background);
+        window.draw(tf);*/
+        /*std::cout << tf.getText().size() << ": " << tf.getText() << "\n";*/
+        /*window.draw(c);*/
+
+
         window.display(); // Tell app that window is done drawing
     }
 
