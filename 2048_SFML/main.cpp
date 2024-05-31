@@ -5,6 +5,7 @@
 #include <SFML/Window.hpp>
 
 #include "Game.hpp"
+#include "layout.hpp"
 
 int main() {
     // Window property
@@ -24,7 +25,13 @@ int main() {
     sf::Clock clock;
 
     // Game objects
-    Board board(Game::GAME_WIDTH, Game::GAME_HEIGHT);
+    Board board;
+    board.init( Game::GAME_WIDTH, 
+                Game::GAME_HEIGHT, 
+                LAYOUT::LAYOUT_4::BOARD_SIZE, 
+                LAYOUT::LAYOUT_4::sizeOfEachCell, 
+                LAYOUT::LAYOUT_4::distanceBetweenEachCell,
+                LAYOUT::LAYOUT_4::distanceBetweenCellAndBorder);
     UI ui;
     TextField tf(20, 500.f, 30.f);
     

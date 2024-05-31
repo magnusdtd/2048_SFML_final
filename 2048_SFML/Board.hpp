@@ -17,15 +17,20 @@ private:
 
 	sf::Texture borderTexture;
 	sf::Sprite border;
-	float sizeOfEachCell = 60.f;
-	float distanceBetweenEachCell = 5.f;
-	float distanceBetweenCellAndBorder = 20.f;
+	float sizeOfEachCell;
+	float distanceBetweenEachCell;
+	float distanceBetweenCellAndBorder;
 
-	u32 size = 10;	// Default size of board
+	u32 size;
 public:
-	Board(u32 width, u32 height);
-	void init(u32 width, u32 height);
+	Board();
 	~Board();
+	void init(	u32 width,
+				u32 height,
+				u32 size,
+				float sizeOfEachCell,
+				float distanceBetweenEachCell,
+				float distanceBetweenCellAndBorder);
 	/*bool isGameOver();
 	void MoveCheck();
 	bool CellCheck(u64 i, u64 j);
