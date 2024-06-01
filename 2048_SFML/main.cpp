@@ -4,8 +4,9 @@
 #include <SFML/System.hpp>
 #include <SFML/Window.hpp>
 
-#include "Game.hpp"
-#include "layout.hpp"
+#include "UI.hpp"
+#include "Board.hpp"
+#include "TextField.hpp"
 
 int main() {
     // Window property
@@ -26,12 +27,6 @@ int main() {
 
     // Game objects
     Board board;
-    board.init( Game::GAME_WIDTH, 
-                Game::GAME_HEIGHT, 
-                LAYOUT::LAYOUT_4::BOARD_SIZE, 
-                LAYOUT::LAYOUT_4::sizeOfEachCell, 
-                LAYOUT::LAYOUT_4::distanceBetweenEachCell,
-                LAYOUT::LAYOUT_4::distanceBetweenCellAndBorder);
     UI ui;
     TextField tf(20, 500.f, 30.f);
     
@@ -53,15 +48,18 @@ int main() {
             }
             else if (event.type == sf::Event::TextEntered)
                 tf.handleInput(event);
+            
         }
 
         // Update
-        if (Game::state == Game::State::START_MENU)
-            Game::StartGame(window);
-        else if (Game::state == Game::State::REGISTER)
-            Game::Register(window, tf);
-        else if (Game::state == Game::State::PLAYING)
-            Game::PlayGame(window, deltaTime, board, ui);
+        ui.update(deltaTime, board.getScore());
+        board.update(deltaTime);
+
+        window.draw(ui);
+        if (ui.getState() == Game::PLAYING) 
+               window.draw(board);
+        if (ui.getState() == Game::REGISTER)
+            window.draw(tf);
 
         window.display(); // Tell app that window is done drawing
     }

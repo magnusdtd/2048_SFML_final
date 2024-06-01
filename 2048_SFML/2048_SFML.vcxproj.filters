@@ -36,9 +36,6 @@
     <ClCompile Include="TextField.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Game.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="layout.hpp">
       <Filter>Header Files</Filter>
     </ClCompile>
@@ -54,9 +51,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UI.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Game.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Cell.hpp">
@@ -85,6 +79,12 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="resources\border.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\Top20List.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\Setting.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

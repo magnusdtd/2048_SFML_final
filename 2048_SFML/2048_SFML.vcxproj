@@ -137,7 +137,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Board.cpp" />
-    <ClCompile Include="Game.cpp" />
     <ClCompile Include="layout.hpp" />
     <ClCompile Include="Loader.cpp" />
     <ClCompile Include="main.cpp" />
@@ -148,7 +147,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Board.hpp" />
-    <ClInclude Include="Game.hpp" />
     <ClInclude Include="Loader.hpp" />
     <ClInclude Include="Cell.hpp" />
     <ClInclude Include="TextField.hpp" />
@@ -162,8 +160,10 @@
     <Image Include="resources\appIcon.png" />
     <Image Include="resources\background.png" />
     <Image Include="resources\border.png" />
+    <Image Include="resources\Setting.png" />
     <Image Include="resources\tile.png" />
     <Image Include="resources\StartMenu.png" />
+    <Image Include="resources\Top20List.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
