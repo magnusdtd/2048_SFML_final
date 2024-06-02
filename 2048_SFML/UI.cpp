@@ -152,11 +152,11 @@ void UI::update(float deltaTime, u64 val, TextField &tf, Board &board) {
 
 	}
 	else if (GameState == Game::State::SETTING) {
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && pressTime <= 0.f) {
 			whichButton = (whichButton + 1) % 2;
 			pressTime = PRESS_DELAY;
 		}
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && pressTime <= 0.f) {
 			whichButton = (whichButton + 1) % 2;
 			pressTime = PRESS_DELAY;
 		}
@@ -171,23 +171,25 @@ void UI::update(float deltaTime, u64 val, TextField &tf, Board &board) {
 		}
 
 		// Button on/off
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && whichButton) {
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && whichButton && pressTime <= 0.f) {
 			buttonOnOff = (buttonOnOff + 1) % 2;
 			pressTime = PRESS_DELAY;
 		}
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && whichButton) {
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && whichButton && pressTime <= 0.f) {
 			buttonOnOff = (buttonOnOff + 1) % 2;
 			pressTime = PRESS_DELAY;
 		}
 		// Button mode
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && !whichButton) {
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && !whichButton && pressTime <= 0.f) {
 			buttonMode = (buttonMode + 6) % 7;
 			pressTime = PRESS_DELAY;
 		}
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && !whichButton) {
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && !whichButton && pressTime <= 0.f) {
 			buttonMode = (buttonMode + 1) % 7;
 			pressTime = PRESS_DELAY;
 		}
+
+		textOnOff.setString((buttonOnOff) ? "On" : "Off");
 
 		switch (buttonMode) {
 		case 0:
