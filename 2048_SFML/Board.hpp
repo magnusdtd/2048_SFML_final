@@ -34,8 +34,8 @@ public:
 	/*bool isGameOver();
 	void MoveCheck();
 	bool CellCheck(u64 i, u64 j);
-	void MakeMovement();
-	void NewPieces();*/
+	void MakeMovement();*/
+	void newCell();
 
 	u64 getScore() const;
 

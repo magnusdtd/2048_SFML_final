@@ -69,9 +69,9 @@ void Cell::setValue(u64 val) {
 
 u64 Cell::getValue() const {
 	return value;
-}
+} 
 
 void Cell::draw(sf::RenderTarget& rt, sf::RenderStates rs) const {
-	rt.draw(text, rs);
 	rt.draw(sprite, rs);
+	rt.draw(text, rs);
 }

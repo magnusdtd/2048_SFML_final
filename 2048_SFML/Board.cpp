@@ -8,7 +8,7 @@ Board::Board() {
 	if (!font.loadFromFile("resources/font.ttf"))
 		std::cout << "Error loading font\n";
 	
-	cells = nullptr;
+	this->cells = nullptr;
 	sizeOfEachCell = 0.f;
 	distanceBetweenEachCell = 0.f;
 	distanceBetweenCellAndBorder = 0.f;
@@ -40,13 +40,13 @@ void Board::init(	u32 width,
 	border.scale(w / borderTexture.getSize().x, h / borderTexture.getSize().y);
 
 
-	cells = new Cell * [this->size];
+	this->cells = new Cell * [this->size];
 	for (u32 i = 0; i < this->size; i++)
-		cells[i] = new Cell[this->size];
+		this->cells[i] = new Cell[this->size];
 
 	for (u32 i = 0; i < this->size; i++)
 		for (u32 j = 0; j < this->size; j++)
-			cells[i][j].init(	x0 + i * this->sizeOfEachCell + i * this->distanceBetweenEachCell,
+			this->cells[i][j].init(	x0 + i * this->sizeOfEachCell + i * this->distanceBetweenEachCell,
 								y0 + j * this->sizeOfEachCell + j * this->distanceBetweenEachCell,
 								font,
 								this->sizeOfEachCell);
@@ -62,26 +62,37 @@ void Board::init(	u32 width,
 			break;
 	}
 	u64 temp = (static_cast<u64>(rand() % 2) + 1) * 2;
-	cells[init1][init2].setValue(temp);
-	cells[init3][init4].setValue(temp);
+	this->cells[init1][init2].setValue(temp);
+	this->cells[init3][init4].setValue(temp);
 }
 
 Board::~Board() {
 	for (u32 i = 0; i < size; i++) {
-		delete[] cells[i];
-		cells[i] = nullptr;
+		delete[] this->cells[i];
+		this->cells[i] = nullptr;
 	}
-	delete[] cells;
-	cells = nullptr;
+	delete[] this->cells;
+	this->cells = nullptr;
 
 	std::cout << "Succesful free memory in Board class !!!\n";
 }
 
+void Board::newCell() {
+	int li, ri;
+	while (true)
+	{
+		li = rand() % size;
+		ri = rand() % size;
+		if (this->cells[li][ri].getValue() == 0) {
+			this->cells[li][ri].setValue(2);
+			break;
+		}
+	}
+}
 
 u64 Board::getScore() const {
 	return score;
 }
-
 
 
 void Board::UpMove() {
@@ -89,22 +100,22 @@ void Board::UpMove() {
 	for (int j = 0; j < (s32)size; j++) {
 		x = 0; y = j;
 		for (int i = 1; i < (s32)size; i++) {
-			if (cells[i][j].getValue() != 0) {
-				if (cells[i - 1][j].getValue() == 0 
-					|| cells[i - 1][j] == cells[i][j]) {
-					if (cells[x][y] == cells[i][j]) {
+			if (this->cells[i][j].getValue() != 0) {
+				if (this->cells[i - 1][j].getValue() == 0 
+					|| this->cells[i - 1][j] == this->cells[i][j]) {
+					if (this->cells[x][y] == this->cells[i][j]) {
 						// update score
-						cells[x][y] *= 2;
-						cells[i][j].setValue(0);
-						score += cells[x][y].getValue();
+						this->cells[x][y] *= 2;
+						this->cells[i][j].setValue(0);
+						score += this->cells[x][y].getValue();
 					}
-					else if (cells[x][y].getValue() == 0) {
-						cells[x][y] = cells[i][j];
-						cells[i][j].setValue(0);
+					else if (this->cells[x][y].getValue() == 0) {
+						this->cells[x][y] = this->cells[i][j];
+						this->cells[i][j].setValue(0);
 					}
 					else {
-						cells[++x][y] = cells[i][j];
-						cells[i][j].setValue(0);
+						this->cells[++x][y] = this->cells[i][j];
+						this->cells[i][j].setValue(0);
 					}
 				}
 				else x++;
@@ -118,23 +129,23 @@ void Board::DownMove() {
 	for (int j = 0; j < (s32)size; j++) {
 		x = (s32)size - 1, y = j;
 		for (int i = (s32)size - 2; i >= 0; i--) {
-			if (cells[i][j].getValue() != 0) {
-				if (cells[i + 1][j].getValue() == 0 
-					|| cells[i + 1][j] == cells[i][j]) {
-					if (cells[x][y].getValue() == cells[i][j].getValue()) {
+			if (this->cells[i][j].getValue() != 0) {
+				if (this->cells[i + 1][j].getValue() == 0 
+					|| this->cells[i + 1][j] == this->cells[i][j]) {
+					if (this->cells[x][y].getValue() == this->cells[i][j].getValue()) {
 						// update score
-						cells[x][y] *= 2;
-						cells[i][j].setValue(0);
-						score += cells[x][y].getValue();
+						this->cells[x][y] *= 2;
+						this->cells[i][j].setValue(0);
+						score += this->cells[x][y].getValue();
 					}
 					else {
-						if (cells[x][y].getValue() == 0) {
-							cells[x][y] = cells[i][j];
-							cells[i][j].setValue(0);
+						if (this->cells[x][y].getValue() == 0) {
+							this->cells[x][y] = this->cells[i][j];
+							this->cells[i][j].setValue(0);
 						}
 						else {
-							cells[--x][y] = cells[i][j];
-							cells[i][j].setValue(0);
+							this->cells[--x][y] = this->cells[i][j];
+							this->cells[i][j].setValue(0);
 						}
 					}
 				}
@@ -149,22 +160,22 @@ void Board::LeftMove() {
 	for (int i = 0; i < (s32)size; i++) {
 		x = i, y = 0;
 		for (int j = 1; j < (s32)size; j++) {
-			if (cells[i][j].getValue() != 0) {
-				if (cells[i][j - 1].getValue() == 0 || cells[i][j - 1] == cells[i][j]) {
-					if (cells[x][y] == cells[i][j]) {
+			if (this->cells[i][j].getValue() != 0) {
+				if (this->cells[i][j - 1].getValue() == 0 || this->cells[i][j - 1] == this->cells[i][j]) {
+					if (this->cells[x][y] == this->cells[i][j]) {
 						// update score
-						cells[x][y] *= 2;
-						cells[i][j].setValue(0);
-						score += cells[x][y].getValue();
+						this->cells[x][y] *= 2;
+						this->cells[i][j].setValue(0);
+						score += this->cells[x][y].getValue();
 					}
 					else {
-						if (cells[x][y].getValue() == 0) {
-							cells[x][y] = cells[i][j];
-							cells[i][j].setValue(0);
+						if (this->cells[x][y].getValue() == 0) {
+							this->cells[x][y] = this->cells[i][j];
+							this->cells[i][j].setValue(0);
 						}
 						else {
-							cells[x][++y] = cells[i][j];
-							cells[i][j].setValue(0);
+							this->cells[x][++y] = this->cells[i][j];
+							this->cells[i][j].setValue(0);
 						}
 					}
 				}
@@ -179,22 +190,22 @@ void Board::RightMove() {
 	for (int i = 0; i < (s32)size; i++) {
 		x = i, y = (s32)size - 1;
 		for (int j = (s32)size - 2; j >= 0; j--) {
-			if (cells[i][j].getValue() != 0) {
-				if (cells[i][j + 1].getValue() == 0 || cells[i][j + 1] == cells[i][j]) {
-					if (cells[x][y] == cells[i][j]) {
+			if (this->cells[i][j].getValue() != 0) {
+				if (this->cells[i][j + 1].getValue() == 0 || this->cells[i][j + 1] == this->cells[i][j]) {
+					if (this->cells[x][y] == this->cells[i][j]) {
 						// update score
-						cells[x][y] *= 2;
-						cells[i][j].setValue(0);
-						score += cells[x][y].getValue();
+						this->cells[x][y] *= 2;
+						this->cells[i][j].setValue(0);
+						score += this->cells[x][y].getValue();
 					}
 					else {
-						if (cells[x][y].getValue() == 0) {
-							cells[x][y] = cells[i][j];
-							cells[i][j].setValue(0);
+						if (this->cells[x][y].getValue() == 0) {
+							this->cells[x][y] = this->cells[i][j];
+							this->cells[i][j].setValue(0);
 						}
 						else {
-							cells[x][--y] = cells[i][j];
-							cells[i][j].setValue(0);
+							this->cells[x][--y] = this->cells[i][j];
+							this->cells[i][j].setValue(0);
 						}
 					}
 				}
@@ -234,5 +245,5 @@ void Board::draw(sf::RenderTarget& rt, sf::RenderStates rs) const {
 
 	for (u32 i = 0; i < size; i++)
 		for (u32 j = 0; j < size; j++)
-			rt.draw(cells[i][j], rs); // Draw cells
+			rt.draw(this->cells[i][j], rs); // Draw this->cells
 }

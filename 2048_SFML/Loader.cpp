@@ -17,6 +17,8 @@ u64 Input::loadScoreAndGetMaxScore(u64 order_number) {
 	}
 	order_number = temp_k - 1;
 	return tempMaxScore;
+
+	input.close();
 }
 
 u64 Input::loadBestScore()
@@ -29,10 +31,14 @@ u64 Input::loadBestScore()
 		return 0;
 	}
 	return (bestScore == 14757395258967641292) ? 0 : bestScore;
+
+	in.close();
 }
 
 void Input::saveBestScore(u64 score)
 {
 	std::ofstream out(BESTSCORE);
 	out << score;
+
+	out.close();
 }
