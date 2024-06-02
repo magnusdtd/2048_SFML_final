@@ -66,6 +66,27 @@ void Board::init(	u32 width,
 	this->cells[init3][init4].setValue(temp);
 }
 
+bool Board::isOver() {
+	for (int i = 0; i < size; i++) {
+		for (int j = 0; j < size; j++) {
+			if (this->cells[i][j].getValue() == 0)
+				return false;
+			else if (i == size - 1 && j == size - 1)
+				continue;
+			else if (i == size - 1)
+				if (this->cells[i][j] == this->cells[i][j + 1])
+					return false;
+			else if (j == size - 1) 
+				if (this->cells[i][j] == this->cells[i + 1][j])
+					return false;
+			else
+				if (this->cells[i + 1][j] == this->cells[i][j] || this->cells[i][j + 1] == this->cells[i][j])
+					return false;
+		}
+	}
+	return true;
+}
+
 Board::~Board() {
 	for (u32 i = 0; i < size; i++) {
 		delete[] this->cells[i];
@@ -97,66 +118,6 @@ u64 Board::getScore() const {
 
 void Board::UpMove() {
 	int x, y;
-	for (int j = 0; j < (s32)size; j++) {
-		x = 0; y = j;
-		for (int i = 1; i < (s32)size; i++) {
-			if (this->cells[i][j].getValue() != 0) {
-				if (this->cells[i - 1][j].getValue() == 0 
-					|| this->cells[i - 1][j] == this->cells[i][j]) {
-					if (this->cells[x][y] == this->cells[i][j]) {
-						// update score
-						this->cells[x][y] *= 2;
-						this->cells[i][j].setValue(0);
-						score += this->cells[x][y].getValue();
-					}
-					else if (this->cells[x][y].getValue() == 0) {
-						this->cells[x][y] = this->cells[i][j];
-						this->cells[i][j].setValue(0);
-					}
-					else {
-						this->cells[++x][y] = this->cells[i][j];
-						this->cells[i][j].setValue(0);
-					}
-				}
-				else x++;
-			}
-		}
-	}
-}
-
-void Board::DownMove() {
-	int x, y;
-	for (int j = 0; j < (s32)size; j++) {
-		x = (s32)size - 1, y = j;
-		for (int i = (s32)size - 2; i >= 0; i--) {
-			if (this->cells[i][j].getValue() != 0) {
-				if (this->cells[i + 1][j].getValue() == 0 
-					|| this->cells[i + 1][j] == this->cells[i][j]) {
-					if (this->cells[x][y].getValue() == this->cells[i][j].getValue()) {
-						// update score
-						this->cells[x][y] *= 2;
-						this->cells[i][j].setValue(0);
-						score += this->cells[x][y].getValue();
-					}
-					else {
-						if (this->cells[x][y].getValue() == 0) {
-							this->cells[x][y] = this->cells[i][j];
-							this->cells[i][j].setValue(0);
-						}
-						else {
-							this->cells[--x][y] = this->cells[i][j];
-							this->cells[i][j].setValue(0);
-						}
-					}
-				}
-				else x--;
-			}
-		}
-	}
-}
-
-void Board::LeftMove() {
-	int x, y;
 	for (int i = 0; i < (s32)size; i++) {
 		x = i, y = 0;
 		for (int j = 1; j < (s32)size; j++) {
@@ -185,7 +146,7 @@ void Board::LeftMove() {
 	}
 }
 
-void Board::RightMove() {
+void Board::DownMove() {
 	int x, y;
 	for (int i = 0; i < (s32)size; i++) {
 		x = i, y = (s32)size - 1;
@@ -215,6 +176,66 @@ void Board::RightMove() {
 	}
 }
 
+void Board::LeftMove() {
+	int x, y;
+	for (int j = 0; j < (s32)size; j++) {
+		x = 0; y = j;
+		for (int i = 1; i < (s32)size; i++) {
+			if (this->cells[i][j].getValue() != 0) {
+				if (this->cells[i - 1][j].getValue() == 0
+					|| this->cells[i - 1][j] == this->cells[i][j]) {
+					if (this->cells[x][y] == this->cells[i][j]) {
+						// update score
+						this->cells[x][y] *= 2;
+						this->cells[i][j].setValue(0);
+						score += this->cells[x][y].getValue();
+					}
+					else if (this->cells[x][y].getValue() == 0) {
+						this->cells[x][y] = this->cells[i][j];
+						this->cells[i][j].setValue(0);
+					}
+					else {
+						this->cells[++x][y] = this->cells[i][j];
+						this->cells[i][j].setValue(0);
+					}
+				}
+				else x++;
+			}
+		}
+	}
+}
+
+void Board::RightMove() {
+	int x, y;
+	for (int j = 0; j < (s32)size; j++) {
+		x = (s32)size - 1, y = j;
+		for (int i = (s32)size - 2; i >= 0; i--) {
+			if (this->cells[i][j].getValue() != 0) {
+				if (this->cells[i + 1][j].getValue() == 0
+					|| this->cells[i + 1][j] == this->cells[i][j]) {
+					if (this->cells[x][y].getValue() == this->cells[i][j].getValue()) {
+						// update score
+						this->cells[x][y] *= 2;
+						this->cells[i][j].setValue(0);
+						score += this->cells[x][y].getValue();
+					}
+					else {
+						if (this->cells[x][y].getValue() == 0) {
+							this->cells[x][y] = this->cells[i][j];
+							this->cells[i][j].setValue(0);
+						}
+						else {
+							this->cells[--x][y] = this->cells[i][j];
+							this->cells[i][j].setValue(0);
+						}
+					}
+				}
+				else x--;
+			}
+		}
+	}
+}
+
 void Board::update(float deltaTime) {
 	pressTime -= deltaTime;
 
@@ -223,17 +244,17 @@ void Board::update(float deltaTime) {
 		UpMove();
 		std::cout << "Up Check\n";
 	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && pressTime <= 0.0f) {
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && pressTime <= 0.0f) {
 		pressTime = PRESS_DELAY;
 		DownMove();
 		std::cout << "Down Check\n";
 	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && pressTime <= 0.0f) {
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && pressTime <= 0.0f) {
 		pressTime = PRESS_DELAY;
 		LeftMove();
 		std::cout << "Left Check\n";
 	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && pressTime <= 0.0f) {
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && pressTime <= 0.0f) {
 		pressTime = PRESS_DELAY;
 		RightMove();
 		std::cout << "Right Check\n";

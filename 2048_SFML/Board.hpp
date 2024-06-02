@@ -12,7 +12,7 @@ private:
 
 	u64 score;
 
-	const float PRESS_DELAY = 0.5f;
+	const float PRESS_DELAY = 0.3f;
 	float pressTime;
 
 	sf::Texture borderTexture;
@@ -31,12 +31,11 @@ public:
 				float sizeOfEachCell,
 				float distanceBetweenEachCell,
 				float distanceBetweenCellAndBorder);
-	/*bool isGameOver();
-	void MoveCheck();
-	bool CellCheck(u64 i, u64 j);
-	void MakeMovement();*/
-	void newCell();
+	bool isOver();
+	/* void MoveCheck(); */
 
+
+	void newCell();
 	u64 getScore() const;
 
 	void UpMove();
