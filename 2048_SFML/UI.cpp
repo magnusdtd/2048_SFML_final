@@ -84,11 +84,10 @@ void UI::GameOver() {
 		gameOver = true;
 }
 
-void UI::update(float deltaTime, u64 val) {
+void UI::update(float deltaTime, u64 val, TextField &tf, Board &board) {
 	pressTime -= deltaTime;
 	if (GameState == Game::State::START_MENU) {
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && pressTime <= 0.f) {
-			std::cout << "Check Select Button up\n";
 			(SELECT_BUTTON += (Game::NUMBER_OF_BUTTONS - 1)) %= Game::NUMBER_OF_BUTTONS;
 			pressTime = PRESS_DELAY;
 		}
@@ -144,8 +143,69 @@ void UI::update(float deltaTime, u64 val) {
 			GameState = Game::State::START_MENU;
 	}
 	else if (GameState == Game::State::REGISTER) {
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter) && tf.getText().size() != 0) {
 			GameState = Game::State::PLAYING;
+			switch (mode) {
+			case Game::MODE_4:
+				board.init(Game::GAME_WIDTH,
+					Game::GAME_HEIGHT,
+					LAYOUT::LAYOUT_4::BOARD_SIZE,
+					LAYOUT::LAYOUT_4::sizeOfEachCell,
+					LAYOUT::LAYOUT_4::distanceBetweenEachCell,
+					LAYOUT::LAYOUT_4::distanceBetweenCellAndBorder);
+				break;
+			case Game::MODE_5:
+				board.init(Game::GAME_WIDTH,
+					Game::GAME_HEIGHT,
+					LAYOUT::LAYOUT_5::BOARD_SIZE,
+					LAYOUT::LAYOUT_5::sizeOfEachCell,
+					LAYOUT::LAYOUT_5::distanceBetweenEachCell,
+					LAYOUT::LAYOUT_5::distanceBetweenCellAndBorder);
+				break;
+			case Game::MODE_6:
+				board.init(Game::GAME_WIDTH,
+					Game::GAME_HEIGHT,
+					LAYOUT::LAYOUT_6::BOARD_SIZE,
+					LAYOUT::LAYOUT_6::sizeOfEachCell,
+					LAYOUT::LAYOUT_6::distanceBetweenEachCell,
+					LAYOUT::LAYOUT_6::distanceBetweenCellAndBorder);
+				break;
+			case Game::MODE_7:
+				board.init(Game::GAME_WIDTH,
+					Game::GAME_HEIGHT,
+					LAYOUT::LAYOUT_7::BOARD_SIZE,
+					LAYOUT::LAYOUT_7::sizeOfEachCell,
+					LAYOUT::LAYOUT_7::distanceBetweenEachCell,
+					LAYOUT::LAYOUT_7::distanceBetweenCellAndBorder);
+				break;
+			case Game::MODE_8:
+				board.init(Game::GAME_WIDTH,
+					Game::GAME_HEIGHT,
+					LAYOUT::LAYOUT_8::BOARD_SIZE,
+					LAYOUT::LAYOUT_8::sizeOfEachCell,
+					LAYOUT::LAYOUT_8::distanceBetweenEachCell,
+					LAYOUT::LAYOUT_8::distanceBetweenCellAndBorder);
+				break;
+			case Game::MODE_9:
+				board.init(Game::GAME_WIDTH,
+					Game::GAME_HEIGHT,
+					LAYOUT::LAYOUT_9::BOARD_SIZE,
+					LAYOUT::LAYOUT_9::sizeOfEachCell,
+					LAYOUT::LAYOUT_9::distanceBetweenEachCell,
+					LAYOUT::LAYOUT_9::distanceBetweenCellAndBorder);
+				break;
+			case Game::MODE_10:
+				board.init(Game::GAME_WIDTH,
+					Game::GAME_HEIGHT,
+					LAYOUT::LAYOUT_10::BOARD_SIZE,
+					LAYOUT::LAYOUT_10::sizeOfEachCell,
+					LAYOUT::LAYOUT_10::distanceBetweenEachCell,
+					LAYOUT::LAYOUT_10::distanceBetweenCellAndBorder);
+				break;
+			default:
+				std::cout << "Error in UI mode\n";
+			}
+		}
 	}
 	else if (GameState == Game::State::PLAYING) {
 		score = val;

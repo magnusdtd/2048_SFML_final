@@ -4,6 +4,9 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include "Loader.hpp"
+#include "TextField.hpp"
+#include "Board.hpp"
+#include "layout.hpp"
 
 namespace Game {
 	enum State {
@@ -55,7 +58,7 @@ private:
 	/* Setting */
 	sf::Texture backgroundTextureSetting;
 	sf::Sprite backgroundSetting;
-	u32 mode; 
+	Game::Mode mode; 
 	sf::Text textMode;
 
 	/* Top 20 List && Register */
@@ -78,10 +81,8 @@ public:
 	UI();
 	void setState(u32 state) { this->GameState = GameState; }
 	u32 getState() const { return GameState; }
-	void setMode(u32 mode) { this->mode = mode; }
-	u32 getMode() const { return mode; }
 	void GameOver();
-	void update(float deltaTime, u64 score);
+	void update(float deltaTime, u64 val, TextField& tf, Board& board);
 	virtual void draw(sf::RenderTarget& rt, sf::RenderStates rs) const;
 };
 

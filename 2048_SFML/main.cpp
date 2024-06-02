@@ -29,6 +29,7 @@ int main() {
     Board board;
     UI ui;
     TextField tf(20, 500.f, 30.f);
+    tf.setPosition(500.f, 300.f);
     
     // Game loop
     while (window.isOpen()) {
@@ -52,7 +53,7 @@ int main() {
         }
 
         // Update
-        ui.update(deltaTime, board.getScore());
+        ui.update(deltaTime, board.getScore(), tf, board);
         board.update(deltaTime);
 
         window.draw(ui);
