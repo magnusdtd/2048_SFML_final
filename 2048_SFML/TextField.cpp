@@ -44,6 +44,10 @@ void TextField::handleInput(sf::Event event) {
         text += event.text.unicode;
 }
 
+void TextField::clear() {
+    text = "";
+}
+
 void TextField::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 	target.draw(rect, states); // Draw box
 

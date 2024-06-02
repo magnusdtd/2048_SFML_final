@@ -39,7 +39,24 @@ UI::UI() {
 	/* Setting */
 	backgroundTextureSetting.loadFromFile("resources/Setting.png");
 	backgroundSetting.setTexture(backgroundTextureSetting);
+
+	whichButton = 0;
+
 	mode = Game::Mode::MODE_4; // Default mode
+	textMode.setFont(font);
+	textMode.setString(std::to_string(mode));
+	textMode.setCharacterSize(64);
+	textMode.setFillColor(sf::Color(0, 0, 0));
+	textMode.setPosition(816.f, 342.f);
+
+	textOnOff.setFont(font);
+	textOnOff.setString("Off"); // Default for Undo/Redo function
+	textOnOff.setCharacterSize(64);
+	textOnOff.setFillColor(sf::Color(0, 0, 0));
+	textOnOff.setPosition(829.f, 518.f);
+
+	buttonOnOff = 0;
+	buttonMode = 0;
 
 	/* Top 20 list && Register */
 	backgroundTextureTop20List.loadFromFile("resources/Top20List.png");
@@ -135,8 +152,79 @@ void UI::update(float deltaTime, u64 val, TextField &tf, Board &board) {
 
 	}
 	else if (GameState == Game::State::SETTING) {
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::BackSpace))
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+			whichButton = (whichButton + 1) % 2;
+			pressTime = PRESS_DELAY;
+		}
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+			whichButton = (whichButton + 1) % 2;
+			pressTime = PRESS_DELAY;
+		}
+
+		if (whichButton) { // whichButton == 1 => Choose on or off Undo/Redo
+			textOnOff.setFillColor(sf::Color(255, 0, 0));
+			textMode.setFillColor(sf::Color(0, 0, 0));
+		}
+		else {
+			textMode.setFillColor(sf::Color(255, 0, 0));
+			textOnOff.setFillColor(sf::Color(0, 0, 0));
+		}
+
+		// Button on/off
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && whichButton) {
+			buttonOnOff = (buttonOnOff + 1) % 2;
+			pressTime = PRESS_DELAY;
+		}
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && whichButton) {
+			buttonOnOff = (buttonOnOff + 1) % 2;
+			pressTime = PRESS_DELAY;
+		}
+		// Button mode
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && !whichButton) {
+			buttonMode = (buttonMode + 6) % 7;
+			pressTime = PRESS_DELAY;
+		}
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && !whichButton) {
+			buttonMode = (buttonMode + 1) % 7;
+			pressTime = PRESS_DELAY;
+		}
+
+		switch (buttonMode) {
+		case 0:
+			textMode.setString("4");
+			mode = Game::MODE_4;
+			break;
+		case 1:
+			textMode.setString("5");
+			mode = Game::MODE_5;
+			break;
+		case 2:
+			textMode.setString("6");
+			mode = Game::MODE_6;
+			break;
+		case 3:
+			textMode.setString("7");
+			mode = Game::MODE_7;
+			break;
+		case 4:
+			textMode.setString("8");
+			mode = Game::MODE_8;
+			break;
+		case 5:
+			textMode.setString("9");
+			mode = Game::MODE_9;
+			break;
+		case 6:
+			textMode.setString("10");
+			mode = Game::MODE_10;
+			break;
+		}
+
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::BackSpace)) {
+			tf.clear();
 			GameState = Game::State::START_MENU;
+		}
 	}
 	else if (GameState == Game::State::TOP20LIST) {
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::BackSpace))
@@ -233,8 +321,11 @@ void UI::draw(sf::RenderTarget& rt, sf::RenderStates rs) const {
 		rt.draw(ButtonResume, rs);
 
 	}
-	else if (GameState == Game::SETTING)
+	else if (GameState == Game::SETTING) {
 		rt.draw(backgroundSetting, rs);
+		rt.draw(textMode, rs);
+		rt.draw(textOnOff, rs);
+	}
 	else if (GameState == Game::TOP20LIST)
 		rt.draw(backgroundTop20List, rs);
 	else if (GameState == Game::REGISTER)

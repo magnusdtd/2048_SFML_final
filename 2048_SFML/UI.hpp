@@ -53,13 +53,19 @@ private:
 	sf::Text ButtonSetting;
 	sf::Text ButtonTop20List;
 	sf::Text ButtonResume;
-
 	
 	/* Setting */
 	sf::Texture backgroundTextureSetting;
 	sf::Sprite backgroundSetting;
+	u32 whichButton;
+
 	Game::Mode mode; 
+	u32 buttonMode;
 	sf::Text textMode;
+
+	u32 buttonOnOff;
+	sf::Text textOnOff;
+
 
 	/* Top 20 List && Register */
 	sf::Texture backgroundTextureTop20List;

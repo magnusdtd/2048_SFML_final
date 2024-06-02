@@ -19,6 +19,7 @@ public:
     bool contains(sf::Vector2f point) const;
     void setFocus(bool focus);
     void handleInput(sf::Event e);
+    void clear();
     void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 };
 
