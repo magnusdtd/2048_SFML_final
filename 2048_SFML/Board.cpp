@@ -67,11 +67,14 @@ void Board::init(	u32 width,
 }
 
 Board::~Board() {
-	for (u32 i = 0; i < size; i++)
+	for (u32 i = 0; i < size; i++) {
 		delete[] cells[i];
+		cells[i] = nullptr;
+	}
 	delete[] cells;
+	cells = nullptr;
 
-	std::cout << "Free memory\n";
+	std::cout << "Succesful free memory in Board class !!!\n";
 }
 
 
