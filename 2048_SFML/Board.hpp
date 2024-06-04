@@ -23,6 +23,9 @@ private:
 	float distanceBetweenCellAndBorder;
 
 	u32 size;
+
+	Stack undoStack;
+	Stack redoStack;
 public:
 	Board();
 	~Board();
@@ -43,6 +46,9 @@ public:
 	void DownMove();
 	void LeftMove();
 	void RightMove();
+	void Undo();
+	void Redo();
+
 	void update(float deltaTime);
 
 	virtual void draw(sf::RenderTarget& rt, sf::RenderStates rs) const;

@@ -235,6 +235,30 @@ void Board::RightMove() {
 	}
 }
 
+void Board::Undo()
+{
+	if (undoStack.empty())
+		return;
+	u64* temp = undoStack.top();
+	for (u32 i = 0; i < size; i++)
+		for (u32 j = 0; j < size; j++)
+			this->cells[i][j].setValue(temp[i * size + j]);
+	redoStack.push(temp, size * size);
+	delete[] temp;
+}
+
+void Board::Redo()
+{
+	if(redoStack.empty())
+		return;
+	u64* temp = redoStack.top();
+	for (u32 i = 0; i < size; i++)
+		for (u32 j = 0; j < size; j++)
+			this->cells[i][j].setValue(temp[i * size + j]);
+	undoStack.push(temp, size * size);
+	delete[] temp;
+}
+
 void Board::update(float deltaTime) {
 	pressTime -= deltaTime;
 

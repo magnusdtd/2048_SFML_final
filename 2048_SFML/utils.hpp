@@ -11,24 +11,35 @@ typedef unsigned int u32;
 typedef long long s64;
 typedef unsigned long long u64;
 
-namespace Stack {
-    struct Node {
-        u64* data;
-        Node* next;
-    };
-    struct Stack {
-        Node* head;
-    };
-    static Stack redoStack;
-    static Stack undoStack;
+class Node {
+public:
+    u64* data;
+	Node* next;
+    Node() {
+		data = nullptr;
+		next = nullptr;
+	}
+    Node(u64* data) {
+        this->data = data;
+		this->next = nullptr;
+    }
+};
 
-    void init(Stack& st);
-    void push(Stack& st, u64* x, u32 n);
-    void pop(Stack& st);
-    bool isEmpty(Stack st);
-    u64* top(Stack& st);
-    void freeMemory(Stack& st);
-}
+class Stack {
+	Node* head;
+	/*This can help to avoid manual deletion of memory and prevent memory leaks.*/
+public:
+    Stack() {
+		head = nullptr;
+	}
+	~Stack();
+	void push(u64* x, u32 n);
+	void pop();
+	u64* top();
+	bool empty() {
+		return (head == nullptr) ? true : false;
+	}
+};
 
 template<typename T>
 inline T Random(T start, T end) {
