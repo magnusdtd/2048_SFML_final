@@ -1,10 +1,8 @@
 #ifndef BOARD_HPP
 #define BOARD_HPP
 
-#include <SFML/Graphics.hpp>
 #include <iostream>
 #include "Cell.hpp"
-#include "utils.hpp"
 
 class Board : public sf::Drawable {
 private:
@@ -21,6 +19,8 @@ private:
 	float sizeOfEachCell;
 	float distanceBetweenEachCell;
 	float distanceBetweenCellAndBorder;
+	float distanceBetweenCellAndScore;
+	u32 sizeofValue;
 
 	u32 size;
 
@@ -35,7 +35,9 @@ public:
 				u32 size,
 				float sizeOfEachCell,
 				float distanceBetweenEachCell,
-				float distanceBetweenCellAndBorder);
+				float distanceBetweenCellAndBorder, 
+				float distanceBetweenCellAndScore, 
+				u32 sizeofValue);
 
 	bool isEqual();
 	bool isOver();

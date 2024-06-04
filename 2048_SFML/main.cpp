@@ -1,9 +1,3 @@
-#include <SFML/Audio.hpp>
-#include <SFML/Graphics.hpp>
-#include <SFML/Network.hpp>
-#include <SFML/System.hpp>
-#include <SFML/Window.hpp>
-
 #include "UI.hpp"
 #include "Board.hpp"
 #include "TextField.hpp"
@@ -53,7 +47,7 @@ int main() {
         }
 
         // Update
-        ui.update(deltaTime, board.getScore(), tf, board);
+        ui.update(deltaTime, tf, board);
         board.update(deltaTime);
 
         window.draw(ui);

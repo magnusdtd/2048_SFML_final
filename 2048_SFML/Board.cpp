@@ -12,19 +12,25 @@ Board::Board() {
 	sizeOfEachCell = 0.f;
 	distanceBetweenEachCell = 0.f;
 	distanceBetweenCellAndBorder = 0.f;
+	distanceBetweenCellAndScore = 0.f;
+	sizeofValue = 0;
 }
 
-void Board::init(	u32 width, 
-					u32 height, 
-					u32 size, 
-					float sizeOfEachCell, 
-					float distanceBetweenEachCell, 
-					float distanceBetweenCellAndBorder) 
+void Board::init(	u32 width,
+					u32 height,
+					u32 size,
+					float sizeOfEachCell,
+					float distanceBetweenEachCell,
+					float distanceBetweenCellAndBorder,
+					float distanceBetweenCellAndScore,
+					u32 sizeofValue)
 {
 	this->size = size;
 	this->sizeOfEachCell = sizeOfEachCell;
 	this->distanceBetweenEachCell = distanceBetweenEachCell;
 	this->distanceBetweenCellAndBorder = distanceBetweenCellAndBorder;
+	this->distanceBetweenCellAndScore = distanceBetweenCellAndScore;
+	this->sizeofValue = sizeofValue;
 
 	// Fomula
 	float w = this->size * this->sizeOfEachCell + this->distanceBetweenEachCell * (this->size - 1) + this->distanceBetweenCellAndBorder * 2;
@@ -47,9 +53,11 @@ void Board::init(	u32 width,
 	for (u32 i = 0; i < this->size; i++)
 		for (u32 j = 0; j < this->size; j++)
 			this->cells[i][j].init(	x0 + i * this->sizeOfEachCell + i * this->distanceBetweenEachCell,
-								y0 + j * this->sizeOfEachCell + j * this->distanceBetweenEachCell,
-								font,
-								this->sizeOfEachCell);
+									y0 + j * this->sizeOfEachCell + j * this->distanceBetweenEachCell,
+									font,
+									this->sizeOfEachCell,
+									distanceBetweenCellAndScore, 
+									sizeofValue);
 
 
 	/* Random intialize two Cell of board */

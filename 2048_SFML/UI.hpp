@@ -88,7 +88,7 @@ public:
 	void setState(u32 state) { this->GameState = GameState; }
 	u32 getState() const { return GameState; }
 	void GameOver();
-	void update(float deltaTime, u64 val, TextField& tf, Board& board);
+	void update(float deltaTime, TextField& tf, Board& board);
 	virtual void draw(sf::RenderTarget& rt, sf::RenderStates rs) const;
 };
 
