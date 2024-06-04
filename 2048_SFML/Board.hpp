@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include "Cell.hpp"
+#include "utils.hpp"
 
 class Board : public sf::Drawable {
 private:

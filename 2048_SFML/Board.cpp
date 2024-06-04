@@ -53,22 +53,21 @@ void Board::init(	u32 width,
 
 
 	/* Random intialize two Cell of board */
-	srand((unsigned int)time(nullptr));
-	size_t init1 = rand() % this->size, init2 = rand() % this->size, init3 = 0, init4 = 0;
+	u32 init1 = Random<u32>(0, size - 1), init2 = Random<u32>(0, size - 1), init3 = 0, init4 = 0;
 	while (true) {
-		init3 = rand() % this->size;
-		init4 = rand() % this->size;
+		init3 = Random<u32>(0, size - 1);
+		init4 = Random<u32>(0, size - 1);
 		if (init3 != init1 && init4 != init2)
 			break;
 	}
-	u64 temp = (static_cast<u64>(rand() % 2) + 1) * 2;
+	u64 temp = static_cast<u64>(Random<u32>(1, 2)) * 2;
 	this->cells[init1][init2].setValue(temp);
 	this->cells[init3][init4].setValue(temp);
 }
 
 bool Board::isOver() {
-	for (int i = 0; i < size; i++) {
-		for (int j = 0; j < size; j++) {
+	for (int i = 0; i < (s32)size; i++) {
+		for (int j = 0; j < (s32)size; j++) {
 			if (this->cells[i][j].getValue() == 0)
 				return false;
 			else if (i == size - 1 && j == size - 1)

@@ -1,7 +1,6 @@
 #ifndef UTILS_HPP
 #define UTILS_HPP
-
-#include "random"
+#include <random>
 
 typedef char s8;
 typedef unsigned char u8;
@@ -31,7 +30,14 @@ namespace Stack {
     void freeMemory(Stack& st);
 }
 
-s64 Random(s64 start, s64 end);
+template<typename T>
+inline T Random(T start, T end) {
+    std::random_device rd;
+    std::mt19937 mt(rd());
+    std::uniform_int_distribution<T> dist(start, end);
+    return dist(mt);
+}
+
 
 #endif
 

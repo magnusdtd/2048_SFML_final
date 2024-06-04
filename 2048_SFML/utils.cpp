@@ -58,11 +58,3 @@ void Stack::freeMemory(Stack& st)
     }
 }
 
-s64 Random(s64 start, s64 end)
-{
-    std::random_device rd;
-    std::mt19937 mt(rd());
-    std::uniform_int_distribution<s64> dist(start, end);
-    return dist(mt);
-}
-
