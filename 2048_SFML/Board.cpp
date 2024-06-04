@@ -63,27 +63,15 @@ void Board::init(	u32 width,
 	u64 temp = static_cast<u64>(Random<u32>(1, 2)) * 2;
 	this->cells[init1][init2].setValue(temp);
 	this->cells[init3][init4].setValue(temp);
-}
 
-bool Board::isOver() {
-	for (int i = 0; i < (s32)size; i++) {
-		for (int j = 0; j < (s32)size; j++) {
-			if (this->cells[i][j].getValue() == 0)
-				return false;
-			else if (i == size - 1 && j == size - 1)
-				continue;
-			else if (i == size - 1)
-				if (this->cells[i][j] == this->cells[i][j + 1])
-					return false;
-			else if (j == size - 1) 
-				if (this->cells[i][j] == this->cells[i + 1][j])
-					return false;
-			else
-				if (this->cells[i + 1][j] == this->cells[i][j] || this->cells[i][j + 1] == this->cells[i][j])
-					return false;
-		}
-	}
-	return true;
+
+	/* Push first state in undo stack */
+	u64* tempState = new u64[size * size];
+	for (u32 i = 0; i < size; i++)
+		for (u32 j = 0; j < size; j++)
+			tempState[i * size + j] = this->cells[i][j].getValue();
+	undoStack.push(tempState, size * size);
+	delete[] tempState;
 }
 
 Board::~Board() {
@@ -97,14 +85,79 @@ Board::~Board() {
 	std::cout << "Succesful free memory in Board class !!!\n";
 }
 
+bool Board::isEqual()
+{
+	std::cout << "CKECK MOVE 1\n";
+	u64* temp = undoStack.top();
+	if (temp == nullptr) {
+		std::cout << "CKECK MOVE 2\n";
+		return false;
+	}
+	for (u32 i = 0; i < size; i++)
+		for (u32 j = 0; j < size; j++)
+			if (temp[i * size + j] != this->cells[i][j].getValue()) {
+				std::cout << "CKECK MOVE 3\n";
+				return false;
+			}
+	std::cout << "CKECK MOVE 4\n";
+	return true;
+}
+
+bool Board::isOver() {
+	for (u32 i = 0; i < size; i++)
+		for (u32 j = 0; j < size; j++)
+			if (this->cells[i][j].getValue() == 0)
+				return false;
+	for (u32 i = 0; i < size; i++)
+		for (u32 j = 0; j < size; j++) {
+			if (i < size - 1 && this->cells[i][j] == this->cells[i + 1][j])
+				return false;
+			if (j < size - 1 && this->cells[i][j] == this->cells[i][j + 1])
+				return false;
+		}
+	return true;
+}
+
+bool Board::isWin()
+{
+	for (u32 i = 0; i < size; i++)
+		for (u32 j = 0; j < size; j++)
+			if (this->cells[i][j].getValue() == 2048)
+				return true;
+	return false;
+}
+
+void Board::checkMove()
+{
+	if (!this->isEqual()) {
+		this->newCell();
+		u64* temp = new u64[size * size];
+		for (u32 i = 0; i < size; i++)
+			for (u32 j = 0; j < size; j++)
+				temp[i * size + j] = this->cells[i][j].getValue();
+		undoStack.push(temp, size * size);
+		delete[] temp;
+		temp = nullptr;
+	}
+	if (isWin()) {
+		std::cout << "You Win\n";
+	}
+	else if (isOver()) {
+		std::cout << "Game Over\n";
+	}
+	else {
+		std::cout << "Game Continue\n";
+	}
+}
+
 void Board::newCell() {
-	int li, ri;
+	int x, y;
 	while (true)
 	{
-		li = rand() % size;
-		ri = rand() % size;
-		if (this->cells[li][ri].getValue() == 0) {
-			this->cells[li][ri].setValue(2);
+		x = rand() % size;
+		y = rand() % size;
+		if (this->cells[x][y].getValue() == 0) {
+			this->cells[x][y].setValue(2);
 			break;
 		}
 	}
@@ -113,7 +166,6 @@ void Board::newCell() {
 u64 Board::getScore() const {
 	return score;
 }
-
 
 void Board::UpMove() {
 	int x, y;
@@ -176,26 +228,28 @@ void Board::DownMove() {
 }
 
 void Board::LeftMove() {
-	int x, y;
+	int x, y;	
 	for (int j = 0; j < (s32)size; j++) {
-		x = 0; y = j;
+		x = 0, y = j;
 		for (int i = 1; i < (s32)size; i++) {
 			if (this->cells[i][j].getValue() != 0) {
 				if (this->cells[i - 1][j].getValue() == 0
 					|| this->cells[i - 1][j] == this->cells[i][j]) {
-					if (this->cells[x][y] == this->cells[i][j]) {
+					if (this->cells[x][y].getValue() == this->cells[i][j].getValue()) {
 						// update score
 						this->cells[x][y] *= 2;
 						this->cells[i][j].setValue(0);
 						score += this->cells[x][y].getValue();
 					}
-					else if (this->cells[x][y].getValue() == 0) {
-						this->cells[x][y] = this->cells[i][j];
-						this->cells[i][j].setValue(0);
-					}
 					else {
-						this->cells[++x][y] = this->cells[i][j];
-						this->cells[i][j].setValue(0);
+						if (this->cells[x][y].getValue() == 0) {
+							this->cells[x][y] = this->cells[i][j];
+							this->cells[i][j].setValue(0);
+						}
+						else {
+							this->cells[++x][y] = this->cells[i][j];
+							this->cells[i][j].setValue(0);
+						}
 					}
 				}
 				else x++;
@@ -264,22 +318,26 @@ void Board::update(float deltaTime) {
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && pressTime <= 0.0f) {
 		pressTime = PRESS_DELAY;
-		UpMove();
+		this->UpMove();
+		this->checkMove();
 		std::cout << "Up Check\n";
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && pressTime <= 0.0f) {
 		pressTime = PRESS_DELAY;
-		DownMove();
+		this->DownMove();
+		this->checkMove();
 		std::cout << "Down Check\n";
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && pressTime <= 0.0f) {
 		pressTime = PRESS_DELAY;
-		LeftMove();
+		this->LeftMove();
+		this->checkMove();
 		std::cout << "Left Check\n";
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && pressTime <= 0.0f) {
 		pressTime = PRESS_DELAY;
-		RightMove();
+		this->RightMove();
+		this->checkMove();
 		std::cout << "Right Check\n";
 	}
 }

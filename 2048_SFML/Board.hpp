@@ -26,6 +26,7 @@ private:
 
 	Stack undoStack;
 	Stack redoStack;
+	Stack scoreStack;
 public:
 	Board();
 	~Board();
@@ -35,10 +36,11 @@ public:
 				float sizeOfEachCell,
 				float distanceBetweenEachCell,
 				float distanceBetweenCellAndBorder);
+
+	bool isEqual();
 	bool isOver();
-	/* void MoveCheck(); */
-
-
+	bool isWin();
+	void checkMove();
 	void newCell();
 	u64 getScore() const;
 
