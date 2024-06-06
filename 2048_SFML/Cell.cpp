@@ -51,13 +51,12 @@ void Cell::init(	float posX,
 	text.setFont(font);
 	text.setString(std::to_string(value));
 	text.setCharacterSize(sizeOfValue);
+	text.setPosition(posX + distanceBetweenCellAndScore, posY + distanceBetweenCellAndScore);
+	text.setFillColor(Color::colors[0]);
 
 	sprite.setScale(size / 75.f, size / 75.f);
 	sprite.setColor(Color::colors[0]);
 	sprite.setPosition(posX, posY);
-
-	text.setPosition(posX + distanceBetweenCellAndScore, posY + distanceBetweenCellAndScore);
-	text.setFillColor(Color::colors[0]);
 }
 
 void Cell::setValue(u64 val) {

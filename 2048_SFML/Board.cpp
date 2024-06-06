@@ -56,8 +56,8 @@ void Board::init(	u32 width,
 									y0 + j * this->sizeOfEachCell + j * this->distanceBetweenEachCell,
 									font,
 									this->sizeOfEachCell,
-									distanceBetweenCellAndScore, 
-									sizeofValue);
+									this->distanceBetweenCellAndScore, 
+									this->sizeofValue);
 
 
 	/* Random intialize two Cell of board */
@@ -95,19 +95,15 @@ Board::~Board() {
 
 bool Board::isEqual()
 {
-	std::cout << "CKECK MOVE 1\n";
 	u64* temp = undoStack.top();
 	if (temp == nullptr) {
-		std::cout << "CKECK MOVE 2\n";
 		return false;
 	}
 	for (u32 i = 0; i < size; i++)
 		for (u32 j = 0; j < size; j++)
 			if (temp[i * size + j] != this->cells[i][j].getValue()) {
-				std::cout << "CKECK MOVE 3\n";
 				return false;
 			}
-	std::cout << "CKECK MOVE 4\n";
 	return true;
 }
 
@@ -324,13 +320,13 @@ void Board::Redo()
 void Board::update(float deltaTime) {
 	pressTime -= deltaTime;
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && pressTime <= 0.0f) {
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && pressTime <= 0.0) {
 		pressTime = PRESS_DELAY;
 		this->UpMove();
 		this->checkMove();
 		std::cout << "Up Check\n";
 	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && pressTime <= 0.0f) {
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && pressTime <= 0.0f ) {
 		pressTime = PRESS_DELAY;
 		this->DownMove();
 		this->checkMove();

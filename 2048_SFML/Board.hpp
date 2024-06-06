@@ -55,7 +55,7 @@ public:
 
 	void update(float deltaTime);
 
-	virtual void draw(sf::RenderTarget& rt, sf::RenderStates rs) const;
+	void draw(sf::RenderTarget& rt, sf::RenderStates rs) const override;
 };
 
 #endif

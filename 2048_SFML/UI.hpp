@@ -8,42 +8,14 @@
 #include "Board.hpp"
 #include "layout.hpp"
 
-namespace Game {
-	enum State {
-		START_MENU,
-		SETTING,
-		REGISTER,
-		TOP20LIST,
-		PLAYING
-	};
-	enum Mode {
-		MODE_4 = 4,
-		MODE_5,
-		MODE_6,
-		MODE_7,
-		MODE_8,
-		MODE_9,
-		MODE_10
-	};
-	enum StartMenuButton {
-		NewGame,
-		Setting,
-		Top20List,
-		Resume,
-		NUMBER_OF_BUTTONS
-	};
-	static const u32 GAME_WIDTH = 1200;
-	static const u32 GAME_HEIGHT = 800;
-}
-
 
 class UI : public sf::Drawable {
 private:
 	/* Common */
 	sf::Font font;
-	u32 GameState;
 	const float PRESS_DELAY = 0.4f;
 	float pressTime;
+	Game::State state = Game::START_MENU;
 
 	/* Start Menu */
 	sf::Texture backgroundTextureStartMenu;
@@ -59,7 +31,7 @@ private:
 	sf::Sprite backgroundSetting;
 	u32 whichButton;
 
-	Game::Mode mode; 
+	Game::Mode mode; // 4x4, 5x5, 6x6, 7x7, 8x8, 9x9, 10x10
 	u32 buttonMode;
 	sf::Text textMode;
 
@@ -70,6 +42,7 @@ private:
 	/* Top 20 List && Register */
 	sf::Texture backgroundTextureTop20List;
 	sf::Sprite backgroundTop20List;
+	TextField tf;
 
 	/* Playing */
 	sf::Texture backgroundTexturePlaying;
@@ -85,10 +58,10 @@ private:
 	
 public:
 	UI();
-	void setState(u32 state) { this->GameState = GameState; }
-	u32 getState() const { return GameState; }
+	Game::State getState() const;
 	void GameOver();
-	void update(float deltaTime, TextField& tf, Board& board);
+	void update(float deltaTime, Board& board);
+	void handleInput(sf::Event event, sf::RenderWindow& window);
 	virtual void draw(sf::RenderTarget& rt, sf::RenderStates rs) const;
 };
 

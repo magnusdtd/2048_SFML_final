@@ -1,6 +1,6 @@
 #include "UI.hpp"
 #include "Board.hpp"
-#include "TextField.hpp"
+#include "layout.hpp"
 
 int main() {
     // Window property
@@ -22,8 +22,6 @@ int main() {
     // Game objects
     Board board;
     UI ui;
-    TextField tf(20, 500.f, 30.f);
-    tf.setPosition(500.f, 300.f);
     
     // Game loop
     while (window.isOpen()) {
@@ -35,27 +33,20 @@ int main() {
                 window.close();
                 break;
             }
-            else if (event.type == sf::Event::MouseButtonReleased) {
-                auto pos = sf::Mouse::getPosition(window);
-                tf.setFocus(false);
-                if (tf.contains(sf::Vector2f(pos)))
-                    tf.setFocus(true);
-            }
-            else if (event.type == sf::Event::TextEntered)
-                tf.handleInput(event);
+            ui.handleInput(event, window);
             
         }
 
         // Update
-        ui.update(deltaTime, tf, board);
-        board.update(deltaTime);
-
+        ui.update(deltaTime, board);
         window.draw(ui);
-        if (ui.getState() == Game::PLAYING) 
-               window.draw(board);
-        if (ui.getState() == Game::REGISTER)
-            window.draw(tf);
 
+        if (ui.getState() == Game::PLAYING) {
+            std::cout << "Draw board\n";
+            board.update(deltaTime);
+            window.draw(board);
+        }
+ 
         window.display(); // Tell app that window is done drawing
     }
     return 0;

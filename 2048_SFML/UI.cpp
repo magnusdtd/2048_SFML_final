@@ -1,10 +1,10 @@
 #include "UI.hpp"
 
-UI::UI() {
+UI::UI() : tf(20, 500.f, 30.f) {
 	/* Common */
 	if (!font.loadFromFile("resources/font.ttf"))
 		std::cout << "Error loading font\n";
-	GameState = Game::START_MENU;
+	state = Game::START_MENU;
 	pressTime = 0.f;
 
 	/* Start Menu */
@@ -42,7 +42,7 @@ UI::UI() {
 
 	whichButton = 0;
 
-	mode = Game::Mode::MODE_4; // Default mode
+	mode = Game::MODE_5; // Default mode
 	textMode.setFont(font);
 	textMode.setString(std::to_string(mode));
 	textMode.setCharacterSize(64);
@@ -61,6 +61,8 @@ UI::UI() {
 	/* Top 20 list && Register */
 	backgroundTextureTop20List.loadFromFile("resources/Top20List.png");
 	backgroundTop20List.setTexture(backgroundTextureTop20List);
+
+	tf.setPosition(500.f, 300.f);
 
 	/* Playing */
 	backgroundTexturePlaying.loadFromFile("resources/background.png");
@@ -92,6 +94,11 @@ UI::UI() {
 	textResume.setPosition(200, 300);
 }
 
+Game::State UI::getState() const
+{
+	return state;
+}
+
 void UI::GameOver() {
 	if (score > bestScore) {
 		newScore = true;
@@ -101,9 +108,9 @@ void UI::GameOver() {
 		gameOver = true;
 }
 
-void UI::update(float deltaTime, TextField& tf, Board& board) {
+void UI::update(float deltaTime, Board& board) {
 	pressTime -= deltaTime;
-	if (GameState == Game::State::START_MENU) {
+	if (state == Game::START_MENU) {
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && pressTime <= 0.f) {
 			(SELECT_BUTTON += (Game::NUMBER_OF_BUTTONS - 1)) %= Game::NUMBER_OF_BUTTONS;
 			pressTime = PRESS_DELAY;
@@ -141,17 +148,17 @@ void UI::update(float deltaTime, TextField& tf, Board& board) {
 		}
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
-			if (SELECT_BUTTON == Game::StartMenuButton::NewGame)
-				GameState = Game::State::REGISTER;
-			else if (SELECT_BUTTON == Game::StartMenuButton::Setting)
-				GameState = Game::State::SETTING;
-			else if (SELECT_BUTTON == Game::StartMenuButton::Top20List)
-				GameState = Game::State::TOP20LIST;
-			else if (SELECT_BUTTON == Game::StartMenuButton::Resume)
-				GameState = Game::State::PLAYING;
+			if (SELECT_BUTTON == Game::NewGame)
+				state = Game::REGISTER;
+			else if (SELECT_BUTTON == Game::Setting)
+				state = Game::SETTING;
+			else if (SELECT_BUTTON == Game::Top20List)
+				state = Game::TOP20LIST;
+			else if (SELECT_BUTTON == Game::Resume)
+				state = Game::PLAYING;
 
 	}
-	else if (GameState == Game::State::SETTING) {
+	else if (state == Game::SETTING) {
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && pressTime <= 0.f) {
 			whichButton = (whichButton + 1) % 2;
 			pressTime = PRESS_DELAY;
@@ -225,21 +232,21 @@ void UI::update(float deltaTime, TextField& tf, Board& board) {
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::BackSpace)) {
 			tf.clear();
-			GameState = Game::State::START_MENU;
+			state = Game::START_MENU;
 		}
 	}
-	else if (GameState == Game::State::TOP20LIST) {
+	else if (state == Game::TOP20LIST) {
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::BackSpace))
-			GameState = Game::State::START_MENU;
+			state = Game::START_MENU;
 	}
-	else if (GameState == Game::State::REGISTER) {
+	else if (state == Game::REGISTER) {
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter) && tf.getText().size() != 0) {
-			GameState = Game::State::PLAYING;
+			state = Game::PLAYING;
 			switch (mode) {
 			case Game::MODE_4:
 				board.init(	Game::GAME_WIDTH,
 							Game::GAME_HEIGHT,
-							LAYOUT::LAYOUT_4.BOARD_SIZE,
+							LAYOUT::LAYOUT_4.boardSize,
 							LAYOUT::LAYOUT_4.sizeOfEachCell,
 							LAYOUT::LAYOUT_4.distanceBetweenEachCell,
 							LAYOUT::LAYOUT_4.distanceBetweenCellAndBorder,
@@ -249,7 +256,7 @@ void UI::update(float deltaTime, TextField& tf, Board& board) {
 			case Game::MODE_5:
 				board.init(	Game::GAME_WIDTH,
 							Game::GAME_HEIGHT,
-							LAYOUT::LAYOUT_5.BOARD_SIZE,
+							LAYOUT::LAYOUT_5.boardSize,
 							LAYOUT::LAYOUT_5.sizeOfEachCell,
 							LAYOUT::LAYOUT_5.distanceBetweenEachCell,
 							LAYOUT::LAYOUT_5.distanceBetweenCellAndBorder,
@@ -259,7 +266,7 @@ void UI::update(float deltaTime, TextField& tf, Board& board) {
 			case Game::MODE_6:
 				board.init(	Game::GAME_WIDTH,
 							Game::GAME_HEIGHT,
-							LAYOUT::LAYOUT_6.BOARD_SIZE,
+							LAYOUT::LAYOUT_6.boardSize,
 							LAYOUT::LAYOUT_6.sizeOfEachCell,
 							LAYOUT::LAYOUT_6.distanceBetweenEachCell,
 							LAYOUT::LAYOUT_6.distanceBetweenCellAndBorder,
@@ -269,7 +276,7 @@ void UI::update(float deltaTime, TextField& tf, Board& board) {
 			case Game::MODE_7:
 				board.init(	Game::GAME_WIDTH,
 							Game::GAME_HEIGHT,
-							LAYOUT::LAYOUT_7.BOARD_SIZE,
+							LAYOUT::LAYOUT_7.boardSize,
 							LAYOUT::LAYOUT_7.sizeOfEachCell,
 							LAYOUT::LAYOUT_7.distanceBetweenEachCell,
 							LAYOUT::LAYOUT_7.distanceBetweenCellAndBorder,
@@ -279,7 +286,7 @@ void UI::update(float deltaTime, TextField& tf, Board& board) {
 			case Game::MODE_8:
 				board.init(	Game::GAME_WIDTH,
 							Game::GAME_HEIGHT,
-							LAYOUT::LAYOUT_8.BOARD_SIZE,
+							LAYOUT::LAYOUT_8.boardSize,
 							LAYOUT::LAYOUT_8.sizeOfEachCell,
 							LAYOUT::LAYOUT_8.distanceBetweenEachCell,
 							LAYOUT::LAYOUT_8.distanceBetweenCellAndBorder, 
@@ -289,7 +296,7 @@ void UI::update(float deltaTime, TextField& tf, Board& board) {
 			case Game::MODE_9:
 				board.init(	Game::GAME_WIDTH,
 							Game::GAME_HEIGHT,
-							LAYOUT::LAYOUT_9.BOARD_SIZE,
+							LAYOUT::LAYOUT_9.boardSize,
 							LAYOUT::LAYOUT_9.sizeOfEachCell,
 							LAYOUT::LAYOUT_9.distanceBetweenEachCell,
 							LAYOUT::LAYOUT_9.distanceBetweenCellAndBorder, 
@@ -299,7 +306,7 @@ void UI::update(float deltaTime, TextField& tf, Board& board) {
 			case Game::MODE_10:
 				board.init(	Game::GAME_WIDTH,
 							Game::GAME_HEIGHT,
-							LAYOUT::LAYOUT_10.BOARD_SIZE,
+							LAYOUT::LAYOUT_10.boardSize,
 							LAYOUT::LAYOUT_10.sizeOfEachCell,
 							LAYOUT::LAYOUT_10.distanceBetweenEachCell,
 							LAYOUT::LAYOUT_10.distanceBetweenCellAndBorder, 
@@ -311,7 +318,7 @@ void UI::update(float deltaTime, TextField& tf, Board& board) {
 			}
 		}
 	}
-	else if (GameState == Game::State::PLAYING) {
+	else if (state == Game::PLAYING) {
 		score = board.getScore();
 		textScore.setString(std::to_string(score));
 		textScore.setOrigin(textScore.getGlobalBounds().width / 2, textScore.getGlobalBounds().height / 2);
@@ -322,13 +329,24 @@ void UI::update(float deltaTime, TextField& tf, Board& board) {
 		}
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::BackSpace))
-			GameState = Game::State::START_MENU;
+			state = Game::START_MENU;
 	}
+}
 
+void UI::handleInput(sf::Event event, sf::RenderWindow& window)
+{
+	if (event.type == sf::Event::MouseButtonReleased) {
+		auto pos = sf::Mouse::getPosition(window);
+		tf.setFocus(false);
+		if (tf.contains(sf::Vector2f(pos)))
+			tf.setFocus(true);
+			}
+	else if (event.type == sf::Event::TextEntered)
+		tf.handleInput(event);
 }
 
 void UI::draw(sf::RenderTarget& rt, sf::RenderStates rs) const {
-	if (GameState == Game::START_MENU) {
+	if (state == Game::START_MENU) {
 		rt.draw(backgroundStartMenu, rs);
 
 		rt.draw(ButtonNewGame, rs);
@@ -337,16 +355,18 @@ void UI::draw(sf::RenderTarget& rt, sf::RenderStates rs) const {
 		rt.draw(ButtonResume, rs);
 
 	}
-	else if (GameState == Game::SETTING) {
+	else if (state == Game::SETTING) {
 		rt.draw(backgroundSetting, rs);
 		rt.draw(textMode, rs);
 		rt.draw(textOnOff, rs);
 	}
-	else if (GameState == Game::TOP20LIST)
+	else if (state == Game::TOP20LIST)
 		rt.draw(backgroundTop20List, rs);
-	else if (GameState == Game::REGISTER)
-		rt.draw(backgroundTop20List, rs);
-	else if (GameState == Game::PLAYING) {
+	else if (state == Game::REGISTER) {
+		rt.draw(backgroundPlaying, rs);
+		rt.draw(tf, rs);
+	}
+	else if (state == Game::PLAYING) {
 		rt.draw(backgroundPlaying, rs);
 
 		rt.draw(textBestScore, rs);
