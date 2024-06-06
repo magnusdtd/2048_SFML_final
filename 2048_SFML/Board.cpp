@@ -1,5 +1,8 @@
 #include "Board.hpp"
 
+/**
+ * @brief Default constructor for Board.
+ */
 Board::Board() {
 	pressTime = 0.0f;
 	score = 0;
@@ -9,13 +12,11 @@ Board::Board() {
 		std::cout << "Error loading font\n";
 	
 	this->cells = nullptr;
-	sizeOfEachCell = 0.f;
-	distanceBetweenEachCell = 0.f;
-	distanceBetweenCellAndBorder = 0.f;
-	distanceBetweenCellAndScore = 0.f;
-	sizeofValue = 0;
 }
 
+/**
+ * @brief Initializes the board.
+ */
 void Board::init(u32 width,
 				u32 height,
 				u32 size,
@@ -27,23 +28,18 @@ void Board::init(u32 width,
 				u32 sizeofValue)
 {
 	this->size = size;
-	this->sizeOfEachCell = sizeOfEachCell;
-	this->distanceBetweenEachCell = distanceBetweenEachCell;
-	this->distanceBetweenCellAndBorder = distanceBetweenCellAndBorder;
-	this->distanceBetweenCellAndScore = distanceBetweenCellAndScore;
-	this->sizeofValue = sizeofValue;
 
 	// Fomula
-	float w = this->size * this->sizeOfEachCell + this->distanceBetweenEachCell * (this->size - 1) + this->distanceBetweenCellAndBorder * 2;
-	float h = this->size * this->sizeOfEachCell + this->distanceBetweenEachCell * (this->size - 1) + this->distanceBetweenCellAndBorder * 2;
+	float w = this->size * sizeOfEachCell + distanceBetweenEachCell * (this->size - 1) + distanceBetweenCellAndBorder * 2;
+	float h = this->size * sizeOfEachCell + distanceBetweenEachCell * (this->size - 1) + distanceBetweenCellAndBorder * 2;
 	float x0 = height / 2.f, y0 = height / 2.f;
-	x0 -= this->size / 2.f * this->sizeOfEachCell + 0.5f * (this->size - 1) * this->distanceBetweenEachCell;
-	y0 -= this->size / 2.f * this->sizeOfEachCell + 0.5f * (this->size - 1) * this->distanceBetweenEachCell;
+	x0 -= this->size / 2.f * sizeOfEachCell + 0.5f * (this->size - 1) * distanceBetweenEachCell;
+	y0 -= this->size / 2.f * sizeOfEachCell + 0.5f * (this->size - 1) * distanceBetweenEachCell;
 
 	/* Border */
 	borderTexture.loadFromFile("Texture/border.png");
 	border.setTexture(borderTexture);
-	border.setPosition(x0 - this->distanceBetweenCellAndBorder, y0 - this->distanceBetweenCellAndBorder);
+	border.setPosition(x0 - distanceBetweenCellAndBorder, y0 - distanceBetweenCellAndBorder);
 	border.scale(w / borderTexture.getSize().x, h / borderTexture.getSize().y);
 
 
@@ -53,13 +49,13 @@ void Board::init(u32 width,
 
 	for (u32 i = 0; i < this->size; i++)
 		for (u32 j = 0; j < this->size; j++)
-			this->cells[i][j].init(	x0 + i * this->sizeOfEachCell + i * this->distanceBetweenEachCell,
-									y0 + j * this->sizeOfEachCell + j * this->distanceBetweenEachCell,
+			this->cells[i][j].init(	x0 + i * sizeOfEachCell + i * distanceBetweenEachCell,
+									y0 + j * sizeOfEachCell + j * distanceBetweenEachCell,
 									font,
-									this->sizeOfEachCell,
+									sizeOfEachCell,
 									alignX, 
 									alignY, 
-									this->sizeofValue);
+									sizeofValue);
 
 
 	/* Random intialize two Cell of board */
@@ -84,6 +80,9 @@ void Board::init(u32 width,
 	delete[] tempState;
 }
 
+/**
+ * @brief Destructor for Board.
+ */
 Board::~Board() {
 	for (u32 i = 0; i < size; i++) {
 		delete[] this->cells[i];
@@ -95,6 +94,10 @@ Board::~Board() {
 	std::cout << "Succesful free memory in Board class !!!\n";
 }
 
+/**
+ * @brief Checks if the board state is equal to the previous state.
+ * @return True if the board state is equal to the previous state, false otherwise.
+ */
 bool Board::isEqual()
 {
 	u64* temp = undoStack.top();
@@ -109,6 +112,10 @@ bool Board::isEqual()
 	return true;
 }
 
+/**
+ * @brief Checks if the game is over.
+ * @return True if the game is over, false otherwise.
+ */
 bool Board::isOver() {
 	for (u32 i = 0; i < size; i++)
 		for (u32 j = 0; j < size; j++)
@@ -124,6 +131,10 @@ bool Board::isOver() {
 	return true;
 }
 
+/**
+ * @brief Checks if the player has won the game.
+ * @return True if the player has won, false otherwise.
+ */
 bool Board::isWin()
 {
 	for (u32 i = 0; i < size; i++)
@@ -133,6 +144,9 @@ bool Board::isWin()
 	return false;
 }
 
+/**
+ * @brief Checks if a move is valid and updates the game state.
+ */
 void Board::checkMove()
 {
 	if (!this->isEqual()) {
@@ -156,6 +170,9 @@ void Board::checkMove()
 	}
 }
 
+/**
+ * @brief Adds a new cell to the board.
+ */
 void Board::newCell() {
 	int x, y;
 	while (true)
@@ -169,10 +186,17 @@ void Board::newCell() {
 	}
 }
 
+/**
+ * @brief Returns the current score.
+ * @return The current score.
+ */
 u64 Board::getScore() const {
 	return score;
 }
 
+/**
+ * @brief Moves the cells up.
+ */
 void Board::UpMove() {
 	int x, y;
 	for (int i = 0; i < (s32)size; i++) {
@@ -203,6 +227,9 @@ void Board::UpMove() {
 	}
 }
 
+/**
+ * @brief Moves the cells down.
+ */
 void Board::DownMove() {
 	int x, y;
 	for (int i = 0; i < (s32)size; i++) {
@@ -233,6 +260,9 @@ void Board::DownMove() {
 	}
 }
 
+/**
+ * @brief Moves the cells left.
+ */
 void Board::LeftMove() {
 	int x, y;	
 	for (int j = 0; j < (s32)size; j++) {
@@ -264,6 +294,9 @@ void Board::LeftMove() {
 	}
 }
 
+/**
+ * @brief Moves the cells right.
+ */
 void Board::RightMove() {
 	int x, y;
 	for (int j = 0; j < (s32)size; j++) {
@@ -295,6 +328,9 @@ void Board::RightMove() {
 	}
 }
 
+/**
+ * @brief Undoes the last move.
+ */
 void Board::Undo()
 {
 	if (undoStack.empty())
@@ -307,6 +343,9 @@ void Board::Undo()
 	delete[] temp;
 }
 
+/**
+ * @brief Redoes the last undone move.
+ */
 void Board::Redo()
 {
 	if(redoStack.empty())
@@ -319,6 +358,10 @@ void Board::Redo()
 	delete[] temp;
 }
 
+/**
+ * @brief Updates the game state.
+ * @param deltaTime The time since the last update.
+ */
 void Board::update(float deltaTime) {
 	pressTime -= deltaTime;
 
@@ -348,6 +391,11 @@ void Board::update(float deltaTime) {
 	}
 }
 
+/**
+ * @brief Draws the board.
+ * @param rt The render target to draw to.
+ * @param rs The render states to use.
+ */
 void Board::draw(sf::RenderTarget& rt, sf::RenderStates rs) const {
 	rt.draw(border, rs); // Draw table
 

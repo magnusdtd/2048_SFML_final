@@ -5,12 +5,14 @@
 #include "SFML/Graphics.hpp"
 #include <array>
 
+// File paths for storing game data
 #define BEST_SCORE_FILE "Data/best_score.dat"
 #define PLAYER_NAME_FILE "Data/player_name.dat"
 #define PLAYER_SCORE_FILE "Data/player_score.dat"
 #define PLAYER_TIME_FILE "Data/player_time.dat"
 
 namespace Game {
+    // Enum representing the different states of the game
     enum State {
         START_MENU,
         SETTING,
@@ -19,6 +21,7 @@ namespace Game {
         PLAYING,
     };
 
+    // Enum representing the different modes of the game
     enum Mode {
         MODE_4 = 4,
         MODE_5,
@@ -29,6 +32,7 @@ namespace Game {
         MODE_10
     };
 
+    // Enum representing the different buttons in the start menu
     enum StartMenuButton {
         NewGame,
         Setting,
@@ -37,22 +41,25 @@ namespace Game {
         NUMBER_OF_BUTTONS
     };
 
+    // Game window dimensions
     static u32 GAME_WIDTH = 1200;
     static u32 GAME_HEIGHT = 800;
 }
 
+// Class representing the layout of the game board
 class Layout {
 public:
-    u32 boardSize;
-    float sizeOfEachCell;
-    float distanceBetweenEachCell;
-    float distanceBetweenCellAndBorder;
-    float alignX; // distance between cell and score in x axis
-    float alignY; // distance between cell and score in y axis
-    u32 sizeOfValue;
+    u32 boardSize; // Size of the game board
+    float sizeOfEachCell; // Size of each cell in the game board
+    float distanceBetweenEachCell; // Distance between each cell in the game board
+    float distanceBetweenCellAndBorder; // Distance between each cell and the border of the game board
+    float alignX; // Distance between cell and score in x axis
+    float alignY; // Distance between cell and score in y axis
+    u32 sizeOfValue; // Size of the value in each cell
 };
 
 namespace LAYOUT {
+    // Layout configurations for different game modes
     static Layout LAYOUT_4 = { 4, 170.f, 5.f, 20.f, 82.f, 78.f, 40 };
     static Layout LAYOUT_5 = { 5, 125.f, 5.f, 20.f, 62.f, 54.f, 35 };
     static Layout LAYOUT_6 = { 6, 100.f, 5.f, 20.f, 46.f, 40.f, 30 };
@@ -63,6 +70,7 @@ namespace LAYOUT {
 }
 
 namespace Color {
+    // Array of colors used in the game
     static std::array<sf::Color, 12> colors = { sf::Color(102,102,102),
                                                 sf::Color(255,166,0),
                                                 sf::Color(245,151,245),

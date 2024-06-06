@@ -1,13 +1,14 @@
 #include "UI.hpp"
-#include "Board.hpp"
-#include "layout.hpp"
 
+/**
+ * Entry point of the application.
+ */
 int main() {
-    // Window property
+    // Create a window with specific properties
     sf::RenderWindow window(sf::VideoMode(Game::GAME_WIDTH, Game::GAME_HEIGHT), "2048",
-                            sf::Style::Titlebar | sf::Style::Close);
+        sf::Style::Titlebar | sf::Style::Close);
 
-    // Set icon
+    // Load and set the application icon
     auto image = sf::Image{};
     if (!image.loadFromFile("Texture/appIcon.png")) {
         std::cout << "Could not load image\n";
@@ -19,47 +20,53 @@ int main() {
     sf::Event event;
     sf::Clock clock;
 
-    // Game objects
+    // Initialize game objects
     Board board;
     UI ui;
     TextField textfield(20, 500.f, 36.f);
     textfield.setPosition(300.f, 420.f);
     textfield.setFocus(true);
-    
-    // Game loop
+
+    // Main game loop
     while (window.isOpen()) {
         float deltaTime = clock.restart().asSeconds();
-          
+
         // Event polling
         while (window.pollEvent(event)) {
+            // Handle window close event
             if (event.type == sf::Event::Closed) {
                 window.close();
                 break;
             }
+            // Handle mouse button release event
             else if (event.type == sf::Event::MouseButtonReleased) {
                 auto pos = sf::Mouse::getPosition(window);
                 textfield.setFocus(false);
                 if (textfield.contains(sf::Vector2f(pos)))
                     textfield.setFocus(true);
             }
+            // Handle text input event
             else if (event.type == sf::Event::TextEntered && ui.getState() == Game::REGISTER)
                 textfield.handleInput(event, deltaTime);
-            
+
         }
 
-        // Update
+        // Update UI and draw it on the window
         ui.update(deltaTime, board, textfield);
         window.draw(ui);
 
-        if (ui.getState() == Game::REGISTER) {;
-			window.draw(textfield);
-		}
+        // Draw textfield or board based on the game state
+        if (ui.getState() == Game::REGISTER) {
+            ;
+            window.draw(textfield);
+        }
         else if (ui.getState() == Game::PLAYING) {
             board.update(deltaTime);
             window.draw(board);
         }
- 
-        window.display(); // Tell app that window is done drawing
+
+        // Display the window content
+        window.display();
     }
     return 0;
 }

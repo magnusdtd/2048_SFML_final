@@ -8,59 +8,88 @@
 #include "Board.hpp"
 #include "layout.hpp"
 
-
+/**
+ * UI class is responsible for managing the user interface of the game.
+ * It handles the game states and updates the UI accordingly.
+ */
 class UI : public sf::Drawable {
 private:
-	/* Common */
-	sf::Font font;
-	const float PRESS_DELAY = 0.4f;
-	float pressTime;
-	Game::State state = Game::START_MENU;
+    /* Common */
+    sf::Font font;  // Font used in the UI
+    const float PRESS_DELAY = 0.4f;  // Delay between key presses
+    float pressTime;  // Time since last key press
+    Game::State state = Game::START_MENU;  // Current game state
 
-	/* Start Menu */
-	sf::Texture backgroundTextureStartMenu;
-	sf::Sprite backgroundStartMenu;
-	u32 SELECT_BUTTON;
-	sf::Text ButtonNewGame;
-	sf::Text ButtonSetting;
-	sf::Text ButtonTop20List;
-	sf::Text ButtonResume;
-	
-	/* Setting */
-	sf::Texture backgroundTextureSetting;
-	sf::Sprite backgroundSetting;
-	u32 whichButton;
+    /* Start Menu */
+    sf::Texture backgroundTextureStartMenu;  // Texture for start menu background
+    sf::Sprite backgroundStartMenu;  // Sprite for start menu background
+    u32 SELECT_BUTTON;  // Currently selected button in the start menu
+    sf::Text ButtonNewGame;  // New Game button
+    sf::Text ButtonSetting;  // Settings button
+    sf::Text ButtonTop20List;  // Top 20 List button
+    sf::Text ButtonResume;  // Resume button
 
-	Game::Mode mode; // 4x4, 5x5, 6x6, 7x7, 8x8, 9x9, 10x10
-	u32 buttonMode;
-	sf::Text textMode;
+    /* Setting */
+    sf::Texture backgroundTextureSetting;  // Texture for settings background
+    sf::Sprite backgroundSetting;  // Sprite for settings background
+    u32 whichButton;  // Currently selected button in the settings
 
-	u32 buttonOnOff;
-	sf::Text textOnOff;
+    Game::Mode mode;  // Current game mode (4x4, 5x5, 6x6, 7x7, 8x8, 9x9, 10x10)
+    u32 buttonMode;  // Currently selected mode button
+    sf::Text textMode;  // Text displaying the current mode
 
+    u32 buttonOnOff;  // Button for turning on/off a feature
+    sf::Text textOnOff;  // Text displaying the on/off status
 
-	/* Top 20 List && Register */
-	sf::Texture backgroundTextureTop20List;
-	sf::Sprite backgroundTop20List;
+    /* Top 20 List && Register */
+    sf::Texture backgroundTextureTop20List;  // Texture for top 20 list background
+    sf::Sprite backgroundTop20List;  // Sprite for top 20 list background
 
-	/* Playing */
-	sf::Texture backgroundTexturePlaying;
-	sf::Sprite backgroundPlaying;
-	sf::Text textBestScore;
-	sf::Text textScore;
-	sf::Text textGameOver;
-	sf::Text textResume;
-	u64 bestScore = 0;
-	u64 score = 0;
-	bool newScore = false;
-	bool gameOver = false;
-	
+    /* Playing */
+    sf::Texture backgroundTexturePlaying;  // Texture for playing background
+    sf::Sprite backgroundPlaying;  // Sprite for playing background
+    sf::Text textBestScore;  // Text displaying the best score
+    sf::Text textScore;  // Text displaying the current score
+    sf::Text textGameOver;  // Text displaying game over message
+    sf::Text textResume;  // Text displaying resume message
+    u64 bestScore = 0;  // Best score
+    u64 score = 0;  // Current score
+    bool newScore = false;  // Flag indicating if a new score has been achieved
+    bool gameOver = false;  // Flag indicating if the game is over
+
 public:
-	UI();
-	Game::State getState() const;
-	void GameOver();
-	void update(float deltaTime, Board& board, TextField& tf);
-	virtual void draw(sf::RenderTarget& rt, sf::RenderStates rs) const;
+    /**
+     * Constructor for the UI class.
+     * Initializes the UI elements.
+     */
+    UI();
+
+    /**
+     * Returns the current game state.
+     * @return Current game state
+     */
+    Game::State getState() const;
+
+    /**
+     * Handles the game over state.
+     * Checks if a new score has been achieved and saves it if necessary.
+     */
+    void GameOver();
+
+    /**
+     * Updates the UI based on the current game state.
+     * @param deltaTime Time since the last frame
+     * @param board Reference to the game board
+     * @param tf Reference to the text field
+     */
+    void update(float deltaTime, Board& board, TextField& tf);
+
+    /**
+     * Draws the UI elements on the screen.
+     * @param rt Render target to draw on
+     * @param rs Current render states
+     */
+    virtual void draw(sf::RenderTarget& rt, sf::RenderStates rs) const;
 };
 
 #endif

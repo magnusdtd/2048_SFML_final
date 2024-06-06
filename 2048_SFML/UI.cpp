@@ -1,5 +1,9 @@
 #include "UI.hpp"
 
+/**
+ * Constructor for the UI class.
+ * Initializes the UI elements.
+ */
 UI::UI() {
 	/* Common */
 	if (!font.loadFromFile("Fonts/font.ttf"))
@@ -8,6 +12,7 @@ UI::UI() {
 	pressTime = 0.f;
 
 	/* Start Menu */
+	// Initialize start menu elements...
 	backgroundTextureStartMenu.loadFromFile("Texture/StartMenu.png");
 	backgroundStartMenu.setTexture(backgroundTextureStartMenu);
 	SELECT_BUTTON = Game::StartMenuButton::NewGame;
@@ -37,6 +42,7 @@ UI::UI() {
 	ButtonResume.setPosition(Game::GAME_WIDTH / 2.f - 100.f, Game::GAME_HEIGHT / 2.f + 240.f);
 
 	/* Setting */
+    // Initialize setting elements...
 	backgroundTextureSetting.loadFromFile("Texture/Setting.png");
 	backgroundSetting.setTexture(backgroundTextureSetting);
 
@@ -58,12 +64,14 @@ UI::UI() {
 	buttonOnOff = 0;
 	buttonMode = 0;
 
-	/* Top 20 list && Register */
+	/* Top 20 list */
+	// Initialize top 20 list elements...
 	backgroundTextureTop20List.loadFromFile("Texture/Top20List.png");
 	backgroundTop20List.setTexture(backgroundTextureTop20List);
 
 
-	/* Playing */
+	/* Playing && Register */
+	// Initialize playing and register elements...
 	backgroundTexturePlaying.loadFromFile("Texture/background.png");
 	backgroundPlaying.setTexture(backgroundTexturePlaying);
 	
@@ -95,12 +103,22 @@ UI::UI() {
 	textResume.setPosition(200, 300);
 }
 
+/**
+ * Returns the current game state.
+ * @return Current game state
+ */
 Game::State UI::getState() const
 {
 	return state;
 }
 
+
+/**
+ * Handles the game over state.
+ * Checks if a new score has been achieved and saves it if necessary.
+ */
 void UI::GameOver() {
+	// Handle game over state...
 	if (score > bestScore) {
 		newScore = true;
 		Output::saveBestScore(BEST_SCORE_FILE, score);
@@ -109,7 +127,14 @@ void UI::GameOver() {
 		gameOver = true;
 }
 
+/**
+ * Updates the UI based on the current game state.
+ * @param deltaTime Time since the last frame
+ * @param board Reference to the game board
+ * @param tf Reference to the text field
+ */
 void UI::update(float deltaTime, Board& board, TextField& tf) {
+	// Update UI based on the current game state...
 	pressTime -= deltaTime;
 	if (state == Game::START_MENU) {
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && pressTime <= 0.f) {
@@ -342,7 +367,13 @@ void UI::update(float deltaTime, Board& board, TextField& tf) {
 	}
 }
 
+/**
+ * Draws the UI elements on the screen.
+ * @param rt Render target to draw on
+ * @param rs Current render states
+ */
 void UI::draw(sf::RenderTarget& rt, sf::RenderStates rs) const {
+	// Draw UI elements based on the current game state...
 	if (state == Game::START_MENU) {
 		rt.draw(backgroundStartMenu, rs);
 
