@@ -1,6 +1,6 @@
 #include "UI.hpp"
 
-UI::UI() : tf(20, 500.f, 30.f) {
+UI::UI() {
 	/* Common */
 	if (!font.loadFromFile("Fonts/font.ttf"))
 		std::cout << "Error loading font\n";
@@ -62,7 +62,6 @@ UI::UI() : tf(20, 500.f, 30.f) {
 	backgroundTextureTop20List.loadFromFile("Texture/Top20List.png");
 	backgroundTop20List.setTexture(backgroundTextureTop20List);
 
-	tf.setPosition(500.f, 300.f);
 
 	/* Playing */
 	backgroundTexturePlaying.loadFromFile("Texture/background.png");
@@ -82,7 +81,6 @@ UI::UI() : tf(20, 500.f, 30.f) {
 	textScore.setFillColor(sf::Color(0, 0, 0));
 	textScore.setPosition(1010.f, 580.f);
 	textScore.setOrigin(textScore.getGlobalBounds().width / 2, textScore.getGlobalBounds().height / 2);
-
 
 	textGameOver.setFont(font);
 	textGameOver.setString("Game Over");
@@ -111,14 +109,14 @@ void UI::GameOver() {
 		gameOver = true;
 }
 
-void UI::update(float deltaTime, Board& board) {
+void UI::update(float deltaTime, Board& board, TextField& tf) {
 	pressTime -= deltaTime;
 	if (state == Game::START_MENU) {
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && pressTime <= 0.f) {
 			(SELECT_BUTTON += (Game::NUMBER_OF_BUTTONS - 1)) %= Game::NUMBER_OF_BUTTONS;
 			pressTime = PRESS_DELAY;
 		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && pressTime <= 0.f) {
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && pressTime <= 0.f) {
 			(SELECT_BUTTON += (Game::NUMBER_OF_BUTTONS + 1)) %= Game::NUMBER_OF_BUTTONS;
 			pressTime = PRESS_DELAY;
 		}
@@ -234,7 +232,6 @@ void UI::update(float deltaTime, Board& board) {
 
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::BackSpace)) {
-			tf.clear();
 			state = Game::START_MENU;
 		}
 	}
@@ -243,7 +240,8 @@ void UI::update(float deltaTime, Board& board) {
 			state = Game::START_MENU;
 	}
 	else if (state == Game::REGISTER) {
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter) && tf.getText().size() != 0) {
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter) && tf.getText().size() != 0 && pressTime + 2.f <= 0.0f) {
+			pressTime = PRESS_DELAY;
 			state = Game::PLAYING;
 			switch (mode) {
 			case Game::MODE_4:
@@ -326,6 +324,7 @@ void UI::update(float deltaTime, Board& board) {
 			default:
 				std::cout << "Error in UI mode\n";
 			}
+			tf.clear();
 		}
 	}
 	else if (state == Game::PLAYING) {
@@ -341,18 +340,6 @@ void UI::update(float deltaTime, Board& board) {
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::BackSpace))
 			state = Game::START_MENU;
 	}
-}
-
-void UI::handleInput(sf::Event event, sf::RenderWindow& window)
-{
-	if (event.type == sf::Event::MouseButtonReleased) {
-		auto pos = sf::Mouse::getPosition(window);
-		tf.setFocus(false);
-		if (tf.contains(sf::Vector2f(pos)))
-			tf.setFocus(true);
-	}
-	else if (event.type == sf::Event::TextEntered)
-		tf.handleInput(event);
 }
 
 void UI::draw(sf::RenderTarget& rt, sf::RenderStates rs) const {
@@ -374,7 +361,6 @@ void UI::draw(sf::RenderTarget& rt, sf::RenderStates rs) const {
 		rt.draw(backgroundTop20List, rs);
 	else if (state == Game::REGISTER) {
 		rt.draw(backgroundPlaying, rs);
-		rt.draw(tf, rs);
 	}
 	else if (state == Game::PLAYING) {
 		rt.draw(backgroundPlaying, rs);

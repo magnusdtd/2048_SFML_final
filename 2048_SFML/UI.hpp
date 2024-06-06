@@ -42,7 +42,6 @@ private:
 	/* Top 20 List && Register */
 	sf::Texture backgroundTextureTop20List;
 	sf::Sprite backgroundTop20List;
-	TextField tf;
 
 	/* Playing */
 	sf::Texture backgroundTexturePlaying;
@@ -60,8 +59,7 @@ public:
 	UI();
 	Game::State getState() const;
 	void GameOver();
-	void update(float deltaTime, Board& board);
-	void handleInput(sf::Event event, sf::RenderWindow& window);
+	void update(float deltaTime, Board& board, TextField& tf);
 	virtual void draw(sf::RenderTarget& rt, sf::RenderStates rs) const;
 };
 

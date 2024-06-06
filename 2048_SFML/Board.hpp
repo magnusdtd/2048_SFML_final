@@ -51,6 +51,7 @@ public:
 	void DownMove();
 	void LeftMove();
 	void RightMove();
+
 	void Undo();
 	void Redo();
 
