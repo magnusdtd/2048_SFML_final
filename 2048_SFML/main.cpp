@@ -9,7 +9,7 @@ int main() {
 
     // Set icon
     auto image = sf::Image{};
-    if (!image.loadFromFile("resources/appIcon.png")) {
+    if (!image.loadFromFile("Texture/appIcon.png")) {
         std::cout << "Could not load image\n";
         return 0;
     }
@@ -42,7 +42,6 @@ int main() {
         window.draw(ui);
 
         if (ui.getState() == Game::PLAYING) {
-            std::cout << "Draw board\n";
             board.update(deltaTime);
             window.draw(board);
         }

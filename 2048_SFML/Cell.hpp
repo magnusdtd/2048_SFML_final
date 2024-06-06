@@ -20,7 +20,8 @@ public:
 				float posY,
 				sf::Font& font,
 				float size,
-				float distanceBetweenCellAndScore,
+				float alignX,
+				float alignY,
 				u32 sizeOfValue);
 	void setValue(u64 val);
 	u64 getValue() const;

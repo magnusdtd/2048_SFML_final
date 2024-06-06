@@ -5,7 +5,7 @@ TextField::TextField(unsigned int maxChars, float width, float height) :
     rect(sf::Vector2f(width, height)),
     hasfocus(false)
 {
-    if (!font.loadFromFile("resources/arial.ttf"))
+    if (!font.loadFromFile("Fonts/arial.ttf"))
         std::cout << "Error loading font\n";
     rect.setOutlineThickness(2);
     rect.setFillColor(sf::Color::White);

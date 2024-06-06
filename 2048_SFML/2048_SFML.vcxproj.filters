@@ -13,6 +13,15 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Resource Files\Data">
+      <UniqueIdentifier>{ba983292-f601-4d0d-afaa-b90d5521bda6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Fonts">
+      <UniqueIdentifier>{6d7edb0d-7b2f-42d8-95b5-6d1752dfe975}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Texture">
+      <UniqueIdentifier>{8daec78b-2507-4aa9-a7a5-0d022a66fa39}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -61,31 +70,48 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="bestScore.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
+    <None Include="Data\best_score.dat">
+      <Filter>Resource Files\Data</Filter>
+    </None>
+    <None Include="Data\player_name.dat">
+      <Filter>Resource Files\Data</Filter>
+    </None>
+    <None Include="Data\player_score.dat">
+      <Filter>Resource Files\Data</Filter>
+    </None>
+    <None Include="Data\player_time.dat">
+      <Filter>Resource Files\Data</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="resources\appIcon.png">
-      <Filter>Resource Files</Filter>
+    <Font Include="Fonts\arial.ttf">
+      <Filter>Resource Files\Fonts</Filter>
+    </Font>
+    <Font Include="Fonts\font.ttf">
+      <Filter>Resource Files\Fonts</Filter>
+    </Font>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Texture\appIcon.png">
+      <Filter>Resource Files\Texture</Filter>
     </Image>
-    <Image Include="resources\background.png">
-      <Filter>Resource Files</Filter>
+    <Image Include="Texture\background.png">
+      <Filter>Resource Files\Texture</Filter>
     </Image>
-    <Image Include="resources\StartMenu.png">
-      <Filter>Resource Files</Filter>
+    <Image Include="Texture\border.png">
+      <Filter>Resource Files\Texture</Filter>
     </Image>
-    <Image Include="resources\tile.png">
-      <Filter>Resource Files</Filter>
+    <Image Include="Texture\Setting.png">
+      <Filter>Resource Files\Texture</Filter>
     </Image>
-    <Image Include="resources\border.png">
-      <Filter>Resource Files</Filter>
+    <Image Include="Texture\StartMenu.png">
+      <Filter>Resource Files\Texture</Filter>
     </Image>
-    <Image Include="resources\Top20List.png">
-      <Filter>Resource Files</Filter>
+    <Image Include="Texture\tile.png">
+      <Filter>Resource Files\Texture</Filter>
     </Image>
-    <Image Include="resources\Setting.png">
-      <Filter>Resource Files</Filter>
+    <Image Include="Texture\Top20List.png">
+      <Filter>Resource Files\Texture</Filter>
     </Image>
   </ItemGroup>
 </Project>

@@ -154,16 +154,23 @@
     <ClInclude Include="utils.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="bestScore.txt" />
+    <None Include="Data\best_score.dat" />
+    <None Include="Data\player_name.dat" />
+    <None Include="Data\player_score.dat" />
+    <None Include="Data\player_time.dat" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="resources\appIcon.png" />
-    <Image Include="resources\background.png" />
-    <Image Include="resources\border.png" />
-    <Image Include="resources\Setting.png" />
-    <Image Include="resources\tile.png" />
-    <Image Include="resources\StartMenu.png" />
-    <Image Include="resources\Top20List.png" />
+    <Font Include="Fonts\arial.ttf" />
+    <Font Include="Fonts\font.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Texture\appIcon.png" />
+    <Image Include="Texture\background.png" />
+    <Image Include="Texture\border.png" />
+    <Image Include="Texture\Setting.png" />
+    <Image Include="Texture\StartMenu.png" />
+    <Image Include="Texture\tile.png" />
+    <Image Include="Texture\Top20List.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

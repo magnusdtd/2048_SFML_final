@@ -35,8 +35,9 @@ public:
 				u32 size,
 				float sizeOfEachCell,
 				float distanceBetweenEachCell,
-				float distanceBetweenCellAndBorder, 
-				float distanceBetweenCellAndScore, 
+				float distanceBetweenCellAndBorder,
+				float alignX,
+				float alignY,
 				u32 sizeofValue);
 
 	bool isEqual();

@@ -3,17 +3,15 @@
 
 #include <fstream>
 #include <iostream>
+#include <string>
 #include "utils.hpp"
 
-#define DATABASE "scores.txt"
-#define BESTSCORE "bestScore.txt"
-
 namespace Input {
-	u64 loadScoreAndGetMaxScore(u64 order_number);
-	u64 loadBestScore();
-	void saveBestScore(u64 score);
+	u64 loadBestScore(const std::string& FileName);
 }
 
-
+namespace Output {
+	void saveBestScore(const std::string& FileName, u64 score);
+}
 #endif
 

@@ -2,13 +2,13 @@
 
 UI::UI() : tf(20, 500.f, 30.f) {
 	/* Common */
-	if (!font.loadFromFile("resources/font.ttf"))
+	if (!font.loadFromFile("Fonts/font.ttf"))
 		std::cout << "Error loading font\n";
 	state = Game::START_MENU;
 	pressTime = 0.f;
 
 	/* Start Menu */
-	backgroundTextureStartMenu.loadFromFile("resources/StartMenu.png");
+	backgroundTextureStartMenu.loadFromFile("Texture/StartMenu.png");
 	backgroundStartMenu.setTexture(backgroundTextureStartMenu);
 	SELECT_BUTTON = Game::StartMenuButton::NewGame;
 
@@ -37,12 +37,12 @@ UI::UI() : tf(20, 500.f, 30.f) {
 	ButtonResume.setPosition(Game::GAME_WIDTH / 2.f - 100.f, Game::GAME_HEIGHT / 2.f + 240.f);
 
 	/* Setting */
-	backgroundTextureSetting.loadFromFile("resources/Setting.png");
+	backgroundTextureSetting.loadFromFile("Texture/Setting.png");
 	backgroundSetting.setTexture(backgroundTextureSetting);
 
 	whichButton = 0;
 
-	mode = Game::MODE_5; // Default mode
+	mode = Game::MODE_4; // Default mode
 	textMode.setFont(font);
 	textMode.setString(std::to_string(mode));
 	textMode.setCharacterSize(64);
@@ -59,27 +59,30 @@ UI::UI() : tf(20, 500.f, 30.f) {
 	buttonMode = 0;
 
 	/* Top 20 list && Register */
-	backgroundTextureTop20List.loadFromFile("resources/Top20List.png");
+	backgroundTextureTop20List.loadFromFile("Texture/Top20List.png");
 	backgroundTop20List.setTexture(backgroundTextureTop20List);
 
 	tf.setPosition(500.f, 300.f);
 
 	/* Playing */
-	backgroundTexturePlaying.loadFromFile("resources/background.png");
+	backgroundTexturePlaying.loadFromFile("Texture/background.png");
 	backgroundPlaying.setTexture(backgroundTexturePlaying);
 	
-	bestScore = Input::loadBestScore();
+	bestScore = Input::loadBestScore("Data/best_score.dat");
 	textBestScore.setFont(font);
 	textBestScore.setString(std::to_string(bestScore));
 	textBestScore.setCharacterSize(32);
 	textBestScore.setFillColor(sf::Color(0, 0, 0));
 	textBestScore.setPosition(1010.f, 365.f);
+	textBestScore.setOrigin(textBestScore.getGlobalBounds().width / 2, textBestScore.getGlobalBounds().height / 2);
 
 	textScore.setFont(font);
 	textScore.setString(std::to_string(score));
 	textScore.setCharacterSize(32);
 	textScore.setFillColor(sf::Color(0, 0, 0));
-	textScore.setPosition(1010.f, 582.f);
+	textScore.setPosition(1010.f, 580.f);
+	textScore.setOrigin(textScore.getGlobalBounds().width / 2, textScore.getGlobalBounds().height / 2);
+
 
 	textGameOver.setFont(font);
 	textGameOver.setString("Game Over");
@@ -102,7 +105,7 @@ Game::State UI::getState() const
 void UI::GameOver() {
 	if (score > bestScore) {
 		newScore = true;
-		Input::saveBestScore(score);
+		Output::saveBestScore(BEST_SCORE_FILE, score);
 	}
 	else
 		gameOver = true;
@@ -250,7 +253,8 @@ void UI::update(float deltaTime, Board& board) {
 							LAYOUT::LAYOUT_4.sizeOfEachCell,
 							LAYOUT::LAYOUT_4.distanceBetweenEachCell,
 							LAYOUT::LAYOUT_4.distanceBetweenCellAndBorder,
-							LAYOUT::LAYOUT_4.distanceBetweenCellAndScore,
+							LAYOUT::LAYOUT_4.alignX,
+							LAYOUT::LAYOUT_4.alignY,
 							LAYOUT::LAYOUT_4.sizeOfValue);
 				break;
 			case Game::MODE_5:
@@ -260,7 +264,8 @@ void UI::update(float deltaTime, Board& board) {
 							LAYOUT::LAYOUT_5.sizeOfEachCell,
 							LAYOUT::LAYOUT_5.distanceBetweenEachCell,
 							LAYOUT::LAYOUT_5.distanceBetweenCellAndBorder,
-							LAYOUT::LAYOUT_5.distanceBetweenCellAndScore,
+							LAYOUT::LAYOUT_5.alignX,
+							LAYOUT::LAYOUT_5.alignY,
 							LAYOUT::LAYOUT_5.sizeOfValue);
 				break;
 			case Game::MODE_6:
@@ -270,7 +275,8 @@ void UI::update(float deltaTime, Board& board) {
 							LAYOUT::LAYOUT_6.sizeOfEachCell,
 							LAYOUT::LAYOUT_6.distanceBetweenEachCell,
 							LAYOUT::LAYOUT_6.distanceBetweenCellAndBorder,
-							LAYOUT::LAYOUT_6.distanceBetweenCellAndScore,
+							LAYOUT::LAYOUT_6.alignX,
+							LAYOUT::LAYOUT_6.alignY,
 							LAYOUT::LAYOUT_6.sizeOfValue);
 				break;
 			case Game::MODE_7:
@@ -280,7 +286,8 @@ void UI::update(float deltaTime, Board& board) {
 							LAYOUT::LAYOUT_7.sizeOfEachCell,
 							LAYOUT::LAYOUT_7.distanceBetweenEachCell,
 							LAYOUT::LAYOUT_7.distanceBetweenCellAndBorder,
-							LAYOUT::LAYOUT_7.distanceBetweenCellAndScore,
+							LAYOUT::LAYOUT_7.alignX,
+							LAYOUT::LAYOUT_7.alignY,
 							LAYOUT::LAYOUT_7.sizeOfValue);
 				break;
 			case Game::MODE_8:
@@ -290,7 +297,8 @@ void UI::update(float deltaTime, Board& board) {
 							LAYOUT::LAYOUT_8.sizeOfEachCell,
 							LAYOUT::LAYOUT_8.distanceBetweenEachCell,
 							LAYOUT::LAYOUT_8.distanceBetweenCellAndBorder, 
-							LAYOUT::LAYOUT_8.distanceBetweenCellAndScore,
+							LAYOUT::LAYOUT_8.alignX,
+							LAYOUT::LAYOUT_8.alignY,
 							LAYOUT::LAYOUT_8.sizeOfValue);
 				break;
 			case Game::MODE_9:
@@ -300,7 +308,8 @@ void UI::update(float deltaTime, Board& board) {
 							LAYOUT::LAYOUT_9.sizeOfEachCell,
 							LAYOUT::LAYOUT_9.distanceBetweenEachCell,
 							LAYOUT::LAYOUT_9.distanceBetweenCellAndBorder, 
-							LAYOUT::LAYOUT_9.distanceBetweenCellAndScore,
+							LAYOUT::LAYOUT_9.alignX,
+							LAYOUT::LAYOUT_9.alignY,
 							LAYOUT::LAYOUT_9.sizeOfValue);
 				break;
 			case Game::MODE_10:
@@ -310,7 +319,8 @@ void UI::update(float deltaTime, Board& board) {
 							LAYOUT::LAYOUT_10.sizeOfEachCell,
 							LAYOUT::LAYOUT_10.distanceBetweenEachCell,
 							LAYOUT::LAYOUT_10.distanceBetweenCellAndBorder, 
-							LAYOUT::LAYOUT_10.distanceBetweenCellAndScore,
+							LAYOUT::LAYOUT_10.alignX,
+							LAYOUT::LAYOUT_10.alignY,
 							LAYOUT::LAYOUT_10.sizeOfValue);
 				break;
 			default:
@@ -340,7 +350,7 @@ void UI::handleInput(sf::Event event, sf::RenderWindow& window)
 		tf.setFocus(false);
 		if (tf.contains(sf::Vector2f(pos)))
 			tf.setFocus(true);
-			}
+	}
 	else if (event.type == sf::Event::TextEntered)
 		tf.handleInput(event);
 }

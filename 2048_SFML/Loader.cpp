@@ -1,44 +1,28 @@
 #include "Loader.hpp"
 
-u64 Input::loadScoreAndGetMaxScore(u64 order_number) {
-	std::fstream input;
-	input.open(DATABASE, std::ios::in);
+u64 Input::loadBestScore(const std::string& FileName)
+{
+    std::ifstream input(FileName, std::ios::binary | std::ios::in);
+    u64 bestScore = 0;
 
-	u64 temp_k = 0, tempScore = 0;
-	std::string tempStr;
-	u64 tempMaxScore = 0;
-	while (!input.eof()) {
-		input >> tempStr;
-		if (tempStr == "")
-			break;
-		input >> tempScore;
-		temp_k++;
-		if (tempScore > tempMaxScore) tempMaxScore = tempScore;
-	}
-	order_number = temp_k - 1;
-	return tempMaxScore;
+    if (input.is_open()) {
+        input.read(reinterpret_cast<char*>(&bestScore), sizeof(u64));
+        input.close();
+    }
+    else
+        std::cerr << "Unable to open file: " << FileName << std::endl;
 
-	input.close();
+    return bestScore;
 }
 
-u64 Input::loadBestScore()
+void Output::saveBestScore(const std::string& FileName, u64 score)
 {
-	u64 bestScore;
-	std::ifstream in(BESTSCORE);
-	in >> bestScore;
-	if (!in.is_open()) {
-		std::cout << "Error loading best score\n";
-		return 0;
+	std::ofstream output(FileName, std::ios::binary);
+
+	if (output.is_open()) {
+		output.write(reinterpret_cast<const char*>(&score), sizeof(u64));
+		output.close();
 	}
-	return (bestScore == 14757395258967641292) ? 0 : bestScore;
-
-	in.close();
-}
-
-void Input::saveBestScore(u64 score)
-{
-	std::ofstream out(BESTSCORE);
-	out << score;
-
-	out.close();
+	else
+		std::cerr << "Unable to open file: " << FileName << std::endl;
 }

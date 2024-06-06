@@ -5,7 +5,7 @@ Cell::Cell() {
 	text.setFillColor(Color::colors[0]);
 	text.setString(std::to_string(value));
 
-	texture.loadFromFile("resources/tile.png");
+	texture.loadFromFile("Texture/tile.png");
 	sprite.setTexture(texture);
 }
 
@@ -16,6 +16,7 @@ bool Cell::operator==(const Cell& c) const {
 void Cell::operator=(const Cell& c) {
 	value = c.value;
 	text.setString(std::to_string(value));
+	text.setOrigin(text.getGlobalBounds().width / 2.f, text.getGlobalBounds().height / 2.f);
 	if (value == 0) {
 		sprite.setColor(Color::colors[0]);
 		text.setFillColor(Color::colors[0]);
@@ -29,6 +30,7 @@ void Cell::operator=(const Cell& c) {
 void Cell::operator*=(const u64& val) {
 	value *= val;
 	text.setString(std::to_string(value));
+	text.setOrigin(text.getGlobalBounds().width / 2.f, text.getGlobalBounds().height / 2.f);
 	if (value == 0) {
 		sprite.setColor(Color::colors[0]);
 		text.setFillColor(Color::colors[0]);
@@ -43,7 +45,8 @@ void Cell::init(	float posX,
 					float posY, 
 					sf::Font& font, 
 					float size, 
-					float distanceBetweenCellAndScore,
+					float alignX,
+					float alignY,
 					u32 sizeOfValue) 
 {
 	value = 0;
@@ -51,7 +54,7 @@ void Cell::init(	float posX,
 	text.setFont(font);
 	text.setString(std::to_string(value));
 	text.setCharacterSize(sizeOfValue);
-	text.setPosition(posX + distanceBetweenCellAndScore, posY + distanceBetweenCellAndScore);
+	text.setPosition(posX + alignX, posY + alignY);
 	text.setFillColor(Color::colors[0]);
 
 	sprite.setScale(size / 75.f, size / 75.f);
@@ -62,6 +65,7 @@ void Cell::init(	float posX,
 void Cell::setValue(u64 val) {
 	value = val;
 	text.setString(std::to_string(value));
+	text.setOrigin(text.getGlobalBounds().width / 2.f, text.getGlobalBounds().height / 2.f);
 	if (value == 0) {
 		sprite.setColor(Color::colors[0]);
 		text.setFillColor(Color::colors[0]);

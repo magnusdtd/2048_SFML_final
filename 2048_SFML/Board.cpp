@@ -5,7 +5,7 @@ Board::Board() {
 	score = 0;
 	size = 0;
 
-	if (!font.loadFromFile("resources/font.ttf"))
+	if (!font.loadFromFile("Fonts/font.ttf"))
 		std::cout << "Error loading font\n";
 	
 	this->cells = nullptr;
@@ -16,14 +16,15 @@ Board::Board() {
 	sizeofValue = 0;
 }
 
-void Board::init(	u32 width,
-					u32 height,
-					u32 size,
-					float sizeOfEachCell,
-					float distanceBetweenEachCell,
-					float distanceBetweenCellAndBorder,
-					float distanceBetweenCellAndScore,
-					u32 sizeofValue)
+void Board::init(u32 width,
+				u32 height,
+				u32 size,
+				float sizeOfEachCell,
+				float distanceBetweenEachCell,
+				float distanceBetweenCellAndBorder,
+				float alignX,
+				float alignY,
+				u32 sizeofValue)
 {
 	this->size = size;
 	this->sizeOfEachCell = sizeOfEachCell;
@@ -40,7 +41,7 @@ void Board::init(	u32 width,
 	y0 -= this->size / 2.f * this->sizeOfEachCell + 0.5f * (this->size - 1) * this->distanceBetweenEachCell;
 
 	/* Border */
-	borderTexture.loadFromFile("resources/border.png");
+	borderTexture.loadFromFile("Texture/border.png");
 	border.setTexture(borderTexture);
 	border.setPosition(x0 - this->distanceBetweenCellAndBorder, y0 - this->distanceBetweenCellAndBorder);
 	border.scale(w / borderTexture.getSize().x, h / borderTexture.getSize().y);
@@ -56,7 +57,8 @@ void Board::init(	u32 width,
 									y0 + j * this->sizeOfEachCell + j * this->distanceBetweenEachCell,
 									font,
 									this->sizeOfEachCell,
-									this->distanceBetweenCellAndScore, 
+									alignX, 
+									alignY, 
 									this->sizeofValue);
 
 
