@@ -141,6 +141,8 @@
     <ClCompile Include="Loader.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Cell.cpp" />
+    <ClCompile Include="PlayerList.cpp" />
+    <ClCompile Include="PlayerList.hpp" />
     <ClCompile Include="TextField.cpp" />
     <ClCompile Include="UI.cpp" />
     <ClCompile Include="utils.cpp" />
@@ -149,6 +151,7 @@
     <ClInclude Include="Board.hpp" />
     <ClInclude Include="Loader.hpp" />
     <ClInclude Include="Cell.hpp" />
+    <ClInclude Include="Player.hpp" />
     <ClInclude Include="TextField.hpp" />
     <ClInclude Include="UI.hpp" />
     <ClInclude Include="utils.hpp" />
