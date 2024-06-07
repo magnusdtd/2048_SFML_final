@@ -10,6 +10,9 @@ Board::Board() {
 
 	if (!font.loadFromFile("Fonts/font.ttf"))
 		std::cout << "Error loading font\n";
+
+	borderTexture.loadFromFile("Texture/border.png");
+	border.setTexture(borderTexture);
 	
 	this->cells = nullptr;
 }
@@ -29,7 +32,7 @@ void Board::init(u32 width,
 {
 	this->size = size;
 
-	// Fomula
+	/* Fomula */
 	float w = this->size * sizeOfEachCell + distanceBetweenEachCell * (this->size - 1) + distanceBetweenCellAndBorder * 2;
 	float h = this->size * sizeOfEachCell + distanceBetweenEachCell * (this->size - 1) + distanceBetweenCellAndBorder * 2;
 	float x0 = height / 2.f, y0 = height / 2.f;
@@ -37,11 +40,8 @@ void Board::init(u32 width,
 	y0 -= this->size / 2.f * sizeOfEachCell + 0.5f * (this->size - 1) * distanceBetweenEachCell;
 
 	/* Border */
-	borderTexture.loadFromFile("Texture/border.png");
-	border.setTexture(borderTexture);
 	border.setPosition(x0 - distanceBetweenCellAndBorder, y0 - distanceBetweenCellAndBorder);
 	border.scale(w / borderTexture.getSize().x, h / borderTexture.getSize().y);
-
 
 	this->cells = new Cell * [this->size];
 	for (u32 i = 0; i < this->size; i++)
@@ -150,14 +150,15 @@ bool Board::isWin()
 void Board::checkMove()
 {
 	if (!this->isEqual()) {
-		this->newCell();
-		u64* temp = new u64[size * size];
-		for (u32 i = 0; i < size; i++)
-			for (u32 j = 0; j < size; j++)
-				temp[i * size + j] = this->cells[i][j].getValue();
-		undoStack.push(temp, size * size);
-		delete[] temp;
-		temp = nullptr;
+		if (this->newCell()) {
+			u64* temp = new u64[size * size];
+			for (u32 i = 0; i < size; i++)
+				for (u32 j = 0; j < size; j++)
+					temp[i * size + j] = this->cells[i][j].getValue();
+			undoStack.push(temp, size * size);
+			delete[] temp;
+			temp = nullptr;
+		}
 	}
 	if (isWin()) {
 		std::cout << "You Win\n";
@@ -173,10 +174,24 @@ void Board::checkMove()
 /**
  * @brief Adds a new cell to the board.
  */
-void Board::newCell() {
+bool Board::newCell() {
+	bool flag = false;
+	/* Check there are a 0-value cell */
+	for (u32 i = 0; i < size; i++) {
+		for (u32 j = 0; j < size; j++) {
+			if (this->cells[i][j].getValue() == 0) {
+				flag = true;
+				break;
+			}
+		}
+		if (flag)
+			break;
+	}
+	if (!flag)
+		return false;
+
 	int x, y;
-	while (true)
-	{
+	while (true) {
 		x = rand() % size;
 		y = rand() % size;
 		if (this->cells[x][y].getValue() == 0) {
@@ -184,6 +199,7 @@ void Board::newCell() {
 			break;
 		}
 	}
+	return true;
 }
 
 /**

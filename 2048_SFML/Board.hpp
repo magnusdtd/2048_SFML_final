@@ -77,8 +77,9 @@ public:
 
 	/**
 	 * @brief Adds a new cell to the board.
+	 * @return True if a new cell was added, false otherwise.
 	 */
-	void newCell();
+	bool newCell();
 
 	/**
 	 * @brief Returns the current score.
