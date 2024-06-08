@@ -27,10 +27,8 @@ public:
      * @param score The player's score.
      * @param timeToComplete The time it took the player to complete the game.
      */
-    Player(std::string userName, u64 score, double timeToComplete)
-        : userName(userName), score(score), timeToComplete(timeToComplete) {
-        next = nullptr;
-    }
+    Player(const std::string& userName, u64 score, double timeToComplete)
+        : userName(userName), score(score), timeToComplete(timeToComplete), next(nullptr) {}
 };
 
 #endif

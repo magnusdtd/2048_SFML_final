@@ -1,5 +1,5 @@
 #include "UI.hpp"
-
+#include "PlayerList.hpp"
 /**
  * Entry point of the application.
  */
@@ -26,6 +26,9 @@ int main() {
     TextField textfield(20, 500.f, 36.f);
     textfield.setPosition(300.f, 420.f);
     textfield.setFocus(true);
+    PlayerList playerList;
+    playerList.loadData("Data/player_name.dat", "Data/player_score.dat", "Data/player_time.dat");
+
 
     // Main game loop
     while (window.isOpen()) {
@@ -57,7 +60,6 @@ int main() {
 
         // Draw textfield or board based on the game state
         if (ui.getState() == Game::REGISTER) {
-            ;
             window.draw(textfield);
         }
         else if (ui.getState() == Game::PLAYING) {

@@ -11,7 +11,6 @@
  * This class provides methods to add, remove, retrieve players,
  * show top 20 players, load and save player data, and reverse the player list.
  */
-
 class PlayerList {
 	Player* head; ///< Pointer to the first player in the list.
 public:
@@ -81,4 +80,4 @@ public:
 	void reverse();
 };
 
-#endif // PLAYERLIST_H
+#endif // PLAYERLIST_HPP

@@ -25,7 +25,7 @@ void PlayerList::addPlayer(std::string userName, u64 score, double timeToComplet
 {
 	Player* newPlayer = new Player(userName, score, timeToComplete);
 
-	if (head == nullptr) {
+	if (head == nullptr || head->score < score || (head->score == score && head->timeToComplete > timeToComplete)) {
 		newPlayer->next = head;
 		head = newPlayer;
 		return;
@@ -80,7 +80,10 @@ void PlayerList::showTop20()
 
 	u32 count = 0;
 	while (temp != nullptr && count < 20) {
-		std::cout << "Username: " << temp->userName << std::endl;
+		std::cout << "Username: ";
+		for (auto c : temp->userName)
+			std::cout << c;
+		std::cout << std::endl;
 		std::cout << "Score: " << temp->score << std::endl;
 		std::cout << "Time to complete: " << temp->timeToComplete << std::endl;
 		std::cout << std::endl;
@@ -125,23 +128,33 @@ void PlayerList::loadData(std::string fileName, std::string fileScore, std::stri
 		return;
 	}
 
-	PlayerList tmp;
 	std::string userName;
 	u64 score = 0;
 	double timeToComplete = 0;
 
-	while (!inputName.eof() && !inputScore.eof() && !inputTimeToComplete.eof()) {
-		inputName.read(reinterpret_cast<char*>(&userName), sizeof(std::string));
+	while (true) {
+		// Read the string size
+		size_t size = 0;
+		inputName.read(reinterpret_cast<char*>(&size), sizeof(size_t));
+
+		if (inputName.eof() || inputScore.eof() || inputTimeToComplete.eof()) 
+			break;  // Check for EOF after trying to read
+		
+		// Resize the string to the correct size
+		userName.resize(size);
+
+		// Read the string characters
+		inputName.read(&userName[0], size);
+
 		inputScore.read(reinterpret_cast<char*>(&score), sizeof(u64));
 		inputTimeToComplete.read(reinterpret_cast<char*>(&timeToComplete), sizeof(double));
-		tmp.addPlayer(userName, score, timeToComplete);
+		this->addPlayer(userName, score, timeToComplete);
 	}
 
-	tmp.reverse();
 
-	head = tmp.head;
-
-	inputName.close();
+	inputName.close();;
+	inputScore.close();
+	inputTimeToComplete.close();
 }
 
 /**
@@ -152,9 +165,9 @@ void PlayerList::loadData(std::string fileName, std::string fileScore, std::stri
  */
 void PlayerList::saveData(std::string fileName, std::string fileScore, std::string fileTime)
 {
-	std::fstream outputName(fileName, std::ios::binary | std::ios::in);
-	std::fstream outputScore(fileScore, std::ios::binary | std::ios::in);
-	std::fstream outputTimeToComplete(fileTime, std::ios::binary | std::ios::in);
+	std::fstream outputName(fileName, std::ios::binary | std::ios::out);
+	std::fstream outputScore(fileScore, std::ios::binary | std::ios::out);
+	std::fstream outputTimeToComplete(fileTime, std::ios::binary | std::ios::out);
 
 	if (!outputName.is_open()) {
 		std::cerr << "Error opening file ";
@@ -182,20 +195,27 @@ void PlayerList::saveData(std::string fileName, std::string fileScore, std::stri
 	u64 score = 0;
 	double timeToComplete = 0;
 
+	std::cout << "Saving data...\n";
 	Player *temp = head;
 	while (temp != nullptr) {
-		userName = temp->userName;
-		score = temp->score;
-		timeToComplete = temp->timeToComplete;
+		// Write the string size
+		size_t size = temp->userName.size();
+		outputName.write(reinterpret_cast<char*>(&size), sizeof(size_t));
 
-		outputName.write(reinterpret_cast<char*>(&userName), sizeof(std::string));
-		outputScore.write(reinterpret_cast<char*>(&score), sizeof(u64));
-		outputTimeToComplete.write(reinterpret_cast<char*>(&timeToComplete), sizeof(double));
+		// Write the string characters
+		outputName.write(temp->userName.c_str(), size);
+
+		outputScore.write(reinterpret_cast<char*>(&temp->score), sizeof(u64));
+		outputTimeToComplete.write(reinterpret_cast<char*>(&temp->timeToComplete), sizeof(double));
 
 		temp = temp->next;
 	}
 
+	std::cout << "Data saved successfully.\n";
+
 	outputName.close();
+	outputScore.close();
+	outputTimeToComplete.close();
 }
 
 /**
