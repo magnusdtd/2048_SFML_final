@@ -1,5 +1,10 @@
 #include "Board.hpp"
 
+BoardStack Board::undoBoardStack; ///< Stack for undo operations
+BoardStack Board::redoBoardStack; ///< Stack for redo operations
+ScoreStack Board::undoScoreStack; ///< Stack for undo operations
+ScoreStack Board::redoScoreStack; ///< Stack for redo operations
+
 /**
  * @brief Default constructor for Board.
  */
@@ -76,8 +81,10 @@ void Board::init(u32 width,
 	for (u32 i = 0; i < size; i++)
 		for (u32 j = 0; j < size; j++)
 			tempState[i * size + j] = this->cells[i][j].getValue();
-	undoStack.push(tempState, size * size);
+	undoBoardStack.push(tempState, size * size);
 	delete[] tempState;
+
+	undoScoreStack.push(score);
 }
 
 /**
@@ -100,7 +107,7 @@ Board::~Board() {
  */
 bool Board::isEqual()
 {
-	u64* temp = undoStack.top();
+	u64* temp = undoBoardStack.top();
 	if (temp == nullptr) {
 		return false;
 	}
@@ -155,9 +162,11 @@ void Board::checkMove()
 			for (u32 i = 0; i < size; i++)
 				for (u32 j = 0; j < size; j++)
 					temp[i * size + j] = this->cells[i][j].getValue();
-			undoStack.push(temp, size * size);
+			undoBoardStack.push(temp, size * size);
 			delete[] temp;
 			temp = nullptr;
+
+			undoScoreStack.push(score);
 		}
 	}
 	if (isWin()) {
@@ -349,14 +358,20 @@ void Board::RightMove() {
  */
 void Board::Undo()
 {
-	if (undoStack.empty())
+	if (undoBoardStack.empty()) {
+		std::cout << "RedoBoardStack is empty\n";
 		return;
-	u64* temp = undoStack.top();
+	}
+	u64* temp = undoBoardStack.top();
 	for (u32 i = 0; i < size; i++)
 		for (u32 j = 0; j < size; j++)
 			this->cells[i][j].setValue(temp[i * size + j]);
-	redoStack.push(temp, size * size);
+	redoBoardStack.push(temp, size * size);
 	delete[] temp;
+
+	score = undoScoreStack.top();
+	redoScoreStack.push(score);
+	undoScoreStack.pop();
 }
 
 /**
@@ -364,14 +379,20 @@ void Board::Undo()
  */
 void Board::Redo()
 {
-	if(redoStack.empty())
+	if (redoBoardStack.empty()) {
+		std::cout << "RedoBoardStack is empty\n";
 		return;
-	u64* temp = redoStack.top();
+	}
+	u64* temp = redoBoardStack.top();
 	for (u32 i = 0; i < size; i++)
 		for (u32 j = 0; j < size; j++)
 			this->cells[i][j].setValue(temp[i * size + j]);
-	undoStack.push(temp, size * size);
+	undoBoardStack.push(temp, size * size);
 	delete[] temp;
+
+	score = redoScoreStack.top();
+	undoScoreStack.push(score);
+	redoScoreStack.pop();
 }
 
 /**

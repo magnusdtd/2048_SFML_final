@@ -217,22 +217,3 @@ void PlayerList::saveData(std::string fileName, std::string fileScore, std::stri
 	outputScore.close();
 	outputTimeToComplete.close();
 }
-
-/**
- * @brief Reverses the player list.
- */
-void PlayerList::reverse()
-{
-	Player* prev = nullptr;
-	Player* current = head;
-	Player* next = nullptr;
-
-	while (current != nullptr) {
-		next = current->next;
-		current->next = prev;
-		prev = current;
-		current = next;
-	}
-
-	head = prev;
-}

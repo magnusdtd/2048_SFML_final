@@ -73,11 +73,6 @@ public:
 	 * @param fileTime The name of the file to save player completion times.
 	 */
 	void saveData(std::string fileName, std::string fileScore, std::string fileTime);
-
-	/**
-	 * @brief Reverses the player list.
-	 */
-	void reverse();
 };
 
 #endif // PLAYERLIST_HPP

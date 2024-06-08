@@ -1,35 +1,35 @@
-#include "utils.hpp"
+#include "BoardStack.hpp"
 
-// Destructor for the Stack class
-Stack::~Stack()
+
+BoardStack::~BoardStack()
 {
-    // Delete all nodes in the stack
+
     while (this->head != nullptr) {
-        Node* temp = this->head;
+        BoardNode* temp = this->head;
         this->head = temp->next;
         delete temp;
     }
 }
 
-// Push a new node onto the stack
-void Stack::push(u64* x, u32 n)
+
+void BoardStack::push(u64* data, u32 n)
 {
-    // Copy state and store in stack
+
     u64* temp = new u64[n];
     for (u32 i = 0; i < n; i++)
-        temp[i] = x[i];
+        temp[i] = data[i];
 
-    Node* newNode = new Node(temp);
+    BoardNode* newNode = new BoardNode(temp);
     newNode->next = head;
     head = newNode;
 }
 
-// Remove the top node from the stack
-void Stack::pop()
+
+void BoardStack::pop()
 {
     if (head == nullptr)
         return;
-    Node* temp = head;
+    BoardNode* temp = head;
     head = head->next;
     delete[] temp->data;
     temp->data = nullptr;
@@ -38,11 +38,11 @@ void Stack::pop()
 }
 
 // Return the data of the top node and remove it from the stack
-u64* Stack::top()
+u64* BoardStack::top()
 {
     if (head == nullptr)
         return nullptr;
-    Node* temp = head;
+    BoardNode* temp = head;
     head = head->next;
     u64* tempData = temp->data;
     delete temp;

@@ -2,6 +2,8 @@
 #define BOARD_HPP
 
 #include <iostream>
+#include "BoardStack.hpp"
+#include "ScoreStack.hpp"
 #include "Cell.hpp"
 
 /**
@@ -25,9 +27,10 @@ private:
 
 	u32 size; ///< Size of the board
 
-	Stack undoStack; ///< Stack for undo operations
-	Stack redoStack; ///< Stack for redo operations
-	Stack scoreStack; ///< Stack for score history
+	static BoardStack undoBoardStack; ///< Stack for undo operations
+	static BoardStack redoBoardStack; ///< Stack for redo operations
+	static ScoreStack undoScoreStack; ///< Stack for undo operations
+	static ScoreStack redoScoreStack; ///< Stack for redo operations
 public:
 	/**
 	 * @brief Default constructor for Board.
