@@ -68,6 +68,9 @@ int main() {
         }
 
         // Display the window content
+        ui.sendMessage(window);
+
+        // Display the window content
         window.display();
     }
     return 0;

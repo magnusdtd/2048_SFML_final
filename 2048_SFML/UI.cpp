@@ -92,15 +92,15 @@ UI::UI() {
 
 	textGameOver.setFont(font);
 	textGameOver.setString("Game Over");
-	textGameOver.setCharacterSize(35);
-	textGameOver.setFillColor(sf::Color(0, 0, 0));
-	textGameOver.setPosition(200, 300);
+	textGameOver.setCharacterSize(60);
+	textGameOver.setFillColor(sf::Color(204, 0, 0));
+	textGameOver.setPosition(650, 370);
 
-	textResume.setFont(font);
-	textResume.setString("Resume");
-	textResume.setCharacterSize(35);
-	textResume.setFillColor(sf::Color(0, 0, 0));
-	textResume.setPosition(200, 300);
+	textWin.setFont(font);
+	textWin.setString("You win !!!");
+	textWin.setCharacterSize(60);
+	textWin.setFillColor(sf::Color(255, 204, 0));
+	textWin.setPosition(650, 370);
 }
 
 /**
@@ -117,14 +117,13 @@ Game::State UI::getState() const
  * Handles the game over state.
  * Checks if a new score has been achieved and saves it if necessary.
  */
-void UI::GameOver() {
-	// Handle game over state...
-	if (score > bestScore) {
-		newScore = true;
-		Output::saveBestScore(BEST_SCORE_FILE, score);
-	}
-	else
-		gameOver = true;
+void UI::GameOverMessage() {
+	isGameOver = true;
+}
+
+void UI::WinMessage()
+{
+	isWin = true;
 }
 
 /**
@@ -355,21 +354,36 @@ void UI::update(float deltaTime, Board& board, TextField& tf) {
 		}
 	}
 	else if (state == Game::PLAYING) {
-		score = board.getScore();
+		score = board.score;
 		textScore.setString(std::to_string(score));
 		textScore.setOrigin(textScore.getGlobalBounds().width / 2, textScore.getGlobalBounds().height / 2);
 
-		if (score > bestScore) {
-			textBestScore.setString(std::to_string(score));
-			textBestScore.setOrigin(textBestScore.getGlobalBounds().width / 2, textBestScore.getGlobalBounds().height / 2);
-		}
+		if (score > bestScore)
+			bestScore = score;
 
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::BackSpace)) {
+		textBestScore.setString(std::to_string(bestScore));
+		textBestScore.setOrigin(textBestScore.getGlobalBounds().width / 2, textBestScore.getGlobalBounds().height / 2);
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::BackSpace) && pressTime <= 0.0f) {
+			pressTime = PRESS_DELAY;
 			state = Game::START_MENU;
 			board.clearUndoBoardStack();
-			board.clearUndoBoardStack();
 			board.clearRedoBoardStack();
-			board.clearRedoBoardStack();
+			board.clearUndoScoreStack();
+			board.clearRedoScoreStack();
+			board.canMove = true;
+			isWin = false;
+			isGameOver = false;
+			board.clear();
+		}
+
+		if (board.isOver()) {
+			GameOverMessage();
+			board.canMove = false;
+		}
+		else if (board.isWin()) {
+			WinMessage();
+			board.canMove = false;
 		}
 	}
 }
@@ -405,14 +419,22 @@ void UI::draw(sf::RenderTarget& rt, sf::RenderStates rs) const {
 
 		rt.draw(textBestScore, rs);
 		rt.draw(textScore, rs);
-		rt.draw(textBestScore, rs);
-		rt.draw(textScore, rs);
-
-
-		if (gameOver)
-			rt.draw(textGameOver, rs);
-		if (newScore)
-			rt.draw(textResume, rs);
 	}
+}
+
+/**
+* Sends a message to the window.
+*/
+void UI::sendMessage(sf::RenderWindow& window)
+{
+	if (isGameOver) {
+		textGameOver.setOrigin(textGameOver.getGlobalBounds().width / 2, textGameOver.getGlobalBounds().height / 2);
+		window.draw(textGameOver);
+	}
+	else if (isWin) {
+		textWin.setOrigin(textWin.getGlobalBounds().width / 2, textWin.getGlobalBounds().height / 2);
+		window.draw(textWin);
+	}
+
 }
 

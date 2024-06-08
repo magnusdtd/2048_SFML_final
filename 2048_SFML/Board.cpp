@@ -10,6 +10,7 @@ Board::Board() {
 	OnOffStack = false;
 	isUndo = false;
 	isRedo = false;
+	canMove = true;
 
 	if (!font.loadFromFile("Fonts/font.ttf"))
 		std::cout << "Error loading font\n";
@@ -48,7 +49,7 @@ void Board::init(u32 width,
 
 	/* Border */
 	border.setPosition(x0 - distanceBetweenCellAndBorder, y0 - distanceBetweenCellAndBorder);
-	border.scale(w / borderTexture.getSize().x, h / borderTexture.getSize().y);
+	border.setScale(w / borderTexture.getSize().x, h / borderTexture.getSize().y);
 
 	this->cells = new Cell * [this->size];
 	for (u32 i = 0; i < this->size; i++)
@@ -211,14 +212,6 @@ bool Board::newCell() {
 		}
 	}
 	return true;
-}
-
-/**
- * @brief Returns the current score.
- * @return The current score.
- */
-u64 Board::getScore() const {
-	return score;
 }
 
 /**
@@ -438,6 +431,13 @@ void Board::clearRedoScoreStack()
 		redoScoreStack.pop();
 }
 
+void Board::clear()
+{
+	for (u32 i = 0; i < size; i++)
+		for (u32 j = 0; j < size; j++)
+			this->cells[i][j].setValue(0);
+}
+
 /**
  * @brief Updates the game state.
  * @param deltaTime The time since the last update.
@@ -445,7 +445,7 @@ void Board::clearRedoScoreStack()
 void Board::update(float deltaTime) {
 	pressTime -= deltaTime;
 
-	if (pressTime <= 0.0f) {
+	if (pressTime <= 0.0f && canMove) {
 		if (!OnOffStack) { // If board turn off stack
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
 				pressTime = PRESS_DELAY;

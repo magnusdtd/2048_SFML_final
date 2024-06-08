@@ -51,11 +51,12 @@ private:
     sf::Text textBestScore;  // Text displaying the best score
     sf::Text textScore;  // Text displaying the current score
     sf::Text textGameOver;  // Text displaying game over message
-    sf::Text textResume;  // Text displaying resume message
+    sf::Text textWin;  // Text displaying win message
     u64 bestScore = 0;  // Best score
     u64 score = 0;  // Current score
     bool newScore = false;  // Flag indicating if a new score has been achieved
-    bool gameOver = false;  // Flag indicating if the game is over
+    bool isGameOver = false;  // Flag indicating if the game is over
+    bool isWin = false;  // Flag indicating if the player has won
 
 public:
     /**
@@ -74,7 +75,9 @@ public:
      * Handles the game over state.
      * Checks if a new score has been achieved and saves it if necessary.
      */
-    void GameOver();
+    void GameOverMessage();
+
+    void WinMessage();
 
     /**
      * Updates the UI based on the current game state.
@@ -90,6 +93,11 @@ public:
      * @param rs Current render states
      */
     virtual void draw(sf::RenderTarget& rt, sf::RenderStates rs) const;
+
+    /**
+    * Sends a message to the window.
+    */
+    void sendMessage(sf::RenderWindow& window);
 };
 
 #endif

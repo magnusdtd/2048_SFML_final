@@ -34,6 +34,7 @@ public:
 	u64 score; ///< Current score
 	u32 size; ///< Size of the board
 	bool OnOffStack; ///< Boolean to check if undo/redo is on or off
+	bool canMove; ///< Boolean to pause the game
 	/**
 	 * @brief Default constructor for Board.
 	 */
@@ -87,12 +88,6 @@ public:
 	bool newCell();
 
 	/**
-	 * @brief Returns the current score.
-	 * @return The current score.
-	 */
-	u64 getScore() const;
-
-	/**
 	 * @brief Moves the cells up.
 	 */
 	void UpMove();
@@ -141,6 +136,11 @@ public:
 	*@brief Clears redo stack of score.
 	*/
 	void clearRedoScoreStack();
+
+	/**
+	* Clears the board.
+	*/
+	void clear();
 
 	/**
 	 * @brief Updates the game state.
