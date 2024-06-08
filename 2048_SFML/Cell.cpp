@@ -1,12 +1,30 @@
 #include "Cell.hpp"
 
+sf::Texture Cell::texture;
+
+void Cell::updateCell()
+{
+    text.setString(std::to_string(value));
+    text.setOrigin(text.getGlobalBounds().width / 2.f, text.getGlobalBounds().height / 2.f);
+    if (value == 0) {
+        sprite.setColor(Color::colors[0]);
+        text.setFillColor(Color::colors[0]);
+    }
+    else {
+        sprite.setColor(Color::colors[(u64)log2(value)]);
+        text.setFillColor(sf::Color::Black);
+    }
+}
+
 // Default constructor
 Cell::Cell() {
     value = 0;
     text.setFillColor(Color::colors[0]);
     text.setString(std::to_string(value));
 
-    texture.loadFromFile("Texture/tile.png");
+    if (texture.getSize().x == 0) { // Load the texture only once
+        texture.loadFromFile("Texture/tile.png");
+    }
     sprite.setTexture(texture);
 }
 
@@ -18,16 +36,7 @@ bool Cell::operator==(const Cell& c) const {
 // Assignment operator
 void Cell::operator=(const Cell& c) {
     value = c.value;
-    text.setString(std::to_string(value));
-    text.setOrigin(text.getGlobalBounds().width / 2.f, text.getGlobalBounds().height / 2.f);
-    if (value == 0) {
-        sprite.setColor(Color::colors[0]);
-        text.setFillColor(Color::colors[0]);
-    }
-    else {
-        sprite.setColor(Color::colors[(u64)log2(value)]);
-        text.setFillColor(sf::Color::Black);
-    }
+    this->updateCell();
 }
 
 // Multiplication assignment operator
@@ -35,14 +44,7 @@ void Cell::operator*=(const u64& val) {
     value *= val;
     text.setString(std::to_string(value));
     text.setOrigin(text.getGlobalBounds().width / 2.f, text.getGlobalBounds().height / 2.f);
-    if (value == 0) {
-        sprite.setColor(Color::colors[0]);
-        text.setFillColor(Color::colors[0]);
-    }
-    else {
-        sprite.setColor(Color::colors[(u64)log2(value)]);
-        text.setFillColor(sf::Color::Black);
-    }
+    this->updateCell();
 }
 
 // Initialize the cell
@@ -70,16 +72,7 @@ void Cell::init(float posX,
 // Set the value of the cell
 void Cell::setValue(u64 val) {
     value = val;
-    text.setString(std::to_string(value));
-    text.setOrigin(text.getGlobalBounds().width / 2.f, text.getGlobalBounds().height / 2.f);
-    if (value == 0) {
-        sprite.setColor(Color::colors[0]);
-        text.setFillColor(Color::colors[0]);
-    }
-    else {
-        sprite.setColor(Color::colors[(u64)log2(value)]);
-        text.setFillColor(sf::Color::Black);
-    }
+    this->updateCell();
 }
 
 // Get the value of the cell

@@ -8,12 +8,15 @@
 // Class representing a cell in the game board
 class Cell : public sf::Drawable {
 private:
-    u64 value; // The value of the cell
     sf::Text text; // The text displayed on the cell
-    sf::Texture texture; // The texture of the cell
+    static sf::Texture texture; // The texture of the cell
     sf::Sprite sprite; // The sprite used to draw the cell
 
+    // Method to update the cell's text and color
+    void updateCell();
 public:
+    u64 value; // The value of the cell
+
     // Default constructor
     Cell();
 
@@ -27,13 +30,13 @@ public:
     void operator *= (const u64& val);
 
     // Initialize the cell
-    void init(float posX,
-        float posY,
-        sf::Font& font,
-        float size,
-        float alignX,
-        float alignY,
-        u32 sizeOfValue);
+    void init(  float posX,
+                float posY,
+                sf::Font& font,
+                float size,
+                float alignX,
+                float alignY,
+                u32 sizeOfValue);
 
     // Set the value of the cell
     void setValue(u64 val);
