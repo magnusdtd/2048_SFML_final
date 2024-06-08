@@ -194,7 +194,7 @@ void UI::update(float deltaTime, Board& board, TextField& tf) {
 			pressTime = PRESS_DELAY;
 		}
 
-		if (whichButton) { // whichButton == 1 => Choose on or off Undo/Redo
+		if (whichButton) { // whichButton == 1 => Choose turn on Undo/Redo
 			textOnOff.setFillColor(sf::Color(255, 0, 0));
 			textMode.setFillColor(sf::Color(0, 0, 0));
 		}
@@ -223,6 +223,7 @@ void UI::update(float deltaTime, Board& board, TextField& tf) {
 		}
 
 		textOnOff.setString((buttonOnOff) ? "On" : "Off");
+		board.OnOffStack = (buttonOnOff == 1) ? true : false;
 
 		switch (buttonMode) {
 		case 0:
@@ -254,7 +255,7 @@ void UI::update(float deltaTime, Board& board, TextField& tf) {
 			mode = Game::MODE_10;
 			break;
 		}
-
+		
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::BackSpace)) {
 			state = Game::START_MENU;
@@ -350,6 +351,7 @@ void UI::update(float deltaTime, Board& board, TextField& tf) {
 				std::cout << "Error in UI mode\n";
 			}
 			tf.clear();
+			tf.setFocus(true);
 		}
 	}
 	else if (state == Game::PLAYING) {
@@ -362,8 +364,13 @@ void UI::update(float deltaTime, Board& board, TextField& tf) {
 			textBestScore.setOrigin(textBestScore.getGlobalBounds().width / 2, textBestScore.getGlobalBounds().height / 2);
 		}
 
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::BackSpace))
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::BackSpace)) {
 			state = Game::START_MENU;
+			board.clearUndoBoardStack();
+			board.clearUndoBoardStack();
+			board.clearRedoBoardStack();
+			board.clearRedoBoardStack();
+		}
 	}
 }
 

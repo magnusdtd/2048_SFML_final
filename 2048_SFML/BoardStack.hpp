@@ -2,6 +2,7 @@
 #define BOARD_STACK_HPP
 
 #include "utils.hpp"
+#include <iostream>
 
 class BoardNode {
 public:
@@ -36,6 +37,21 @@ public:
 
     bool empty() {
         return (head == nullptr) ? true : false;
+    }
+
+    void print(u32 size) {
+        BoardNode* temp = head;
+        int t = 1;
+        std::cout << "---------------BOARD STACK-------------\n";
+        while (temp != nullptr) {
+            std::cout << "Board Node " << t++ << ": ";
+            for (u32 i = 0; i < size * size; i++) {
+                std::cout << temp->data[i] << " ";
+            }
+            std::cout << "\n";
+            temp = temp->next;
+        }
+        std::cout << "---------------------------------------\n";
     }
 };
 

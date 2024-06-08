@@ -1,10 +1,5 @@
 #include "Board.hpp"
 
-BoardStack Board::undoBoardStack; ///< Stack for undo operations
-BoardStack Board::redoBoardStack; ///< Stack for redo operations
-ScoreStack Board::undoScoreStack; ///< Stack for undo operations
-ScoreStack Board::redoScoreStack; ///< Stack for redo operations
-
 /**
  * @brief Default constructor for Board.
  */
@@ -12,6 +7,9 @@ Board::Board() {
 	pressTime = 0.0f;
 	score = 0;
 	size = 0;
+	OnOffStack = false;
+	isUndo = false;
+	isRedo = false;
 
 	if (!font.loadFromFile("Fonts/font.ttf"))
 		std::cout << "Error loading font\n";
@@ -36,6 +34,10 @@ void Board::init(u32 width,
 				u32 sizeofValue)
 {
 	this->size = size;
+	pressTime = 0.0f;
+	score = 0;
+	isUndo = false;
+	isRedo = false;
 
 	/* Fomula */
 	float w = this->size * sizeOfEachCell + distanceBetweenEachCell * (this->size - 1) + distanceBetweenCellAndBorder * 2;
@@ -359,16 +361,21 @@ void Board::RightMove() {
 void Board::Undo()
 {
 	if (undoBoardStack.empty()) {
-		std::cout << "RedoBoardStack is empty\n";
+		std::cout << "UndoBoardStack is empty\n";
 		return;
 	}
+
 	u64* temp = undoBoardStack.top();
 	for (u32 i = 0; i < size; i++)
 		for (u32 j = 0; j < size; j++)
 			this->cells[i][j].setValue(temp[i * size + j]);
 	redoBoardStack.push(temp, size * size);
-	delete[] temp;
+	undoBoardStack.pop();
 
+	if (undoScoreStack.empty()) {
+		std::cout << "UndoScoreStack is empty\n";
+		return;
+	}
 	score = undoScoreStack.top();
 	redoScoreStack.push(score);
 	undoScoreStack.pop();
@@ -388,11 +395,47 @@ void Board::Redo()
 		for (u32 j = 0; j < size; j++)
 			this->cells[i][j].setValue(temp[i * size + j]);
 	undoBoardStack.push(temp, size * size);
-	delete[] temp;
+	redoBoardStack.pop();
 
 	score = redoScoreStack.top();
 	undoScoreStack.push(score);
 	redoScoreStack.pop();
+}
+
+/**
+* @brief Clears the undo stack of board.
+*/
+void Board::clearUndoBoardStack()
+{
+	while (!undoBoardStack.empty())
+		undoBoardStack.pop();
+}
+
+/**
+* @brief Clears the redo stack of board.
+*/
+void Board::clearRedoBoardStack()
+{
+	while (!redoBoardStack.empty())
+		redoBoardStack.pop();
+}
+
+/**
+*@brief Clears undo stack of score.
+*/
+void Board::clearUndoScoreStack()
+{
+	while (!undoScoreStack.empty())
+		undoScoreStack.pop();
+}
+
+/**
+*@brief Clears redo stack of score.
+*/
+void Board::clearRedoScoreStack()
+{
+	while (!redoScoreStack.empty())
+		redoScoreStack.pop();
 }
 
 /**
@@ -402,29 +445,158 @@ void Board::Redo()
 void Board::update(float deltaTime) {
 	pressTime -= deltaTime;
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && pressTime <= 0.0) {
-		pressTime = PRESS_DELAY;
-		this->UpMove();
-		this->checkMove();
-		std::cout << "Up Check\n";
-	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && pressTime <= 0.0f ) {
-		pressTime = PRESS_DELAY;
-		this->DownMove();
-		this->checkMove();
-		std::cout << "Down Check\n";
-	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && pressTime <= 0.0f) {
-		pressTime = PRESS_DELAY;
-		this->LeftMove();
-		this->checkMove();
-		std::cout << "Left Check\n";
-	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && pressTime <= 0.0f) {
-		pressTime = PRESS_DELAY;
-		this->RightMove();
-		this->checkMove();
-		std::cout << "Right Check\n";
+	if (pressTime <= 0.0f) {
+		if (!OnOffStack) { // If board turn off stack
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
+				pressTime = PRESS_DELAY;
+				this->UpMove();
+				this->checkMove();
+			}
+			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
+				pressTime = PRESS_DELAY;
+				this->DownMove();
+				this->checkMove();
+			}
+			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+				pressTime = PRESS_DELAY;
+				this->LeftMove();
+				this->checkMove();
+			}
+			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+				pressTime = PRESS_DELAY;
+				this->RightMove();
+				this->checkMove();
+			}
+		}
+		else { // If board turn on stack
+			if (!isUndo && !isRedo) { // If not undo or redo state
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
+					pressTime = PRESS_DELAY;
+					this->UpMove();
+					this->checkMove();
+				}
+				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
+					pressTime = PRESS_DELAY;
+					this->DownMove();
+					this->checkMove();
+				}
+				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+					pressTime = PRESS_DELAY;
+					this->LeftMove();
+					this->checkMove();
+				}
+				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+					pressTime = PRESS_DELAY;
+					this->RightMove();
+					this->checkMove();
+				}
+				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::R)) {
+					pressTime = PRESS_DELAY;
+					isUndo = true;
+					isRedo = false;
+					undoBoardStack.pop();
+					undoScoreStack.pop();
+				}
+				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::U)) {
+					pressTime = PRESS_DELAY;
+					isUndo = false;
+					isRedo = true;
+					redoBoardStack.pop();
+					redoScoreStack.pop();
+				}
+			}
+			else if (isUndo && !isRedo) { // If board is in undo state
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) ||
+					sf::Keyboard::isKeyPressed(sf::Keyboard::Down) ||
+					sf::Keyboard::isKeyPressed(sf::Keyboard::Left) ||
+					sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+					pressTime = PRESS_DELAY;
+					this->clearRedoBoardStack();
+					this->clearRedoScoreStack();
+					isUndo = false;
+					isRedo = false;
+					if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
+						this->UpMove();
+						this->checkMove();
+					}
+					else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
+						this->DownMove();
+						this->checkMove();
+					}
+					else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+						this->LeftMove();
+						this->checkMove();
+					}
+					else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+						this->RightMove();
+						this->checkMove();
+					}
+
+				}
+				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::U)) {
+					pressTime = PRESS_DELAY;
+					isUndo = true;
+					isRedo = false;
+					this->Undo();
+				}
+				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::R)) {
+					pressTime = PRESS_DELAY;
+					isUndo = false;
+					isRedo = true;
+					this->Redo();
+				}
+			}
+			else if (!isUndo && isRedo) { // If board is in redo state
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) ||
+					sf::Keyboard::isKeyPressed(sf::Keyboard::Down) ||
+					sf::Keyboard::isKeyPressed(sf::Keyboard::Left) ||
+					sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+					pressTime = PRESS_DELAY;
+					this->clearRedoBoardStack();
+					this->clearRedoScoreStack();
+					isUndo = false;
+					isRedo = false;
+					if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
+						this->UpMove();
+						this->checkMove();
+					}
+					else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
+						this->DownMove();
+						this->checkMove();
+					}
+					else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+						this->LeftMove();
+						this->checkMove();
+					}
+					else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+						this->RightMove();
+						this->checkMove();
+					}
+
+				}
+				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::U)) {
+					pressTime = PRESS_DELAY;
+					isUndo = true;
+					isRedo = false;
+					this->Undo();
+				}
+				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::R)) {
+					pressTime = PRESS_DELAY;
+					isUndo = false;
+					isRedo = true;
+					this->Redo();
+				}
+			}
+		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::T)) {
+			pressTime = PRESS_DELAY;
+			std::cout << "UNDO\n";
+			undoBoardStack.print(size);
+			undoScoreStack.print();
+			std::cout << "REDO\n";
+			redoBoardStack.print(size);
+			redoScoreStack.print();
+		}
 	}
 }
 

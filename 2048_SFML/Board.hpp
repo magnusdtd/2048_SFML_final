@@ -17,21 +17,23 @@ private:
 	Cell **cells; ///< 2D array of cells
 	sf::Font font; ///< Font used for rendering text
 
-	u64 score; ///< Current score
-
 	const float PRESS_DELAY = 0.3f; ///< Delay between key presses
 	float pressTime; ///< Time since last key press
 
 	sf::Texture borderTexture; ///< Texture for the border
 	sf::Sprite border; ///< Sprite for the border
 
-	u32 size; ///< Size of the board
+	BoardStack undoBoardStack; ///< Stack for undo operations
+	BoardStack redoBoardStack; ///< Stack for redo operations
+	ScoreStack undoScoreStack; ///< Stack for undo operations
+	ScoreStack redoScoreStack; ///< Stack for redo operations
 
-	static BoardStack undoBoardStack; ///< Stack for undo operations
-	static BoardStack redoBoardStack; ///< Stack for redo operations
-	static ScoreStack undoScoreStack; ///< Stack for undo operations
-	static ScoreStack redoScoreStack; ///< Stack for redo operations
+	bool isUndo; ///< Boolean to check if undo is possible
+	bool isRedo; ///< Boolean to check if redo is possible
 public:
+	u64 score; ///< Current score
+	u32 size; ///< Size of the board
+	bool OnOffStack; ///< Boolean to check if undo/redo is on or off
 	/**
 	 * @brief Default constructor for Board.
 	 */
@@ -119,6 +121,26 @@ public:
 	 * @brief Redoes the last undone move.
 	 */
 	void Redo();
+
+	/**
+	* @brief Clears the undo stack of board.
+	*/
+	void clearUndoBoardStack();
+
+	/**
+	* @brief Clears the redo stack of board.
+	*/
+	void clearRedoBoardStack();
+
+	/**
+	*@brief Clears undo stack of score.
+	*/
+	void clearUndoScoreStack();
+
+	/**
+	*@brief Clears redo stack of score.
+	*/
+	void clearRedoScoreStack();
 
 	/**
 	 * @brief Updates the game state.

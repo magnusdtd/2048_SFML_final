@@ -7,8 +7,10 @@ BoardStack::~BoardStack()
     while (this->head != nullptr) {
         BoardNode* temp = this->head;
         this->head = temp->next;
+        delete[] temp->data;
         delete temp;
     }
+    std::cout << "BoardStack destroyed\n";
 }
 
 
@@ -31,10 +33,11 @@ void BoardStack::pop()
         return;
     BoardNode* temp = head;
     head = head->next;
-    delete[] temp->data;
-    temp->data = nullptr;
+    if (temp->data != nullptr) {
+        delete[] temp->data;
+        temp->data = nullptr;
+    }
     delete temp;
-    temp = nullptr;
 }
 
 // Return the data of the top node and remove it from the stack
@@ -42,9 +45,5 @@ u64* BoardStack::top()
 {
     if (head == nullptr)
         return nullptr;
-    BoardNode* temp = head;
-    head = head->next;
-    u64* tempData = temp->data;
-    delete temp;
-    return tempData;
+    return head->data;
 }

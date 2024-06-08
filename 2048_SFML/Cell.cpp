@@ -11,7 +11,7 @@ void Cell::updateCell()
         text.setFillColor(Color::colors[0]);
     }
     else {
-        sprite.setColor(Color::colors[(u64)log2(value)]);
+        sprite.setColor(Color::colors[((u64)log2(value)) % 12]);
         text.setFillColor(sf::Color::Black);
     }
 }

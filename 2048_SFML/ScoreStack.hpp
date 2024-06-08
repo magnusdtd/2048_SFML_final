@@ -2,6 +2,7 @@
 #define SCORE_STACK_HPP
 
 #include "utils.hpp"
+#include <iostream>
 
 class ScoreNode {
 public:
@@ -37,6 +38,17 @@ public:
     bool empty() {
         return (head == nullptr) ? true : false;
     }
+
+    void print() {
+        std::cout << "---------------SCORE STACK-------------\n";
+        int t = 1;
+		ScoreNode* temp = head;
+		while (temp != nullptr) {
+			std::cout << "Score Node " << t++ << ": " << temp->data << "\n";
+			temp = temp->next;
+		}
+        std::cout << "---------------------------------------\n";
+	}
 };
 
 #endif
