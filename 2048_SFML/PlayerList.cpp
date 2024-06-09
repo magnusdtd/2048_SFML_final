@@ -100,29 +100,29 @@ void PlayerList::showTop20()
  * @param fileScore The name of the file containing player scores.
  * @param fileTime The name of the file containing player completion times.
  */
-void PlayerList::loadData(std::string fileName, std::string fileScore, std::string fileTime)
+void PlayerList::loadData(const std::string& nameFile, const std::string& scoreFile, const std::string& timeFile)
 {
-	std::fstream inputName(fileName, std::ios::binary | std::ios::in);
-	std::fstream inputScore(fileScore, std::ios::binary | std::ios::in);
-	std::fstream inputTimeToComplete(fileTime, std::ios::binary | std::ios::in);
+	std::fstream inputName(nameFile, std::ios::binary | std::ios::in);
+	std::fstream inputScore(scoreFile, std::ios::binary | std::ios::in);
+	std::fstream inputTimeToComplete(timeFile, std::ios::binary | std::ios::in);
 
 	if (!inputName.is_open()) {
 		std::cerr << "Error opening file ";
-		for (auto ch : fileName)
+		for (auto ch : nameFile)
 			std::cout << ch;
 		std::cout << "\n";
 		return;
 	}
 	if (!inputScore.is_open()) {
 		std::cerr << "Error opening file ";
-		for (auto ch : fileScore)
+		for (auto ch : scoreFile)
 			std::cout << ch;
 		std::cout << "\n";
 		return;
 	}
 	if (!inputTimeToComplete.is_open()) {
 		std::cerr << "Error opening file ";
-		for (auto ch : fileTime)
+		for (auto ch : timeFile)
 			std::cout << ch;
 		std::cout << "\n";
 		return;

@@ -1,9 +1,37 @@
 #include "UI.hpp"
 #include "PlayerList.hpp"
+#include "RSA.hpp"
+
+void test() {
+    RSA security(907, 911);
+
+    std::string msg = "Dam Tien Dat";
+    u64* encrypted = security.encryptString(msg);
+    std::string decrypted = security.decryptString(encrypted, msg.size());
+
+    std::cout << "Encrypted: ";
+    for (u32 i = 0; i < msg.size(); i++) {
+        std::cout << encrypted[i] << ' ';
+    }
+    std::cout << "\n";
+
+    std::cout << "Decrypted: " << decrypted << "\n";
+
+
+    delete[] encrypted;
+    encrypted = nullptr;
+}
+
+
 /**
  * Entry point of the application.
  */
 int main() {
+
+    test();
+
+    std::cout << "Press any key to continue...\n";
+
     // Create a window with specific properties
     sf::RenderWindow window(sf::VideoMode(Game::GAME_WIDTH, Game::GAME_HEIGHT), "2048",
         sf::Style::Titlebar | sf::Style::Close);

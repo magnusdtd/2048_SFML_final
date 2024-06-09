@@ -1,5 +1,5 @@
-#ifndef PLAYERLIST_HPP
-#define PLAYERLIST_HPP
+#ifndef PLAYER_LIST_HPP
+#define PLAYER_LIST_HPP
 
 #include "Player.hpp"
 #include <fstream>
@@ -64,7 +64,7 @@ public:
 	 * @param fileScore The name of the file containing player scores.
 	 * @param fileTime The name of the file containing player completion times.
 	 */
-	void loadData(std::string fileName, std::string fileScore, std::string fileTime);
+	void loadData(const std::string& nameFile, const std::string& scoreFile, const std::string& timeFile);
 
 	/**
 	 * @brief Saves player data to files.
@@ -75,4 +75,4 @@ public:
 	void saveData(std::string fileName, std::string fileScore, std::string fileTime);
 };
 
-#endif // PLAYERLIST_HPP
+#endif 

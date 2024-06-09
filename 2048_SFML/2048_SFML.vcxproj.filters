@@ -57,6 +57,9 @@
     <ClCompile Include="ScoreStack.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="RSA.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utils.hpp">
@@ -84,6 +87,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ScoreStack.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RSA.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
