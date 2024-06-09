@@ -3,7 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <iostream>
-#include "Loader.hpp"
+#include <fstream>
 #include "TextField.hpp"
 #include "Board.hpp"
 #include "layout.hpp"
@@ -57,6 +57,7 @@ private:
     bool newScore = false;  // Flag indicating if a new score has been achieved
     bool isGameOver = false;  // Flag indicating if the game is over
     bool isWin = false;  // Flag indicating if the player has won
+    bool isNewBestScore = false;  // Flag indicating if a new best score has been achieved
 
 public:
     /**
@@ -72,11 +73,25 @@ public:
     Game::State getState() const;
 
     /**
+    * Loads the best score from a file.
+    */
+    u64 loadBestScore(std::string filename);
+
+    /**
+    * Saves the best score to a file.
+	*/
+    void saveBestScore(std::string filename);
+
+    /**
      * Handles the game over state.
      * Checks if a new score has been achieved and saves it if necessary.
      */
     void GameOverMessage();
 
+    /**
+     * Handles the win state.
+     * Checks if a new score has been achieved and saves it if necessary.
+     */
     void WinMessage();
 
     /**

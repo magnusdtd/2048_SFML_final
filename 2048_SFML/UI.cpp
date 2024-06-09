@@ -75,7 +75,7 @@ UI::UI() {
 	backgroundTexturePlaying.loadFromFile("Texture/background.png");
 	backgroundPlaying.setTexture(backgroundTexturePlaying);
 	
-	bestScore = Input::loadBestScore("Data/best_score.dat");
+	bestScore = this->loadBestScore("Data/best_score.dat");
 	textBestScore.setFont(font);
 	textBestScore.setString(std::to_string(bestScore));
 	textBestScore.setCharacterSize(32);
@@ -110,6 +110,46 @@ UI::UI() {
 Game::State UI::getState() const
 {
 	return state;
+}
+
+/**
+* Loads the best score from a file.
+*/
+u64 UI::loadBestScore(std::string filename)
+{
+	// Open the file in binary mode for reading.
+	std::ifstream input(filename, std::ios::binary | std::ios::in);
+	u64 bestScore = 0;
+
+	// If the file is open, read the best score from it.
+	if (input.is_open()) {
+		input.read(reinterpret_cast<char*>(&bestScore), sizeof(u64));
+		input.close();
+	}
+	else
+		// If the file could not be opened, print an error message.
+		std::cerr << "Unable to open file: " << filename << std::endl;
+
+	// Return the best score.
+	return bestScore;
+}
+
+/**
+* Saves the best score to a file.
+*/
+void UI::saveBestScore(std::string filename)
+{
+	// Open the file in binary mode for writing.
+	std::ofstream output(filename, std::ios::binary);
+
+	// If the file is open, write the score to it.
+	if (output.is_open()) {
+		output.write(reinterpret_cast<const char*>(&bestScore), sizeof(u64));
+		output.close();
+	}
+	else
+		// If the file could not be opened, print an error message.
+		std::cerr << "Unable to open file: " << filename << std::endl;
 }
 
 
@@ -358,8 +398,15 @@ void UI::update(float deltaTime, Board& board, TextField& tf) {
 		textScore.setString(std::to_string(score));
 		textScore.setOrigin(textScore.getGlobalBounds().width / 2, textScore.getGlobalBounds().height / 2);
 
-		if (score > bestScore)
+		if (score > bestScore) {
 			bestScore = score;
+			isNewBestScore = true;
+		}
+
+		if (isNewBestScore) 
+			this->saveBestScore("Data/best_score.dat");
+
+
 
 		textBestScore.setString(std::to_string(bestScore));
 		textBestScore.setOrigin(textBestScore.getGlobalBounds().width / 2, textBestScore.getGlobalBounds().height / 2);

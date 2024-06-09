@@ -3,9 +3,9 @@
 #include "RSA.hpp"
 
 void test() {
-    RSA security(907, 911);
+    RSA security(211, 199);
 
-    std::string msg = "Dam Tien Dat";
+    std::string msg = "Toi ten la";
     u64* encrypted = security.encryptString(msg);
     std::string decrypted = security.decryptString(encrypted, msg.size());
 
@@ -55,7 +55,7 @@ int main() {
     textfield.setPosition(300.f, 420.f);
     textfield.setFocus(true);
     PlayerList playerList;
-    playerList.loadData("Data/player_name.dat", "Data/player_score.dat", "Data/player_time.dat");
+    //playerList.loadData("Data/player_name.dat", "Data/player_score.dat", "Data/player_time.dat");
 
 
     // Main game loop
