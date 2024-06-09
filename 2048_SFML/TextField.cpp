@@ -71,7 +71,10 @@ void TextField::handleInput(sf::Event event, float deltaTime) {
         pressTime = PRESS_DELAY;
     }
     else if (text.size() < size && pressTime <= 0.f) {
-        text += event.text.unicode;
+        if (isHide)
+			text += "*";
+		else
+			text += event.text.unicode;
         pressTime = PRESS_DELAY;
     }
 }
@@ -86,6 +89,14 @@ void TextField::clear() {
 }
 
 /**
+* @brief Hide the text
+*/
+void TextField::setHide(bool hide)
+{
+    isHide = hide;
+}
+
+/**
  * Draws the text field on a render target.
  */
 void TextField::draw(sf::RenderTarget& target, sf::RenderStates states) const {
@@ -96,14 +107,14 @@ void TextField::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     t.setFont(font);
     t.setString(text);
     t.setOutlineThickness(0.1f);
-    t.setPosition(rect.getPosition() + sf::Vector2f(7.f, 0.f));
+    t.setPosition(rect.getPosition() + sf::Vector2f(10.f, 0.f));
     t.setCharacterSize(25);
     t.setFillColor(sf::Color::Black);
     target.draw(t, states);
 
     /* Draw instruction text */
     t.setString(instruction);
-    t.setPosition(rect.getPosition() + sf::Vector2f(7.f, -45.f));
+    t.setPosition(rect.getPosition() + sf::Vector2f(10.f, -45.f));
     t.setCharacterSize(40);
     t.setFillColor(sf::Color::Black);
     target.draw(t, states);

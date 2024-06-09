@@ -65,6 +65,7 @@ void Board::init(u32 width,
 									alignY, 
 									sizeofValue);
 
+	this->clearNewCells();
 
 	/* Random intialize two Cell of board */
 	u32 init1 = Random<u32>(0, size - 1), init2 = Random<u32>(0, size - 1), init3 = 0, init4 = 0;
@@ -75,8 +76,13 @@ void Board::init(u32 width,
 			break;
 	}
 	u64 temp = static_cast<u64>(Random<u32>(1, 2)) * 2;
+
 	this->cells[init1][init2].setValue(temp);
+	this->cells[init1][init2].isNew = true;
+
 	this->cells[init3][init4].setValue(temp);
+	this->cells[init3][init4].isNew = true;
+
 
 
 	/* Push first state in undo stack */
@@ -211,6 +217,9 @@ bool Board::newCell() {
 			break;
 		}
 	}
+
+	cells[x][y].isNew = true;
+
 	return true;
 }
 
@@ -433,24 +442,29 @@ void Board::update(float deltaTime) {
 	pressTime -= deltaTime;
 
 	if (pressTime <= 0.0f && canMove) {
+
 		if (!OnOffStack) { // If board turn off stack
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
 				pressTime = PRESS_DELAY;
+				this->clearNewCells();
 				this->UpMove();
 				this->checkMove();
 			}
 			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
 				pressTime = PRESS_DELAY;
+				this->clearNewCells();
 				this->DownMove();
 				this->checkMove();
 			}
 			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
 				pressTime = PRESS_DELAY;
+				this->clearNewCells();
 				this->LeftMove();
 				this->checkMove();
 			}
 			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
 				pressTime = PRESS_DELAY;
+				this->clearNewCells();
 				this->RightMove();
 				this->checkMove();
 			}
@@ -459,26 +473,31 @@ void Board::update(float deltaTime) {
 			if (!isUndo && !isRedo) { // If not undo or redo state
 				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
 					pressTime = PRESS_DELAY;
+					this->clearNewCells();
 					this->UpMove();
 					this->checkMove();
 				}
 				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
 					pressTime = PRESS_DELAY;
+					this->clearNewCells();
 					this->DownMove();
 					this->checkMove();
 				}
 				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
 					pressTime = PRESS_DELAY;
+					this->clearNewCells();
 					this->LeftMove();
 					this->checkMove();
 				}
 				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
 					pressTime = PRESS_DELAY;
+					this->clearNewCells();
 					this->RightMove();
 					this->checkMove();
 				}
 				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::R)) {
 					pressTime = PRESS_DELAY;
+					this->clearNewCells();
 					isUndo = true;
 					isRedo = false;
 					undoBoardStack.pop();
@@ -486,6 +505,7 @@ void Board::update(float deltaTime) {
 				}
 				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::U)) {
 					pressTime = PRESS_DELAY;
+					this->clearNewCells();
 					isUndo = false;
 					isRedo = true;
 					redoBoardStack.pop();
@@ -498,6 +518,7 @@ void Board::update(float deltaTime) {
 					sf::Keyboard::isKeyPressed(sf::Keyboard::Left) ||
 					sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
 					pressTime = PRESS_DELAY;
+					this->clearNewCells();
 					this->clearRedoBoardStack();
 					this->clearRedoScoreStack();
 					isUndo = false;
@@ -522,12 +543,14 @@ void Board::update(float deltaTime) {
 				}
 				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::U)) {
 					pressTime = PRESS_DELAY;
+					this->clearNewCells();
 					isUndo = true;
 					isRedo = false;
 					this->Undo();
 				}
 				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::R)) {
 					pressTime = PRESS_DELAY;
+					this->clearNewCells();
 					isUndo = false;
 					isRedo = true;
 					this->Redo();
@@ -539,6 +562,7 @@ void Board::update(float deltaTime) {
 					sf::Keyboard::isKeyPressed(sf::Keyboard::Left) ||
 					sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
 					pressTime = PRESS_DELAY;
+					this->clearNewCells();
 					this->clearRedoBoardStack();
 					this->clearRedoScoreStack();
 					isUndo = false;
@@ -584,7 +608,18 @@ void Board::update(float deltaTime) {
 			redoBoardStack.print(size);
 			redoScoreStack.print();
 		}
+
 	}
+}
+
+/**
+* @brief Clears the new cells.
+*/
+void Board::clearNewCells()
+{
+	for (u32 i = 0; i < size; i++)
+		for (u32 j = 0; j < size; j++)
+			this->cells[i][j].isNew = false;
 }
 
 /**

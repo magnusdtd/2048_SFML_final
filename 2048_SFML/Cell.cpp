@@ -1,6 +1,7 @@
 #include "Cell.hpp"
 
 sf::Texture Cell::texture;
+sf::Font Cell::font;
 
 void Cell::updateCell()
 {
@@ -17,8 +18,11 @@ void Cell::updateCell()
 }
 
 // Default constructor
-Cell::Cell() {
-    value = 0;
+Cell::Cell() : value(0) {
+    if (font.getInfo().family == "") { // Load the font only once (static member
+        font.loadFromFile("Fonts/font.ttf");
+        std::cout << "Check font for one cell\n";
+    }
     text.setFillColor(Color::colors[0]);
     text.setString(std::to_string(value));
 
@@ -84,4 +88,14 @@ u64 Cell::getValue() const {
 void Cell::draw(sf::RenderTarget& rt, sf::RenderStates rs) const {
     rt.draw(sprite, rs);
     rt.draw(text, rs);
+
+    if(isNew) {
+		sf::Text newText;
+        newText.setFont(font);
+        newText.setString("New");
+        newText.setCharacterSize(20);
+        newText.setFillColor(sf::Color(Random<u32>(0, 255), Random<u32>(0, 255), Random<u32>(0, 255)));
+        newText.setPosition(sprite.getPosition().x + 10.f, sprite.getPosition().y + 10.f);
+        rt.draw(newText, rs);
+	}
 }

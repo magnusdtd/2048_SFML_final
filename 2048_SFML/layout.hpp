@@ -71,18 +71,18 @@ namespace LAYOUT {
 
 namespace Color {
     // Array of colors used in the game
-    static std::array<sf::Color, 12> colors = { sf::Color(102,102,102),
-                                                sf::Color(255,166,0),
-                                                sf::Color(245,151,245),
-                                                sf::Color(51,204,153),
-                                                sf::Color(255,110,110),
-                                                sf::Color(255,204,77),
-                                                sf::Color(166,166,255),
-                                                sf::Color(137,194,247),
-                                                sf::Color(0,255,255),
-                                                sf::Color(0,128,0),
-                                                sf::Color(255,0,255),
-                                                sf::Color(128,128,0) };
+    static sf::Color colors[12] = { sf::Color(102, 102, 102),
+                                    sf::Color(255, 166, 0),
+                                    sf::Color(246, 157, 227),
+                                    sf::Color(51, 204, 153),
+                                    sf::Color(255, 110, 110),
+                                    sf::Color(255, 204, 77),
+                                    sf::Color(166, 166, 255),
+                                    sf::Color(137, 194, 247),
+                                    sf::Color(0, 255, 255),
+                                    sf::Color(34, 241, 34),
+                                    sf::Color(209, 72, 244),
+                                    sf::Color(232, 15, 15) };
 }
 
 #endif

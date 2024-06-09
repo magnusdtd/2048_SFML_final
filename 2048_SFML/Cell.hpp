@@ -4,10 +4,12 @@
 #include <string.h>
 #include <math.h>
 #include "layout.hpp"
+#include <iostream>
 
 // Class representing a cell in the game board
 class Cell : public sf::Drawable {
 private:
+    static sf::Font font; // The font used to display the cell's text
     sf::Text text; // The text displayed on the cell
     static sf::Texture texture; // The texture of the cell
     sf::Sprite sprite; // The sprite used to draw the cell
@@ -16,6 +18,7 @@ private:
     void updateCell();
 public:
     u64 value; // The value of the cell
+    bool isNew = true; // Whether the cell is a new cell
 
     // Default constructor
     Cell();

@@ -16,6 +16,7 @@ Login::Login() :
     usernameField.warning = "Name must only contain number 0 - 9, letter A - Z, a - z ans NO space!!!";
 
     passwordField.setPosition(350.f, 566.f);
+    passwordField.setHide(true);
     passwordField.instruction = "Enter password";
     passwordField.warning = "Password must only contain number 0 - 9, letter A - Z, a - z ans NO space!!!";
 }

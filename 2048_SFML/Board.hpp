@@ -149,6 +149,11 @@ public:
 	void update(float deltaTime);
 
 	/**
+	* @brief Clears the new cells.
+	*/
+	void clearNewCells();
+
+	/**
 	 * @brief Draws the board.
 	 * @param rt The render target to draw to.
 	 * @param rs The render states to use.

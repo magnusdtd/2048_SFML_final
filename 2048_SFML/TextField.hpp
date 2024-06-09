@@ -18,6 +18,7 @@ private:
     u32 size;  // The maximum number of characters allowed in the text field
     bool hasfocus;  // Whether the text field is currently focused
     bool isWarning = false;  // Whether there is a warning
+    bool isHide = false;  // Whether the text field is hidden
     float pressTime;  // The time since the last key press
     const float PRESS_DELAY = 0.4f;  // The delay between key presses
 public:
@@ -58,6 +59,11 @@ public:
      * Clears the text field.
      */
     void clear();
+
+    /**
+    * @brief Hide the text
+    */
+    void setHide(bool hide);
 
     /**
      * Draws the text field on a render target.
