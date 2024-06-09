@@ -223,10 +223,10 @@ void Board::UpMove() {
 		x = i, y = 0;
 		for (int j = 1; j < (s32)size; j++) {
 			if (this->cells[i][j].getValue() != 0) {
-				if (this->cells[i][j - 1].getValue() == 0 || this->cells[i][j - 1] == this->cells[i][j]) {
-					if (this->cells[x][y] == this->cells[i][j]) {
+				if (this->cells[i][j - 1].getValue() == 0 || this->cells[i][j - 1].getValue() == this->cells[i][j].getValue()) {
+					if (this->cells[x][y].getValue() == this->cells[i][j].getValue()) {
 						// update score
-						this->cells[x][y] *= 2;
+						this->cells[x][y].setValue(this->cells[x][y].getValue() * 2);
 						this->cells[i][j].setValue(0);
 						score += this->cells[x][y].getValue();
 					}
@@ -247,6 +247,7 @@ void Board::UpMove() {
 	}
 }
 
+
 /**
  * @brief Moves the cells down.
  */
@@ -256,10 +257,10 @@ void Board::DownMove() {
 		x = i, y = (s32)size - 1;
 		for (int j = (s32)size - 2; j >= 0; j--) {
 			if (this->cells[i][j].getValue() != 0) {
-				if (this->cells[i][j + 1].getValue() == 0 || this->cells[i][j + 1] == this->cells[i][j]) {
-					if (this->cells[x][y] == this->cells[i][j]) {
+				if (this->cells[i][j + 1].getValue() == 0 || this->cells[i][j + 1].getValue() == this->cells[i][j].getValue()) {
+					if (this->cells[x][y].getValue() == this->cells[i][j].getValue()) {
 						// update score
-						this->cells[x][y] *= 2;
+						this->cells[x][y].setValue(this->cells[x][y].getValue() * 2);
 						this->cells[i][j].setValue(0);
 						score += this->cells[x][y].getValue();
 					}
@@ -284,31 +285,24 @@ void Board::DownMove() {
  * @brief Moves the cells left.
  */
 void Board::LeftMove() {
-	int x, y;	
 	for (int j = 0; j < (s32)size; j++) {
-		x = 0, y = j;
-		for (int i = 1; i < (s32)size; i++) {
-			if (this->cells[i][j].getValue() != 0) {
-				if (this->cells[i - 1][j].getValue() == 0
-					|| this->cells[i - 1][j] == this->cells[i][j]) {
-					if (this->cells[x][y].getValue() == this->cells[i][j].getValue()) {
-						// update score
-						this->cells[x][y] *= 2;
-						this->cells[i][j].setValue(0);
-						score += this->cells[x][y].getValue();
-					}
-					else {
-						if (this->cells[x][y].getValue() == 0) {
-							this->cells[x][y] = this->cells[i][j];
-							this->cells[i][j].setValue(0);
-						}
-						else {
-							this->cells[++x][y] = this->cells[i][j];
-							this->cells[i][j].setValue(0);
-						}
-					}
+		for (int i = 0; i < (s32)size; i++) {
+			int x = i;
+			while (x > 0) {
+				if (this->cells[x - 1][j].getValue() == 0) {
+					this->cells[x - 1][j] = this->cells[x][j];
+					this->cells[x][j].setValue(0);
+					x--;
 				}
-				else x++;
+				else if (this->cells[x - 1][j] == this->cells[x][j]) {
+					this->cells[x - 1][j] *= 2;
+					this->cells[x][j].setValue(0);
+					score += this->cells[x - 1][j].getValue();
+					break;
+				}
+				else {
+					break;
+				}
 			}
 		}
 	}
@@ -318,31 +312,24 @@ void Board::LeftMove() {
  * @brief Moves the cells right.
  */
 void Board::RightMove() {
-	int x, y;
 	for (int j = 0; j < (s32)size; j++) {
-		x = (s32)size - 1, y = j;
-		for (int i = (s32)size - 2; i >= 0; i--) {
-			if (this->cells[i][j].getValue() != 0) {
-				if (this->cells[i + 1][j].getValue() == 0
-					|| this->cells[i + 1][j] == this->cells[i][j]) {
-					if (this->cells[x][y].getValue() == this->cells[i][j].getValue()) {
-						// update score
-						this->cells[x][y] *= 2;
-						this->cells[i][j].setValue(0);
-						score += this->cells[x][y].getValue();
-					}
-					else {
-						if (this->cells[x][y].getValue() == 0) {
-							this->cells[x][y] = this->cells[i][j];
-							this->cells[i][j].setValue(0);
-						}
-						else {
-							this->cells[--x][y] = this->cells[i][j];
-							this->cells[i][j].setValue(0);
-						}
-					}
+		for (int i = (s32)size - 1; i >= 0; i--) {
+			int x = i;
+			while (x < (s32)size - 1) {
+				if (this->cells[x + 1][j].getValue() == 0) {
+					this->cells[x + 1][j] = this->cells[x][j];
+					this->cells[x][j].setValue(0);
+					x++;
 				}
-				else x--;
+				else if (this->cells[x + 1][j] == this->cells[x][j]) {
+					this->cells[x + 1][j] *= 2;
+					this->cells[x][j].setValue(0);
+					score += this->cells[x + 1][j].getValue();
+					break;
+				}
+				else {
+					break;
+				}
 			}
 		}
 	}
