@@ -138,6 +138,7 @@
   <ItemGroup>
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="BoardStack.cpp" />
+    <ClCompile Include="Container.cpp" />
     <ClCompile Include="layout.hpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Cell.cpp" />
@@ -152,6 +153,7 @@
     <ClInclude Include="Board.hpp" />
     <ClInclude Include="BoardStack.hpp" />
     <ClInclude Include="Cell.hpp" />
+    <ClInclude Include="Container.hpp" />
     <ClInclude Include="Player.hpp" />
     <ClInclude Include="RSA.hpp" />
     <ClInclude Include="ScoreStack.hpp" />
