@@ -6,7 +6,10 @@
 #include <fstream>
 #include "TextField.hpp"
 #include "Board.hpp"
+#include "PlayerList.hpp"
 #include "layout.hpp"
+#include <chrono>
+#include <ctime>
 
 /**
  * UI class is responsible for managing the user interface of the game.
@@ -59,6 +62,12 @@ private:
     bool isWin = false;  // Flag indicating if the player has won
     bool isNewBestScore = false;  // Flag indicating if a new best score has been achieved
 
+    bool isCalculated = false;  // Flag indicating if the time has been calculated
+    std::chrono::system_clock::time_point startTime; ///< Start time for the game
+    std::chrono::system_clock::time_point endTime; ///< Start time for the game
+
+    std::string password;  // Password for the player
+
 public:
     /**
      * Constructor for the UI class.
@@ -80,7 +89,7 @@ public:
     /**
     * Saves the best score to a file.
 	*/
-    void saveBestScore(std::string filename);
+    void saveBestScore(std::string filename) const;
 
     /**
      * Handles the game over state.
@@ -100,7 +109,7 @@ public:
      * @param board Reference to the game board
      * @param tf Reference to the text field
      */
-    void update(float deltaTime, Board& board, TextField& tf);
+    void update(float deltaTime, Board& board, TextField& tf, PlayerList& playerList);
 
     /**
      * Draws the UI elements on the screen.

@@ -1,5 +1,4 @@
 #include "UI.hpp"
-#include "PlayerList.hpp"
 #include "RSA.hpp"
 
 void test() {
@@ -55,17 +54,27 @@ int main() {
     textfield.setPosition(300.f, 420.f);
     textfield.setFocus(true);
     PlayerList playerList;
-    //playerList.loadData("Data/player_name.dat", "Data/player_score.dat", "Data/player_time.dat");
+    playerList.loadData("Data/player_name.dat", 
+                        "Data/player_score.dat", 
+                        "Data/player_time.dat", 
+                        "Data/player_password.dat");
 
+    float pressTime = 0.f;
 
     // Main game loop
     while (window.isOpen()) {
         float deltaTime = clock.restart().asSeconds();
 
+        pressTime -= deltaTime;
+
         // Event polling
         while (window.pollEvent(event)) {
             // Handle window close event
             if (event.type == sf::Event::Closed) {
+                playerList.saveData("Data/player_name.dat", 
+                                    "Data/player_score.dat", 
+                                    "Data/player_time.dat", 
+                                    "Data/player_password.dat");
                 window.close();
                 break;
             }
@@ -83,7 +92,7 @@ int main() {
         }
 
         // Update UI and draw it on the window
-        ui.update(deltaTime, board, textfield);
+        ui.update(deltaTime, board, textfield, playerList);
         window.draw(ui);
 
         // Draw textfield or board based on the game state
@@ -95,6 +104,12 @@ int main() {
             window.draw(board);
         }
 
+        if (ui.getState() == Game::PLAYING && sf::Keyboard::isKeyPressed(sf::Keyboard::Y) && pressTime <= 0.0f) {
+            pressTime = 0.5f;
+            std::cout << "_______________________Y pressed__________________\n";
+			playerList.showTop20();
+            std::cout << "__________________________________________________\n";
+		}
         // Display the window content
         ui.sendMessage(window);
 

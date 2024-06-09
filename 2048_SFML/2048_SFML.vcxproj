@@ -166,6 +166,7 @@
     <None Include="Data\player_name.dat" />
     <None Include="Data\player_score.dat" />
     <None Include="Data\player_time.dat" />
+    <None Include="player_password.dat" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="Fonts\arial.ttf" />

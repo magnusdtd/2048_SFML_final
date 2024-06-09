@@ -106,6 +106,9 @@
     <None Include="Data\player_time.dat">
       <Filter>Resource Files\Data</Filter>
     </None>
+    <None Include="player_password.dat">
+      <Filter>Resource Files\Data</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Font Include="Fonts\arial.ttf">

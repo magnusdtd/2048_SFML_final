@@ -137,7 +137,7 @@ u64 UI::loadBestScore(std::string filename)
 /**
 * Saves the best score to a file.
 */
-void UI::saveBestScore(std::string filename)
+void UI::saveBestScore(std::string filename) const
 {
 	// Open the file in binary mode for writing.
 	std::ofstream output(filename, std::ios::binary);
@@ -172,7 +172,7 @@ void UI::WinMessage()
  * @param board Reference to the game board
  * @param tf Reference to the text field
  */
-void UI::update(float deltaTime, Board& board, TextField& tf) {
+void UI::update(float deltaTime, Board& board, TextField& tf, PlayerList& playerList) {
 	// Update UI based on the current game state...
 	pressTime -= deltaTime;
 	if (state == Game::START_MENU) {
@@ -389,8 +389,8 @@ void UI::update(float deltaTime, Board& board, TextField& tf) {
 			default:
 				std::cout << "Error in UI mode\n";
 			}
-			tf.clear();
-			tf.setFocus(true);
+
+			startTime = std::chrono::system_clock::now(); // Start time for the game
 		}
 	}
 	else if (state == Game::PLAYING) {
@@ -414,23 +414,40 @@ void UI::update(float deltaTime, Board& board, TextField& tf) {
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::BackSpace) && pressTime <= 0.0f) {
 			pressTime = PRESS_DELAY;
 			state = Game::START_MENU;
+
 			board.clearUndoBoardStack();
 			board.clearRedoBoardStack();
 			board.clearUndoScoreStack();
 			board.clearRedoScoreStack();
+			board.clear();
 			board.canMove = true;
+
 			isWin = false;
 			isGameOver = false;
-			board.clear();
+
+			isCalculated = false;
+
+			tf.clear();
+			tf.setFocus(true);
 		}
 
-		if (board.isOver()) {
-			GameOverMessage();
+		if (board.isOver() || board.isWin()) {
+			if (board.isOver()) 
+				GameOverMessage();
+			else 
+				WinMessage();
+
 			board.canMove = false;
-		}
-		else if (board.isWin()) {
-			WinMessage();
-			board.canMove = false;
+
+			if (!isCalculated) {
+				endTime = std::chrono::system_clock::now();
+				std::chrono::duration<double> elapsed_seconds = endTime - startTime;
+
+				playerList.addPlayer(tf.getText(), score, elapsed_seconds.count(), password);
+
+				std::cout << "Time taken: " << elapsed_seconds.count() << "s\n";
+				isCalculated = true;
+			}
 		}
 	}
 }

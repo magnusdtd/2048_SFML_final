@@ -38,7 +38,7 @@ public:
 	 * @param score The score of the player.
 	 * @param timeToComplete The time taken by the player to complete the game.
 	 */
-	void addPlayer(std::string userName, u64 score, double timeToComplete);
+	void addPlayer(std::string userName, u64 score, double timeToComplete, std::string password);
 
 	/**
 	 * @brief Removes a player from the list.
@@ -63,16 +63,18 @@ public:
 	 * @param fileName The name of the file containing player names.
 	 * @param fileScore The name of the file containing player scores.
 	 * @param fileTime The name of the file containing player completion times.
+	 * @param passwordName The name of the file containing player passwords.
 	 */
-	void loadData(const std::string& nameFile, const std::string& scoreFile, const std::string& timeFile);
+	void loadData(std::string nameFile, std::string scoreFile, std::string timeFile, std::string passwordName);
 
 	/**
 	 * @brief Saves player data to files.
 	 * @param fileName The name of the file to save player names.
 	 * @param fileScore The name of the file to save player scores.
 	 * @param fileTime The name of the file to save player completion times.
+	 * @param passwordName The name of the file to save player passwords.
 	 */
-	void saveData(std::string fileName, std::string fileScore, std::string fileTime);
+	void saveData(std::string nameFile, std::string scoreFile, std::string timeFile, std::string passwordName);
 };
 
 #endif 

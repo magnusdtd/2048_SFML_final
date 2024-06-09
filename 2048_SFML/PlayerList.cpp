@@ -9,7 +9,7 @@ Player* PlayerList::getPlayer(std::string userName)
 {
 	Player* temp = head;
 
-	while (temp != nullptr && temp->userName != userName)
+	while (temp != nullptr && temp->getName() != userName)
 		temp = temp->next;
 
 	return temp;
@@ -21,23 +21,23 @@ Player* PlayerList::getPlayer(std::string userName)
  * @param score The score of the player.
  * @param timeToComplete The time taken by the player to complete the game.
  */
-void PlayerList::addPlayer(std::string userName, u64 score, double timeToComplete)
+void PlayerList::addPlayer(std::string userName, u64 score, double timeToComplete, std::string password)
 {
-	Player* newPlayer = new Player(userName, score, timeToComplete);
+	Player* newPlayer = new Player(userName, score, timeToComplete, password);
 
-	if (head == nullptr || head->score < score || (head->score == score && head->timeToComplete > timeToComplete)) {
+	if (head == nullptr || head->getScore() < score || (head->getScore() == score && head->getTime() > timeToComplete)) {
 		newPlayer->next = head;
 		head = newPlayer;
 		return;
 	}
 
 	Player* temp = head, *prev = head;
-	while (temp != nullptr && temp->score >= score) {
+	while (temp != nullptr && temp->getScore() >= score) {
 		prev = temp;
 		temp = temp->next;
 	}
 
-	while (temp != nullptr && temp->score == score && temp->timeToComplete <= timeToComplete) {
+	while (temp != nullptr && temp->getScore() == score && temp->getTime() <= timeToComplete) {
 		prev = temp;
 		temp = temp-> next;
 	}
@@ -55,7 +55,7 @@ void PlayerList::removePlayer(std::string userName)
 	Player* temp = head;
 	Player* prev = nullptr;
 
-	while (temp != nullptr && temp->userName != userName) {
+	while (temp != nullptr && temp->getName() != userName) {
 		prev = temp;
 		temp = temp->next;
 	}
@@ -81,12 +81,15 @@ void PlayerList::showTop20()
 	u32 count = 0;
 	while (temp != nullptr && count < 20) {
 		std::cout << "Username: ";
-		for (auto c : temp->userName)
+		for (auto c : temp->getName())
 			std::cout << c;
-		std::cout << std::endl;
-		std::cout << "Score: " << temp->score << std::endl;
-		std::cout << "Time to complete: " << temp->timeToComplete << std::endl;
-		std::cout << std::endl;
+		std::cout << "\n";
+		std::cout << "Score: " << temp->getScore() << "\n";
+		std::cout << "Time to complete: " << temp->getTime() << "\n";
+		std::cout << "Password: ";
+		for (auto c : temp->getPassword())
+			std::cout << c;
+		std::cout << "\n\n";
 
 
 		count++;
@@ -95,16 +98,18 @@ void PlayerList::showTop20()
 }
 
 /**
- * @brief Loads player data from files.
- * @param fileName The name of the file containing player names.
- * @param fileScore The name of the file containing player scores.
- * @param fileTime The name of the file containing player completion times.
- */
-void PlayerList::loadData(const std::string& nameFile, const std::string& scoreFile, const std::string& timeFile)
+* @brief Loads player data from files.
+* @param fileName The name of the file containing player names.
+* @param fileScore The name of the file containing player scores.
+* @param fileTime The name of the file containing player completion times.
+* @param passwordName The name of the file containing player passwords.
+*/
+void PlayerList::loadData(std::string nameFile, std::string scoreFile, std::string timeFile, std::string passwordName)
 {
 	std::fstream inputName(nameFile, std::ios::binary | std::ios::in);
 	std::fstream inputScore(scoreFile, std::ios::binary | std::ios::in);
 	std::fstream inputTimeToComplete(timeFile, std::ios::binary | std::ios::in);
+	std::fstream inputPassword(passwordName, std::ios::binary | std::ios::in);
 
 	if (!inputName.is_open()) {
 		std::cerr << "Error opening file ";
@@ -127,93 +132,115 @@ void PlayerList::loadData(const std::string& nameFile, const std::string& scoreF
 		std::cout << "\n";
 		return;
 	}
+	if (!inputPassword.is_open()) {
+		std::cerr << "Error opening file ";
+		for (auto ch : passwordName)
+			std::cout << ch;
+		std::cout << "\n";
+		return;
+	}
 
 	std::string userName;
 	u64 score = 0;
 	double timeToComplete = 0;
+	std::string password;
+	size_t size = 0;
 
 	while (true) {
-		// Read the string size
-		size_t size = 0;
+		/* Read name */
+		size = 0;
 		inputName.read(reinterpret_cast<char*>(&size), sizeof(size_t));
+		userName.resize(size);
+		inputName.read(&userName[0], size);
 
 		if (inputName.eof() || inputScore.eof() || inputTimeToComplete.eof()) 
 			break;  // Check for EOF after trying to read
-		
-		// Resize the string to the correct size
-		userName.resize(size);
 
-		// Read the string characters
-		inputName.read(&userName[0], size);
-
+		/* Read score */
 		inputScore.read(reinterpret_cast<char*>(&score), sizeof(u64));
+
+		/* Read time */
 		inputTimeToComplete.read(reinterpret_cast<char*>(&timeToComplete), sizeof(double));
-		this->addPlayer(userName, score, timeToComplete);
+
+		/* Read password */
+		inputPassword.read(reinterpret_cast<char*>(&size), sizeof(size_t));
+		password.resize(size);
+		inputPassword.read(&password[0], size);
+
+		this->addPlayer(userName, score, timeToComplete, password);
 	}
 
 
 	inputName.close();;
 	inputScore.close();
 	inputTimeToComplete.close();
+	inputPassword.close();
 }
 
 /**
- * @brief Saves player data to files.
- * @param fileName The name of the file to save player names.
- * @param fileScore The name of the file to save player scores.
- * @param fileTime The name of the file to save player completion times.
- */
-void PlayerList::saveData(std::string fileName, std::string fileScore, std::string fileTime)
+* @brief Saves player data to files.
+* @param fileName The name of the file to save player names.
+* @param fileScore The name of the file to save player scores.
+* @param fileTime The name of the file to save player completion times.
+* @param passwordName The name of the file to save player passwords.
+*/
+void PlayerList::saveData(std::string nameFile, std::string scoreFile, std::string timeFile, std::string passwordName)
 {
-	std::fstream outputName(fileName, std::ios::binary | std::ios::out);
-	std::fstream outputScore(fileScore, std::ios::binary | std::ios::out);
-	std::fstream outputTimeToComplete(fileTime, std::ios::binary | std::ios::out);
+	std::fstream outputName(nameFile, std::ios::binary | std::ios::out);
+	std::fstream outputScore(scoreFile, std::ios::binary | std::ios::out);
+	std::fstream outputTimeToComplete(timeFile, std::ios::binary | std::ios::out);
+	std::fstream outputPassword(passwordName, std::ios::binary | std::ios::out);
 
 	if (!outputName.is_open()) {
 		std::cerr << "Error opening file ";
-		for (auto ch : fileName)
+		for (auto ch : nameFile)
 			std::cout << ch;
 		std::cout << "\n";
 		return;
 	}
 	if (!outputScore.is_open()) {
 		std::cerr << "Error opening file ";
-		for (auto ch : fileScore)
+		for (auto ch : scoreFile)
 			std::cout << ch;
 		std::cout << "\n";
 		return;
 	}
 	if (!outputTimeToComplete.is_open()) {
 		std::cerr << "Error opening file ";
-		for (auto ch : fileTime)
+		for (auto ch : timeFile)
 			std::cout << ch;
 		std::cout << "\n";
 		return;
 	}
 
-	std::string userName;
 	u64 score = 0;
 	double timeToComplete = 0;
+	size_t size = 0;
 
-	std::cout << "Saving data...\n";
 	Player *temp = head;
 	while (temp != nullptr) {
-		// Write the string size
-		size_t size = temp->userName.size();
+		/* Name */
+		size = temp->getName().size();
 		outputName.write(reinterpret_cast<char*>(&size), sizeof(size_t));
+		outputName.write(temp->getName().c_str(), size);
 
-		// Write the string characters
-		outputName.write(temp->userName.c_str(), size);
+		score = temp->getScore();
+		outputScore.write(reinterpret_cast<char*>(&score), sizeof(u64));
 
-		outputScore.write(reinterpret_cast<char*>(&temp->score), sizeof(u64));
-		outputTimeToComplete.write(reinterpret_cast<char*>(&temp->timeToComplete), sizeof(double));
+		timeToComplete = temp->getTime();
+		outputTimeToComplete.write(reinterpret_cast<char*>(&timeToComplete), sizeof(double));
+
+		/* Password */
+		size = temp->getPassword().size();
+		outputPassword.write(reinterpret_cast<char*>(&size), sizeof(size_t));
+		outputPassword.write(temp->getPassword().c_str(), size);
+
 
 		temp = temp->next;
 	}
 
-	std::cout << "Data saved successfully.\n";
-
 	outputName.close();
 	outputScore.close();
 	outputTimeToComplete.close();
+	outputPassword.close();
 }
