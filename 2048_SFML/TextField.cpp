@@ -3,7 +3,7 @@
 /**
  * Constructor that initializes the text field with a maximum number of characters and dimensions.
  */
-TextField::TextField(unsigned int maxChars, float width, float height) :
+TextField::TextField(u32 maxChars, float width, float height) :
     size(maxChars),
     rect(sf::Vector2f(width, height)),
     hasfocus(false)
@@ -55,14 +55,13 @@ void TextField::setFocus(bool focus) {
  */
 void TextField::handleInput(sf::Event event, float deltaTime) {
     if (!hasfocus || event.type != sf::Event::TextEntered)
-        return;
-    std::cout << event.text.unicode << std::endl;
+        return;;
 
     if (!((event.text.unicode >= 48 && event.text.unicode <= 57) || // Number
         (event.text.unicode >= 65 && event.text.unicode <= 90) ||   // Uppercase
         (event.text.unicode >= 97 && event.text.unicode <= 122) ||  // Lowercase
         event.text.unicode == 8)) {
-        isWarnning = true;
+        isWarning = true;
         return;
     }
 
@@ -82,6 +81,8 @@ void TextField::handleInput(sf::Event event, float deltaTime) {
  */
 void TextField::clear() {
     text = "";
+    isWarning = false;
+    hasfocus = true;
 }
 
 /**
@@ -101,15 +102,15 @@ void TextField::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     target.draw(t, states);
 
     /* Draw instruction text */
-    t.setString("Enter your name");
+    t.setString(instruction);
     t.setPosition(rect.getPosition() + sf::Vector2f(7.f, -45.f));
     t.setCharacterSize(40);
     t.setFillColor(sf::Color::Black);
     target.draw(t, states);
 
-    /* Draw warnning */
-    if (isWarnning) {
-        t.setString("Name must only contain number 0-9, letter A-Z, a-z ans NO space!!!");
+    /* Draw warning */
+    if (isWarning) {
+        t.setString(warning);
         t.setPosition(rect.getPosition() + sf::Vector2f(7.f, 35.f));
         t.setCharacterSize(30);
         t.setFillColor(sf::Color::Red);

@@ -50,9 +50,8 @@ int main() {
     // Initialize game objects
     Board board;
     UI ui;
-    TextField textfield(20, 500.f, 36.f);
-    textfield.setPosition(300.f, 420.f);
-    textfield.setFocus(true);
+    Login login;
+    
     PlayerList playerList;
     playerList.loadData("Data/player_name.dat", 
                         "Data/player_score.dat", 
@@ -78,26 +77,16 @@ int main() {
                 window.close();
                 break;
             }
-            // Handle mouse button release event
-            else if (event.type == sf::Event::MouseButtonReleased) {
-                auto pos = sf::Mouse::getPosition(window);
-                textfield.setFocus(false);
-                if (textfield.contains(sf::Vector2f(pos)))
-                    textfield.setFocus(true);
-            }
-            // Handle text input event
-            else if (event.type == sf::Event::TextEntered && ui.getState() == Game::REGISTER)
-                textfield.handleInput(event, deltaTime);
-
+            login.handleInput(event, window, ui.getState(), deltaTime);
         }
 
         // Update UI and draw it on the window
-        ui.update(deltaTime, board, textfield, playerList);
+        ui.update(deltaTime, board, login, playerList);
         window.draw(ui);
 
         // Draw textfield or board based on the game state
         if (ui.getState() == Game::REGISTER) {
-            window.draw(textfield);
+            window.draw(login);
         }
         else if (ui.getState() == Game::PLAYING) {
             board.update(deltaTime);

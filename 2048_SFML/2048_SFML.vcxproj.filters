@@ -60,6 +60,9 @@
     <ClCompile Include="Container.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Login.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utils.hpp">
@@ -90,6 +93,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Container.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Login.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -138,6 +144,9 @@
       <Filter>Resource Files\Texture</Filter>
     </Image>
     <Image Include="Texture\Top20List.png">
+      <Filter>Resource Files\Texture</Filter>
+    </Image>
+    <Image Include="Texture\Login.png">
       <Filter>Resource Files\Texture</Filter>
     </Image>
   </ItemGroup>

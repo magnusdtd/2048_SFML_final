@@ -172,7 +172,7 @@ void UI::WinMessage()
  * @param board Reference to the game board
  * @param tf Reference to the text field
  */
-void UI::update(float deltaTime, Board& board, TextField& tf, PlayerList& playerList) {
+void UI::update(float deltaTime, Board& board, Login& login, PlayerList& playerList) {
 	// Update UI based on the current game state...
 	pressTime -= deltaTime;
 	if (state == Game::START_MENU) {
@@ -305,7 +305,11 @@ void UI::update(float deltaTime, Board& board, TextField& tf, PlayerList& player
 			state = Game::START_MENU;
 	}
 	else if (state == Game::REGISTER) {
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter) && tf.getText().size() != 0 && pressTime + 2.f <= 0.0f) {
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter) && 
+			login.getUsername().size() != 0 &&
+			login.getPassword().size() != 0 && 
+			pressTime + 2.f <= 0.0f) {
+
 			pressTime = PRESS_DELAY;
 			state = Game::PLAYING;
 			switch (mode) {
@@ -427,8 +431,7 @@ void UI::update(float deltaTime, Board& board, TextField& tf, PlayerList& player
 
 			isCalculated = false;
 
-			tf.clear();
-			tf.setFocus(true);
+			login.clear();
 		}
 
 		if (board.isOver() || board.isWin()) {
@@ -443,7 +446,7 @@ void UI::update(float deltaTime, Board& board, TextField& tf, PlayerList& player
 				endTime = std::chrono::system_clock::now();
 				std::chrono::duration<double> elapsed_seconds = endTime - startTime;
 
-				playerList.addPlayer(tf.getText(), score, elapsed_seconds.count(), password);
+				playerList.addPlayer(login.getUsername(), score, elapsed_seconds.count(), login.getPassword());
 
 				std::cout << "Time taken: " << elapsed_seconds.count() << "s\n";
 				isCalculated = true;
@@ -476,7 +479,7 @@ void UI::draw(sf::RenderTarget& rt, sf::RenderStates rs) const {
 	else if (state == Game::TOP20LIST)
 		rt.draw(backgroundTop20List, rs);
 	else if (state == Game::REGISTER) {
-		rt.draw(backgroundPlaying, rs);
+		rt.clear(sf::Color(255, 255, 255));
 	}
 	else if (state == Game::PLAYING) {
 		rt.draw(backgroundPlaying, rs);

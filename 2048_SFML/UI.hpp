@@ -1,15 +1,14 @@
 #ifndef UI_HPP
 #define UI_HPP
 
-#include <SFML/Graphics.hpp>
 #include <iostream>
 #include <fstream>
-#include "TextField.hpp"
 #include "Board.hpp"
 #include "PlayerList.hpp"
 #include "layout.hpp"
 #include <chrono>
 #include <ctime>
+#include "Login.hpp"
 
 /**
  * UI class is responsible for managing the user interface of the game.
@@ -66,8 +65,6 @@ private:
     std::chrono::system_clock::time_point startTime; ///< Start time for the game
     std::chrono::system_clock::time_point endTime; ///< Start time for the game
 
-    std::string password;  // Password for the player
-
 public:
     /**
      * Constructor for the UI class.
@@ -109,14 +106,14 @@ public:
      * @param board Reference to the game board
      * @param tf Reference to the text field
      */
-    void update(float deltaTime, Board& board, TextField& tf, PlayerList& playerList);
+    void update(float deltaTime, Board& board, Login& login, PlayerList& playerList);
 
     /**
      * Draws the UI elements on the screen.
      * @param rt Render target to draw on
      * @param rs Current render states
      */
-    virtual void draw(sf::RenderTarget& rt, sf::RenderStates rs) const;
+    void draw(sf::RenderTarget& rt, sf::RenderStates rs) const;
 
     /**
     * Sends a message to the window.

@@ -140,6 +140,7 @@
     <ClCompile Include="BoardStack.cpp" />
     <ClCompile Include="Container.cpp" />
     <ClCompile Include="layout.hpp" />
+    <ClCompile Include="Login.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Cell.cpp" />
     <ClCompile Include="PlayerList.cpp" />
@@ -154,6 +155,7 @@
     <ClInclude Include="BoardStack.hpp" />
     <ClInclude Include="Cell.hpp" />
     <ClInclude Include="Container.hpp" />
+    <ClInclude Include="Login.hpp" />
     <ClInclude Include="Player.hpp" />
     <ClInclude Include="RSA.hpp" />
     <ClInclude Include="ScoreStack.hpp" />
@@ -176,6 +178,7 @@
     <Image Include="Texture\appIcon.png" />
     <Image Include="Texture\background.png" />
     <Image Include="Texture\border.png" />
+    <Image Include="Texture\Login.png" />
     <Image Include="Texture\Setting.png" />
     <Image Include="Texture\StartMenu.png" />
     <Image Include="Texture\tile.png" />
