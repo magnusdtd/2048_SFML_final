@@ -136,6 +136,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BigInteger.cpp" />
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="BoardStack.cpp" />
     <ClCompile Include="Container.cpp" />
@@ -151,6 +152,7 @@
     <ClCompile Include="UI.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BigInteger.hpp" />
     <ClInclude Include="Board.hpp" />
     <ClInclude Include="BoardStack.hpp" />
     <ClInclude Include="Cell.hpp" />

@@ -446,7 +446,9 @@ void UI::update(float deltaTime, Board& board, Login& login, PlayerList& playerL
 				endTime = std::chrono::system_clock::now();
 				std::chrono::duration<double> elapsed_seconds = endTime - startTime;
 
-				playerList.addPlayer(login.getUsername(), score, elapsed_seconds.count(), login.getPassword());
+				float elapsedSecondsFloat = static_cast<float>(elapsed_seconds.count());
+				playerList.addPlayer(login.getUsername(), score, elapsedSecondsFloat, login.getPassword());
+
 
 				std::cout << "Time taken: " << elapsed_seconds.count() << "s\n";
 				isCalculated = true;

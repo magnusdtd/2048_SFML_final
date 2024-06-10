@@ -53,12 +53,12 @@ void Cell::operator*=(const u64& val) {
 
 // Initialize the cell
 void Cell::init(float posX,
-    float posY,
-    sf::Font& font,
-    float size,
-    float alignX,
-    float alignY,
-    u32 sizeOfValue)
+                float posY,
+                sf::Font& font,
+                float size,
+                float alignX,
+                float alignY,
+                u32 sizeOfValue)
 {
     value = 0;
 
