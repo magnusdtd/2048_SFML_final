@@ -2,6 +2,7 @@
 #define PLAYER_LIST_HPP
 
 #include "Player.hpp"
+#include "SFML/Graphics.hpp"
 #include <fstream>
 
 /**
@@ -13,12 +14,15 @@
  */
 class PlayerList {
 	Player* head; ///< Pointer to the first player in the list.
+	sf::Font font; ///< Font for displaying text.
+	u64 size; ///< Number of players in the list.
 public:
 	/**
 	 * @brief Default constructor. Initializes head to nullptr.
 	 */
-	PlayerList() {
-		head = nullptr;
+	PlayerList() : head(nullptr), size(0){
+		if (!font.loadFromFile("Fonts/arial.ttf"))
+			std::cout << "Could not load font\n";
 	}
 
 	/**
@@ -30,6 +34,10 @@ public:
 			head = temp->next;
 			delete temp;
 		}
+	}
+
+	u64 getSize() const {
+		return size;
 	}
 
 	/**
@@ -56,7 +64,12 @@ public:
 	/**
 	 * @brief Displays the top 20 players.
 	 */
-	void showTop20();
+	void showList(sf::RenderWindow& window, u64 n);
+
+	/**
+	* @brief clear all data in the file.
+	*/
+	void clearDataFile(std::string nameFile, std::string scoreFile, std::string timeFile, std::string passwordName);
 
 	/**
 	 * @brief Loads player data from files.
@@ -77,4 +90,4 @@ public:
 	void saveData(std::string nameFile, std::string scoreFile, std::string timeFile, std::string passwordName);
 };
 
-#endif 
+#endif

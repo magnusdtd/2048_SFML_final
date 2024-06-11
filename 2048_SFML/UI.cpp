@@ -478,8 +478,9 @@ void UI::draw(sf::RenderTarget& rt, sf::RenderStates rs) const {
 		rt.draw(textMode, rs);
 		rt.draw(textOnOff, rs);
 	}
-	else if (state == Game::TOP20LIST)
+	else if (state == Game::TOP20LIST) {
 		rt.draw(backgroundTop20List, rs);
+	}
 	else if (state == Game::REGISTER) {
 		rt.clear(sf::Color(255, 255, 255));
 	}

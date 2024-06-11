@@ -28,10 +28,11 @@ void PlayerList::addPlayer(std::string userName, u64 score, double timeToComplet
 	if (head == nullptr || head->getScore() < score || (head->getScore() == score && head->getTime() > timeToComplete)) {
 		newPlayer->next = head;
 		head = newPlayer;
+		size++;
 		return;
 	}
 
-	Player* temp = head, *prev = head;
+	Player* temp = head, * prev = head;
 	while (temp != nullptr && temp->getScore() >= score) {
 		prev = temp;
 		temp = temp->next;
@@ -39,11 +40,13 @@ void PlayerList::addPlayer(std::string userName, u64 score, double timeToComplet
 
 	while (temp != nullptr && temp->getScore() == score && temp->getTime() <= timeToComplete) {
 		prev = temp;
-		temp = temp-> next;
+		temp = temp->next;
 	}
 
 	newPlayer->next = temp;
 	prev->next = newPlayer;
+
+	size++;
 }
 
 /**
@@ -68,34 +71,46 @@ void PlayerList::removePlayer(std::string userName)
 	else
 		prev->next = temp->next;
 
+	size--;
 	delete temp;
 }
 
 /**
  * @brief Displays the top 20 players.
  */
-void PlayerList::showTop20()
+void PlayerList::showList(sf::RenderWindow& window, u64 n)
 {
 	Player* temp = head;
 
 	u32 count = 0;
-	while (temp != nullptr && count < 20) {
-		std::cout << "Username: ";
-		for (auto c : temp->getName())
-			std::cout << c;
-		std::cout << "\n";
-		std::cout << "Score: " << temp->getScore() << "\n";
-		std::cout << "Time to complete: " << temp->getTime() << "\n";
-		std::cout << "Password: ";
-		for (auto c : temp->getPassword())
-			std::cout << c;
-		std::cout << "\n\n";
+	float x = 350.0f; // Starting x position for the text
+	float y = 220.0f; // Starting y position for the text
+	while (temp != nullptr && count < n) {
+		std::string info = std::to_string(count + 1) + ". Username: " + temp->getName() + "\n"
+			+ "Score: " + std::to_string(temp->getScore()) + "\n"
+			+ "Time to complete: " + std::to_string(temp->getTime()) + "\n";
 
+		sf::Text text(info, font);
+		text.setCharacterSize(24); // Set the size of the text
+		text.setFillColor(sf::Color::Black); // Set the color of the text
+		text.setPosition(x, y); // Set the position of the text
 
+		window.draw(text); // Draw the text to the window
+
+		y += 120.0f; // Move the y position for the next player
 		count++;
 		temp = temp->next;
 	}
 }
+
+void PlayerList::clearDataFile(std::string nameFile, std::string scoreFile, std::string timeFile, std::string passwordName)
+{
+	std::ofstream outputName(nameFile, std::ios::trunc);
+	std::ofstream outputScore(scoreFile, std::ios::trunc);
+	std::ofstream outputTimeToComplete(timeFile, std::ios::trunc);
+	std::ofstream outputPassword(passwordName, std::ios::trunc);
+}
+
 
 /**
 * @brief Loads player data from files.
@@ -153,7 +168,7 @@ void PlayerList::loadData(std::string nameFile, std::string scoreFile, std::stri
 		userName.resize(size);
 		inputName.read(&userName[0], size);
 
-		if (inputName.eof() || inputScore.eof() || inputTimeToComplete.eof()) 
+		if (inputName.eof() || inputScore.eof() || inputTimeToComplete.eof())
 			break;  // Check for EOF after trying to read
 
 		/* Read score */
@@ -217,7 +232,7 @@ void PlayerList::saveData(std::string nameFile, std::string scoreFile, std::stri
 	double timeToComplete = 0;
 	size_t size = 0;
 
-	Player *temp = head;
+	Player* temp = head;
 	while (temp != nullptr) {
 		/* Name */
 		size = temp->getName().size();
