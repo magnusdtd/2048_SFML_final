@@ -15,6 +15,7 @@ void Cell::updateCell()
         sprite.setColor(Color::colors[((u64)log2(value)) % 12]);
         text.setFillColor(sf::Color::Black);
     }
+
 }
 
 // Default constructor
@@ -44,7 +45,7 @@ void Cell::operator=(const Cell& c) {
 }
 
 // Multiplication assignment operator
-void Cell::operator*=(const u64& val) {
+void Cell::operator *= (const u64& val) {
     value *= val;
     text.setString(std::to_string(value));
     text.setOrigin(text.getGlobalBounds().width / 2.f, text.getGlobalBounds().height / 2.f);
@@ -58,9 +59,13 @@ void Cell::init(float posX,
                 float size,
                 float alignX,
                 float alignY,
-                u32 sizeOfValue)
+                u32 sizeOfValue,
+                float alignNewText,
+                u32 sizeOfNewText)
 {
     value = 0;
+    this->alignNewText = alignNewText;
+    this->sizeOfNewText = sizeOfNewText;
 
     text.setFont(font);
     text.setString(std::to_string(value));
@@ -85,17 +90,17 @@ u64 Cell::getValue() const {
 }
 
 // Draw the cell
-void Cell::draw(sf::RenderTarget& rt, sf::RenderStates rs) const {
+void Cell::draw(sf::RenderTarget& rt, sf::RenderStates rs) const{
     rt.draw(sprite, rs);
     rt.draw(text, rs);
 
     if(isNew) {
-		sf::Text newText;
+        sf::Text newText;
         newText.setFont(font);
         newText.setString("New");
-        newText.setCharacterSize(20);
+        newText.setCharacterSize(sizeOfNewText);
         newText.setFillColor(sf::Color(Random<u32>(0, 255), Random<u32>(0, 255), Random<u32>(0, 255)));
-        newText.setPosition(sprite.getPosition().x + 10.f, sprite.getPosition().y + 10.f);
+        newText.setPosition(sprite.getPosition().x + alignNewText, sprite.getPosition().y + alignNewText);
         rt.draw(newText, rs);
 	}
 }

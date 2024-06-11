@@ -56,17 +56,19 @@ public:
     float alignX; // Distance between cell and score in x axis
     float alignY; // Distance between cell and score in y axis
     u32 sizeOfValue; // Size of the value in each cell
+    float alignNextText; // Alignment of the next text
+    u32 sizeOfNextText; // Size of the next text
 };
 
 namespace LAYOUT {
     // Layout configurations for different game modes
-    static Layout LAYOUT_4 = { 4, 170.f, 5.f, 20.f, 82.f, 78.f, 40 };
-    static Layout LAYOUT_5 = { 5, 125.f, 5.f, 20.f, 62.f, 54.f, 35 };
-    static Layout LAYOUT_6 = { 6, 100.f, 5.f, 20.f, 46.f, 40.f, 30 };
-    static Layout LAYOUT_7 = { 7, 90.f, 5.f, 20.f, 42.f, 36.f, 27 };
-    static Layout LAYOUT_8 = { 8, 75.f, 5.f, 20.f, 35.f, 31.f, 22 };
-    static Layout LAYOUT_9 = { 9, 70.f, 5.f, 20.f, 32.f, 28.f, 20 };
-    static Layout LAYOUT_10 = { 10, 60.f, 5.f, 20.f, 28.f, 25.f, 18 };
+    static Layout LAYOUT_4 = { 4, 170.f, 5.f, 20.f, 82.f, 78.f, 40, 10.f, 30 };
+    static Layout LAYOUT_5 = { 5, 125.f, 5.f, 20.f, 62.f, 54.f, 35, 10.f, 25 };
+    static Layout LAYOUT_6 = { 6, 100.f, 5.f, 20.f, 46.f, 40.f, 30, 10.f, 18 };
+    static Layout LAYOUT_7 = { 7, 90.f, 5.f, 20.f, 42.f, 36.f, 27, 8.f, 15 };
+    static Layout LAYOUT_8 = { 8, 75.f, 5.f, 20.f, 35.f, 31.f, 22, 8.f, 14 };
+    static Layout LAYOUT_9 = { 9, 70.f, 5.f, 20.f, 32.f, 28.f, 20, 8.f, 12 };
+    static Layout LAYOUT_10 = { 10, 60.f, 5.f, 20.f, 28.f, 25.f, 18, 5.f, 8 };
 }
 
 namespace Color {

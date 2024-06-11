@@ -13,9 +13,11 @@ private:
     sf::Text text; // The text displayed on the cell
     static sf::Texture texture; // The texture of the cell
     sf::Sprite sprite; // The sprite used to draw the cell
+    
+    u32 sizeOfNewText; // Size of the "New" text
+    float alignNewText; // Alignment of the "New" text
 
-    // Method to update the cell's text and color
-    void updateCell();
+    void updateCell();// Method to update the cell's text and color
 public:
     u64 value; // The value of the cell
     bool isNew = true; // Whether the cell is a new cell
@@ -40,7 +42,9 @@ public:
                 float size,
                 float alignX,
                 float alignY,
-                u32 sizeOfValue);
+                u32 sizeOfValue, 
+                float alignNewText,
+                u32 sizeOfNewText);
 
     // Set the value of the cell
     void setValue(u64 val);

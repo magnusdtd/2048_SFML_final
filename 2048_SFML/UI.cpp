@@ -322,7 +322,9 @@ void UI::update(float deltaTime, Board& board, Login& login, PlayerList& playerL
 							LAYOUT::LAYOUT_4.distanceBetweenCellAndBorder,
 							LAYOUT::LAYOUT_4.alignX,
 							LAYOUT::LAYOUT_4.alignY,
-							LAYOUT::LAYOUT_4.sizeOfValue);
+							LAYOUT::LAYOUT_4.sizeOfValue, 
+							LAYOUT::LAYOUT_4.alignNextText, 
+							LAYOUT::LAYOUT_4.sizeOfNextText );
 				break;
 			case Game::MODE_5:
 				board.init(	Game::GAME_WIDTH,
@@ -333,7 +335,9 @@ void UI::update(float deltaTime, Board& board, Login& login, PlayerList& playerL
 							LAYOUT::LAYOUT_5.distanceBetweenCellAndBorder,
 							LAYOUT::LAYOUT_5.alignX,
 							LAYOUT::LAYOUT_5.alignY,
-							LAYOUT::LAYOUT_5.sizeOfValue);
+							LAYOUT::LAYOUT_5.sizeOfValue,
+							LAYOUT::LAYOUT_5.alignNextText,
+							LAYOUT::LAYOUT_5.sizeOfNextText);
 				break;
 			case Game::MODE_6:
 				board.init(	Game::GAME_WIDTH,
@@ -344,7 +348,9 @@ void UI::update(float deltaTime, Board& board, Login& login, PlayerList& playerL
 							LAYOUT::LAYOUT_6.distanceBetweenCellAndBorder,
 							LAYOUT::LAYOUT_6.alignX,
 							LAYOUT::LAYOUT_6.alignY,
-							LAYOUT::LAYOUT_6.sizeOfValue);
+							LAYOUT::LAYOUT_6.sizeOfValue, 
+							LAYOUT::LAYOUT_6.alignNextText,
+							LAYOUT::LAYOUT_6.sizeOfNextText);
 				break;
 			case Game::MODE_7:
 				board.init(	Game::GAME_WIDTH,
@@ -355,8 +361,10 @@ void UI::update(float deltaTime, Board& board, Login& login, PlayerList& playerL
 							LAYOUT::LAYOUT_7.distanceBetweenCellAndBorder,
 							LAYOUT::LAYOUT_7.alignX,
 							LAYOUT::LAYOUT_7.alignY,
-							LAYOUT::LAYOUT_7.sizeOfValue);
-				break;
+							LAYOUT::LAYOUT_7.sizeOfValue, 
+							LAYOUT::LAYOUT_7.alignNextText,
+							LAYOUT::LAYOUT_7.sizeOfNextText);
+						break;
 			case Game::MODE_8:
 				board.init(	Game::GAME_WIDTH,
 							Game::GAME_HEIGHT,
@@ -366,7 +374,9 @@ void UI::update(float deltaTime, Board& board, Login& login, PlayerList& playerL
 							LAYOUT::LAYOUT_8.distanceBetweenCellAndBorder, 
 							LAYOUT::LAYOUT_8.alignX,
 							LAYOUT::LAYOUT_8.alignY,
-							LAYOUT::LAYOUT_8.sizeOfValue);
+							LAYOUT::LAYOUT_8.sizeOfValue, 
+							LAYOUT::LAYOUT_8.alignNextText,
+							LAYOUT::LAYOUT_8.sizeOfNextText);
 				break;
 			case Game::MODE_9:
 				board.init(	Game::GAME_WIDTH,
@@ -377,8 +387,10 @@ void UI::update(float deltaTime, Board& board, Login& login, PlayerList& playerL
 							LAYOUT::LAYOUT_9.distanceBetweenCellAndBorder, 
 							LAYOUT::LAYOUT_9.alignX,
 							LAYOUT::LAYOUT_9.alignY,
-							LAYOUT::LAYOUT_9.sizeOfValue);
-				break;
+							LAYOUT::LAYOUT_9.sizeOfValue, 
+							LAYOUT::LAYOUT_9.alignNextText,
+							LAYOUT::LAYOUT_9.sizeOfNextText);
+						break;
 			case Game::MODE_10:
 				board.init(	Game::GAME_WIDTH,
 							Game::GAME_HEIGHT,
@@ -388,7 +400,9 @@ void UI::update(float deltaTime, Board& board, Login& login, PlayerList& playerL
 							LAYOUT::LAYOUT_10.distanceBetweenCellAndBorder, 
 							LAYOUT::LAYOUT_10.alignX,
 							LAYOUT::LAYOUT_10.alignY,
-							LAYOUT::LAYOUT_10.sizeOfValue);
+							LAYOUT::LAYOUT_10.sizeOfValue, 
+							LAYOUT::LAYOUT_10.alignNextText,
+							LAYOUT::LAYOUT_10.sizeOfNextText);
 				break;
 			default:
 				std::cout << "Error in UI mode\n";

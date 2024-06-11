@@ -56,7 +56,9 @@ public:
 				float distanceBetweenCellAndBorder,
 				float alignX,
 				float alignY,
-				u32 sizeofValue);
+				u32 sizeofValue, 
+				float alignNewText,
+				u32 sizeOfNewText);
 
 	/**
 	 * @brief Checks if the board state is equal to the previous state.

@@ -32,7 +32,9 @@ void Board::init(u32 width,
 				float distanceBetweenCellAndBorder,
 				float alignX,
 				float alignY,
-				u32 sizeofValue)
+				u32 sizeofValue, 
+				float alignNewText,
+				u32 sizeOfNewText)
 {
 	this->size = size;
 	pressTime = 0.0f;
@@ -63,7 +65,9 @@ void Board::init(u32 width,
 									sizeOfEachCell,
 									alignX, 
 									alignY, 
-									sizeofValue);
+									sizeofValue, 
+									alignNewText,
+									sizeOfNewText);
 
 	this->clearNewCells();
 
