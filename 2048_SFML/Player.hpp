@@ -22,6 +22,11 @@ public:
     Player* next; ///< A pointer to the next player in the list.
 
     /**
+    * @brief Default construct a new Player object.
+    */
+    Player() : userName(""), score(0), timeToComplete(0), password(""), next(nullptr) {}
+
+    /**
      * @brief Construct a new Player object.
      * @param userName The player's name.
      * @param score The player's score.

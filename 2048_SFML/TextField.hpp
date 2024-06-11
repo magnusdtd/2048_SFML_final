@@ -26,6 +26,11 @@ public:
     std::string instruction;  // Instruction message
 
     /**
+    * Default constructor for the TextField class.
+	 */
+    TextField() : text(""), size(0), hasfocus(false), pressTime(0) {}
+
+    /**
      * Constructor that initializes the text field with a maximum number of characters and dimensions.
      */
     TextField(u32 maxChars, float width, float height);

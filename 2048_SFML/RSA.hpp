@@ -50,6 +50,12 @@ private:
     u64 modExponent(u64 base, u64 exp, u64 mod);
 
 public:
+
+    /**
+    * Default constructor for the RSA class.
+    */
+    RSA() : n(0), totient(0), e(0), d(0) {}
+
     /**
      * Constructor for the RSA class.
      * @param p - The first prime number
