@@ -69,8 +69,13 @@ UI::UI() {
 	backgroundTextureTop20List.loadFromFile("Texture/Top20List.png");
 	backgroundTop20List.setTexture(backgroundTextureTop20List);
 
+	/* Resume */
+	// Initialize register elements...
+	backgroundTextureResume.loadFromFile("Texture/Resume.png");
+	backgroundResume.setTexture(backgroundTextureResume);
 
-	/* Playing && Register */
+
+	/* Playing*/
 	// Initialize playing and register elements...
 	backgroundTexturePlaying.loadFromFile("Texture/background.png");
 	backgroundPlaying.setTexture(backgroundTexturePlaying);
@@ -220,7 +225,7 @@ void UI::update(float deltaTime, Board& board, Login& login, PlayerList& playerL
 			else if (SELECT_BUTTON == Game::Top20List)
 				state = Game::TOP20LIST;
 			else if (SELECT_BUTTON == Game::Resume)
-				state = Game::PLAYING;
+				state = Game::RESUME;
 
 	}
 	else if (state == Game::SETTING) {
@@ -303,6 +308,12 @@ void UI::update(float deltaTime, Board& board, Login& login, PlayerList& playerL
 	else if (state == Game::TOP20LIST) {
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::BackSpace))
 			state = Game::START_MENU;
+	}
+	else if (state == Game::RESUME) {
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter) && pressTime + 1.f <= 0.f) {
+			pressTime = PRESS_DELAY;
+			state = Game::PLAYING;
+		}
 	}
 	else if (state == Game::REGISTER) {
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter) && 
@@ -497,6 +508,9 @@ void UI::draw(sf::RenderTarget& rt, sf::RenderStates rs) const {
 	}
 	else if (state == Game::REGISTER) {
 		rt.clear(sf::Color(255, 255, 255));
+	}
+	else if (state == Game::RESUME) {
+		rt.draw(backgroundResume, rs);
 	}
 	else if (state == Game::PLAYING) {
 		rt.draw(backgroundPlaying, rs);

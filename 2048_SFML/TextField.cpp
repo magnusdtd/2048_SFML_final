@@ -115,7 +115,7 @@ void TextField::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     /* Draw instruction text */
     t.setString(instruction);
     t.setPosition(rect.getPosition() + sf::Vector2f(10.f, -45.f));
-    t.setCharacterSize(40);
+    t.setCharacterSize(30);
     t.setFillColor(sf::Color::Black);
     target.draw(t, states);
 

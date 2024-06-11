@@ -137,6 +137,9 @@ bool Board::isEqual()
  * @return True if the game is over, false otherwise.
  */
 bool Board::isOver() {
+	if (size == 0)
+		return false;
+
 	for (u32 i = 0; i < size; i++)
 		for (u32 j = 0; j < size; j++)
 			if (this->cells[i][j].getValue() == 0)

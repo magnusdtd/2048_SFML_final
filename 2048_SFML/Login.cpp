@@ -13,12 +13,12 @@ Login::Login() :
     usernameField.setPosition(350.f, 364.f);
     usernameField.setFocus(true);
     usernameField.instruction = "Enter your name";
-    usernameField.warning = "Name must only contain number 0 - 9, letter A - Z, a - z ans NO space!!!";
+    usernameField.warning = "Name must only contain number \n0 - 9, letter A - Z, a - z, and NO space!!!";
 
     passwordField.setPosition(350.f, 566.f);
     passwordField.setHide(true);
     passwordField.instruction = "Enter password";
-    passwordField.warning = "Password must only contain number 0 - 9, letter A - Z, a - z ans NO space!!!";
+    passwordField.warning = "Password must only contain number \n0 - 9, letter A - Z, a - z, and NO space!!!";
 }
 
 void Login::handleInput(sf::Event event, sf::RenderWindow& window, Game::State state, float deltaTime) {

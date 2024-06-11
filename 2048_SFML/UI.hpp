@@ -41,9 +41,13 @@ private:
     u32 buttonOnOff;  // Button for turning on/off a feature
     sf::Text textOnOff;  // Text displaying the on/off status
 
-    /* Top 20 List && Register */
+    /* Top 20 List */
     sf::Texture backgroundTextureTop20List;  // Texture for top 20 list background
     sf::Sprite backgroundTop20List;  // Sprite for top 20 list background
+
+    /* Resume */
+    sf::Texture backgroundTextureResume;  // Texture for resume background
+    sf::Sprite backgroundResume;  // Sprite for resume background
 
     /* Playing */
     sf::Texture backgroundTexturePlaying;  // Texture for playing background
