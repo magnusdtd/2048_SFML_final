@@ -88,6 +88,11 @@ public:
 	bool newCell();
 
 	/**
+	* Reset the hasMerged flag of all cells to false.
+	*/
+	void resetMergeFlags();
+
+	/**
 	 * @brief Moves the cells up.
 	 */
 	void UpMove();

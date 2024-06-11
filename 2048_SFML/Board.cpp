@@ -224,93 +224,89 @@ bool Board::newCell() {
 }
 
 /**
- * @brief Moves the cells up.
+ * @brief Resets the merge flags of all cells to false.
  */
+void Board::resetMergeFlags()
+{
+	for (u32 i = 0; i < size; i++)
+		for (u32 j = 0; j < size; j++)
+			this->cells[i][j].isMerged = false;
+}
+
+/**
+* @brief Moves the cells up.
+*/
 void Board::UpMove() {
-	int x, y;
+	this->resetMergeFlags();
 	for (int i = 0; i < (s32)size; i++) {
-		x = i, y = 0;
 		for (int j = 1; j < (s32)size; j++) {
 			if (this->cells[i][j].getValue() != 0) {
-				if (this->cells[i][j - 1].getValue() == 0 || this->cells[i][j - 1].getValue() == this->cells[i][j].getValue()) {
-					if (this->cells[x][y].getValue() == this->cells[i][j].getValue()) {
-						// update score
-						this->cells[x][y].setValue(this->cells[x][y].getValue() * 2);
-						this->cells[i][j].setValue(0);
-						score += this->cells[x][y].getValue();
-					}
-					else {
-						if (this->cells[x][y].getValue() == 0) {
-							this->cells[x][y] = this->cells[i][j];
-							this->cells[i][j].setValue(0);
-						}
-						else {
-							this->cells[x][++y] = this->cells[i][j];
-							this->cells[i][j].setValue(0);
-						}
-					}
+				int y = j - 1;
+				while (y >= 0 && this->cells[i][y].getValue() == 0)
+					y--;
+				if (y != -1 && this->cells[i][y].getValue() == this->cells[i][j].getValue() && !this->cells[i][y].isMerged) {
+					this->cells[i][y].setValue(this->cells[i][y].getValue() * 2);
+					score += this->cells[i][y].getValue();
+					this->cells[i][y].isMerged = true;
+					this->cells[i][j].setValue(0);
 				}
-				else y++;
+				else if (y != j - 1) {
+					this->cells[i][y + 1].setValue(this->cells[i][j].getValue());
+					this->cells[i][j].setValue(0);
+				}
 			}
 		}
 	}
 }
 
-
 /**
- * @brief Moves the cells down.
- */
+* @brief Moves the cells down.
+*/
 void Board::DownMove() {
-	int x, y;
+	this->resetMergeFlags();
 	for (int i = 0; i < (s32)size; i++) {
-		x = i, y = (s32)size - 1;
 		for (int j = (s32)size - 2; j >= 0; j--) {
 			if (this->cells[i][j].getValue() != 0) {
-				if (this->cells[i][j + 1].getValue() == 0 || this->cells[i][j + 1].getValue() == this->cells[i][j].getValue()) {
-					if (this->cells[x][y].getValue() == this->cells[i][j].getValue()) {
-						// update score
-						this->cells[x][y].setValue(this->cells[x][y].getValue() * 2);
-						this->cells[i][j].setValue(0);
-						score += this->cells[x][y].getValue();
-					}
-					else {
-						if (this->cells[x][y].getValue() == 0) {
-							this->cells[x][y] = this->cells[i][j];
-							this->cells[i][j].setValue(0);
-						}
-						else {
-							this->cells[x][--y] = this->cells[i][j];
-							this->cells[i][j].setValue(0);
-						}
-					}
+				int y = j + 1;
+				while (y < (s32)size && this->cells[i][y].getValue() == 0) {
+					y++;
 				}
-				else y--;
+				if (y != size && this->cells[i][y].getValue() == this->cells[i][j].getValue() && !this->cells[i][y].isMerged) {
+					this->cells[i][y].setValue(this->cells[i][y].getValue() * 2);
+					score += this->cells[i][y].getValue();
+					this->cells[i][y].isMerged = true;
+					this->cells[i][j].setValue(0);
+				}
+				else if (y != j + 1) {
+					this->cells[i][y - 1].setValue(this->cells[i][j].getValue());
+					this->cells[i][j].setValue(0);
+				}
 			}
 		}
 	}
 }
 
 /**
- * @brief Moves the cells left.
- */
+* @brief Moves the cells left.
+*/
 void Board::LeftMove() {
+	this->resetMergeFlags();
 	for (int j = 0; j < (s32)size; j++) {
-		for (int i = 0; i < (s32)size; i++) {
-			int x = i;
-			while (x > 0) {
-				if (this->cells[x - 1][j].getValue() == 0) {
-					this->cells[x - 1][j] = this->cells[x][j];
-					this->cells[x][j].setValue(0);
+		for (int i = 1; i < (s32)size; i++) {
+			if (this->cells[i][j].getValue() != 0) {
+				int x = i - 1;
+				while (x >= 0 && this->cells[x][j].getValue() == 0) {
 					x--;
 				}
-				else if (this->cells[x - 1][j] == this->cells[x][j]) {
-					this->cells[x - 1][j] *= 2;
-					this->cells[x][j].setValue(0);
-					score += this->cells[x - 1][j].getValue();
-					break;
+				if (x != -1 && this->cells[x][j].getValue() == this->cells[i][j].getValue() && !this->cells[x][j].isMerged) {
+					this->cells[x][j].setValue(this->cells[x][j].getValue() * 2);
+					score += this->cells[x][j].getValue();
+					this->cells[x][j].isMerged = true;
+					this->cells[i][j].setValue(0);
 				}
-				else {
-					break;
+				else if (x != i - 1) {
+					this->cells[x + 1][j].setValue(this->cells[i][j].getValue());
+					this->cells[i][j].setValue(0);
 				}
 			}
 		}
@@ -318,31 +314,32 @@ void Board::LeftMove() {
 }
 
 /**
- * @brief Moves the cells right.
- */
+* @brief Moves the cells right.
+*/
 void Board::RightMove() {
+	this->resetMergeFlags();
 	for (int j = 0; j < (s32)size; j++) {
-		for (int i = (s32)size - 1; i >= 0; i--) {
-			int x = i;
-			while (x < (s32)size - 1) {
-				if (this->cells[x + 1][j].getValue() == 0) {
-					this->cells[x + 1][j] = this->cells[x][j];
-					this->cells[x][j].setValue(0);
+		for (int i = (s32)size - 2; i >= 0; i--) {
+			if (this->cells[i][j].getValue() != 0) {
+				int x = i + 1;
+				while (x < (s32)size && this->cells[x][j].getValue() == 0) {
 					x++;
 				}
-				else if (this->cells[x + 1][j] == this->cells[x][j]) {
-					this->cells[x + 1][j] *= 2;
-					this->cells[x][j].setValue(0);
-					score += this->cells[x + 1][j].getValue();
-					break;
+				if (x != size && this->cells[x][j].getValue() == this->cells[i][j].getValue() && !this->cells[x][j].isMerged) {
+					this->cells[x][j].setValue(this->cells[x][j].getValue() * 2);
+					score += this->cells[x][j].getValue();
+					this->cells[x][j].isMerged = true;
+					this->cells[i][j].setValue(0);
 				}
-				else {
-					break;
+				else if (x != i + 1) {
+					this->cells[x - 1][j].setValue(this->cells[i][j].getValue());
+					this->cells[i][j].setValue(0);
 				}
 			}
 		}
 	}
 }
+
 
 /**
  * @brief Undoes the last move.

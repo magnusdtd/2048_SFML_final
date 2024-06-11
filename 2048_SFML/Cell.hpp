@@ -19,6 +19,7 @@ private:
 public:
     u64 value; // The value of the cell
     bool isNew = true; // Whether the cell is a new cell
+    bool isMerged = false; // Whether the cell has been merged
 
     // Default constructor
     Cell();

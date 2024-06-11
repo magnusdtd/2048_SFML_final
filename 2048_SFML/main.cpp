@@ -102,7 +102,7 @@ int main() {
                         "Data/player_score.dat", 
                         "Data/player_time.dat", 
                         "Data/player_password.dat");
-    test3(playerList);
+    //test3(playerList);
 
     // Main game loop
     while (window.isOpen()) {
