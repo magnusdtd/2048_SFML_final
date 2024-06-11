@@ -11,8 +11,14 @@ private:
     sf::Sprite background;
     TextField usernameField;
     TextField passwordField;
+
+    sf::Font font;
+    sf::Text alertText;
+    bool isWarning = false;
 public:
     Login();
+
+    void setWarning(bool warning);
 
     void handleInput(sf::Event event, sf::RenderWindow& window, Game::State state, float deltaTime);
 

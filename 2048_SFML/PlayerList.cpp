@@ -29,25 +29,39 @@ void PlayerList::addPlayer(std::string userName, u64 score, double timeToComplet
 		newPlayer->next = head;
 		head = newPlayer;
 		size++;
-		return;
+	}
+	else {
+		Player* temp = head, * prev = head;
+		while (temp != nullptr && temp->getScore() >= score) {
+			prev = temp;
+			temp = temp->next;
+		}
+
+		while (temp != nullptr && temp->getScore() == score && temp->getTime() <= timeToComplete) {
+			prev = temp;
+			temp = temp->next;
+		}
+
+		newPlayer->next = temp;
+		prev->next = newPlayer;
+
+		size++;
 	}
 
-	Player* temp = head, * prev = head;
-	while (temp != nullptr && temp->getScore() >= score) {
-		prev = temp;
-		temp = temp->next;
+	// If the size of the list is more than 20, remove the player with the lowest score
+	if (size > 20) {
+		Player* temp = head, * prev = nullptr;
+		while (temp->next != nullptr) {
+			prev = temp;
+			temp = temp->next;
+		}
+
+		prev->next = nullptr;
+		delete temp;
+		size--;
 	}
-
-	while (temp != nullptr && temp->getScore() == score && temp->getTime() <= timeToComplete) {
-		prev = temp;
-		temp = temp->next;
-	}
-
-	newPlayer->next = temp;
-	prev->next = newPlayer;
-
-	size++;
 }
+
 
 /**
  * @brief Removes a player from the list.
@@ -73,6 +87,34 @@ void PlayerList::removePlayer(std::string userName)
 
 	size--;
 	delete temp;
+}
+
+bool PlayerList::findPlayer(std::string userName)
+{
+	Player* temp = head;
+
+	while (temp != nullptr) {
+		if (temp->getName() == userName)
+			return true;
+		temp = temp->next;
+	}
+
+	return false;
+}
+
+u32 PlayerList::findPlayerIndex(u64 score)
+{
+	Player* temp = head;
+	u32 index = 1;
+
+	while (temp != nullptr && index <= 20) {
+		if (temp->getScore() > score)
+			return index;
+		temp = temp->next;
+		index++;
+	}
+
+	return index;
 }
 
 /**
@@ -223,6 +265,13 @@ void PlayerList::saveData(std::string nameFile, std::string scoreFile, std::stri
 	if (!outputTimeToComplete.is_open()) {
 		std::cerr << "Error opening file ";
 		for (auto ch : timeFile)
+			std::cout << ch;
+		std::cout << "\n";
+		return;
+	}
+	if (!outputPassword.is_open()) {
+		std::cerr << "Error opening file ";
+		for (auto ch : passwordName)
 			std::cout << ch;
 		std::cout << "\n";
 		return;

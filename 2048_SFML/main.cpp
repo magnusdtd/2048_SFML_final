@@ -51,7 +51,7 @@ void test2() {
 }
 
 void test3(PlayerList &playerList) {
-    for (int i = 0; i < 20; i++) {
+    for (int i = 0; i < 10; i++) {
         playerList.addPlayer("Player" + std::to_string(i), (u64)Random<int>(0, 1000), Random<double>(0, 1000), "password");
     }
     std::cout << "Size: " << playerList.getSize() << "\n";

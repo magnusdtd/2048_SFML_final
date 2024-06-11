@@ -62,6 +62,20 @@ public:
 	Player* getPlayer(std::string userName);
 
 	/**
+	* @brief Find the player have the userName.
+	* @param name of the user who want to find.
+	* @return true if there is a player with the same name in playerlist, otherwise return fasle.
+	*/
+	bool findPlayer(std::string userName);
+
+	/**
+	* @brief Find position of the player on top 20 list.
+	* @param Score of player.
+	* @return A position in top 20 list.
+	*/
+	u32 findPlayerIndex(u64 score);
+
+	/**
 	 * @brief Displays the top 20 players.
 	 */
 	void showList(sf::RenderWindow& window, u64 n);

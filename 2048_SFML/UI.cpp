@@ -314,6 +314,7 @@ void UI::update(float deltaTime, Board& board, Login& login, PlayerList& playerL
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter) && 
 			login.getUsername().size() != 0 &&
 			login.getPassword().size() != 0 && 
+			!playerList.findPlayer(login.getUsername()) &&
 			pressTime + 2.f <= 0.0f) {
 
 			pressTime = PRESS_DELAY;
@@ -416,6 +417,11 @@ void UI::update(float deltaTime, Board& board, Login& login, PlayerList& playerL
 
 			startTime = std::chrono::system_clock::now(); // Start time for the game
 		}
+
+		if (login.getUsername().size() != 0 && playerList.findPlayer(login.getUsername()))
+			login.setWarning(true);
+		else 
+			login.setWarning(false);
 	}
 	else if (state == Game::PLAYING) {
 		score = board.score;

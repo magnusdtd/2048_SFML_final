@@ -15,8 +15,9 @@ void Top20List::update(float deltaTime, PlayerList& playerList)
     newPosition = view.getCenter();
 
     // Adjust the view boundary based on the number of players
-    viewBoundary.height = 400.f + playerList.getSize() * 120.f;
-    if (viewBoundary.height > 2825.f) viewBoundary.height = 2825.f;
+    viewBoundary.height = 400.f + playerList.getSize() * 120.f - 500.f;
+    if (viewBoundary.height > 2825.f) 
+        viewBoundary.height = 2825.f;
 
     if (newPosition.y <= 400)
         newPosition.y = 400;
@@ -27,7 +28,7 @@ void Top20List::update(float deltaTime, PlayerList& playerList)
         pressTime = 0.1f;
         newPosition.y += moveSpeed * deltaTime;
     }
-    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && pressTime <= 0.0f) {
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && pressTime <= 0.0f && newPosition.y > 400) {
         pressTime = 0.1f;
         newPosition.y -= moveSpeed * deltaTime;
     }

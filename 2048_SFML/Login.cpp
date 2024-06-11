@@ -15,10 +15,24 @@ Login::Login() :
     usernameField.instruction = "Enter your name";
     usernameField.warning = "Name must only contain number \n0 - 9, letter A - Z, a - z, and NO space!!!";
 
-    passwordField.setPosition(350.f, 566.f);
+    passwordField.setPosition(350.f, 550.f);
     passwordField.setHide(true);
     passwordField.instruction = "Enter password";
     passwordField.warning = "Password must only contain number \n0 - 9, letter A - Z, a - z, and NO space!!!";
+
+	if (!font.loadFromFile("Fonts/arial.ttf"))
+        std::cout << "Could not load font\n";
+
+    alertText.setFont(font);
+    alertText.setCharacterSize(40);
+    alertText.setFillColor(sf::Color::Red);
+    alertText.setPosition(454, 665);
+    alertText.setString("Username exist!!!");
+}
+
+void Login::setWarning(bool warning)
+{
+    isWarning = warning;
 }
 
 void Login::handleInput(sf::Event event, sf::RenderWindow& window, Game::State state, float deltaTime) {
@@ -66,7 +80,8 @@ void Login::clear()
 
 void Login::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     target.draw(background, states);
-
+    if (isWarning)
+        target.draw(alertText, states);
     usernameField.draw(target, states);
     passwordField.draw(target, states);
 }
