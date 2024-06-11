@@ -63,6 +63,9 @@
     <ClCompile Include="PlayerList.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Top20List.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utils.hpp">
@@ -102,6 +105,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PlayerList.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Top20List.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -153,6 +159,9 @@
       <Filter>Resource Files\Texture</Filter>
     </Image>
     <Image Include="Texture\Login.png">
+      <Filter>Resource Files\Texture</Filter>
+    </Image>
+    <Image Include="Texture\Resume.png">
       <Filter>Resource Files\Texture</Filter>
     </Image>
   </ItemGroup>

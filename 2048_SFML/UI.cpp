@@ -64,11 +64,6 @@ UI::UI() {
 	buttonOnOff = 0;
 	buttonMode = 0;
 
-	/* Top 20 list */
-	// Initialize top 20 list elements...
-	backgroundTextureTop20List.loadFromFile("Texture/Top20List.png");
-	backgroundTop20List.setTexture(backgroundTextureTop20List);
-
 	/* Resume */
 	// Initialize register elements...
 	backgroundTextureResume.loadFromFile("Texture/Resume.png");
@@ -504,7 +499,7 @@ void UI::draw(sf::RenderTarget& rt, sf::RenderStates rs) const {
 		rt.draw(textOnOff, rs);
 	}
 	else if (state == Game::TOP20LIST) {
-		rt.draw(backgroundTop20List, rs);
+
 	}
 	else if (state == Game::REGISTER) {
 		rt.clear(sf::Color(255, 255, 255));

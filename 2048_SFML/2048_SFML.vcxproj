@@ -149,6 +149,7 @@
     <ClCompile Include="RSA.cpp" />
     <ClCompile Include="ScoreStack.cpp" />
     <ClCompile Include="TextField.cpp" />
+    <ClCompile Include="Top20List.cpp" />
     <ClCompile Include="UI.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -163,6 +164,7 @@
     <ClInclude Include="RSA.hpp" />
     <ClInclude Include="ScoreStack.hpp" />
     <ClInclude Include="TextField.hpp" />
+    <ClInclude Include="Top20List.hpp" />
     <ClInclude Include="UI.hpp" />
     <ClInclude Include="utils.hpp" />
   </ItemGroup>
@@ -182,6 +184,7 @@
     <Image Include="Texture\background.png" />
     <Image Include="Texture\border.png" />
     <Image Include="Texture\Login.png" />
+    <Image Include="Texture\Resume.png" />
     <Image Include="Texture\Setting.png" />
     <Image Include="Texture\StartMenu.png" />
     <Image Include="Texture\tile.png" />

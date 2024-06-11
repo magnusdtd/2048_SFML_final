@@ -1,6 +1,7 @@
 #include "UI.hpp"
 #include "RSA.hpp"
 #include "BigInteger.hpp"
+#include "Top20List.hpp"
 
 void test() {
     RSA security(211, 199);
@@ -80,24 +81,17 @@ int main() {
 
     sf::Event event;
     sf::Clock clock;
-    sf::View view(sf::FloatRect(0, 0, (float)Game::GAME_WIDTH, (float)Game::GAME_HEIGHT));
-    sf::FloatRect viewBoundary(0, 0, (float)Game::GAME_WIDTH, (float)Game::GAME_HEIGHT); // Define the boundary
-    sf::Vector2f newPosition;
-
-    const float moveSpeed = 2500.0f ; // Adjust this value to change the speed of the movement
-    float pressTime = 0.f;
 
     // Initialize game objects
     Board board;
     UI ui;
     Login login;
-    
+    Top20List top20List;
     PlayerList playerList;
     /*playerList.clearDataFile("Data/player_name.dat",
                             "Data/player_score.dat",
                             "Data/player_time.dat",
                             "Data/player_password.dat");*/
-
     playerList.loadData("Data/player_name.dat", 
                         "Data/player_score.dat", 
                         "Data/player_time.dat", 
@@ -107,9 +101,6 @@ int main() {
     // Main game loop
     while (window.isOpen()) {
         float deltaTime = clock.restart().asSeconds();
-
-        pressTime -= deltaTime;
-        if (pressTime < 0.0f) pressTime = 0.0f;
 
         // Event polling
         while (window.pollEvent(event)) {
@@ -127,35 +118,9 @@ int main() {
 
         auto state = ui.getState();
         if (state == Game::TOP20LIST) {
-            newPosition = view.getCenter();
-
-            // Adjust the view boundary based on the number of players
-            viewBoundary.height = 400.f + playerList.getSize() * 120.f;
-            if (viewBoundary.height > 2825.f) viewBoundary.height = 2825.f;
-
-            if (newPosition.y <= 400) 
-                newPosition.y = 400;
-            else if (newPosition.y >= viewBoundary.height)
-                newPosition.y = viewBoundary.height;
-
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && pressTime <= 0.0f) {
-                pressTime = 0.1f;
-                newPosition.y += moveSpeed * deltaTime;
-            }
-            else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && pressTime <= 0.0f) {
-                pressTime = 0.1f;
-                newPosition.y -= moveSpeed * deltaTime;
-            }
-
-            // Check if the new position is within the boundary
-            if (viewBoundary.contains(newPosition))
-                view.setCenter(newPosition);
-
-            window.setView(view);
-            window.clear(sf::Color::White);
             ui.update(deltaTime, board, login, playerList);
-            window.draw(ui);
-            playerList.showList(window, 20);
+            top20List.update(deltaTime, playerList);
+            top20List.draw(window, playerList);
         }
         else {
             window.setView(window.getDefaultView());
@@ -164,7 +129,6 @@ int main() {
         }
 
 
-        // Draw textfield or board based on the game state
         if (state == Game::REGISTER)
             window.draw(login);
         else if (state == Game::PLAYING) {
