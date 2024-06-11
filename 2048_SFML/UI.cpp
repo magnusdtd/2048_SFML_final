@@ -91,16 +91,24 @@ UI::UI() {
 	textScore.setOrigin(textScore.getGlobalBounds().width / 2, textScore.getGlobalBounds().height / 2);
 
 	textGameOver.setFont(font);
-	textGameOver.setString("Game Over");
 	textGameOver.setCharacterSize(60);
 	textGameOver.setFillColor(sf::Color(204, 0, 0));
 	textGameOver.setPosition(650, 370);
 
 	textWin.setFont(font);
-	textWin.setString("You win !!!");
 	textWin.setCharacterSize(60);
-	textWin.setFillColor(sf::Color(255, 204, 0));
+	textWin.setFillColor(sf::Color(204, 0, 0));
 	textWin.setPosition(650, 370);
+
+	subMessage.setFont(font);
+	subMessage.setCharacterSize(20);
+	subMessage.setFillColor(sf::Color(204, 0, 0));
+	subMessage.setPosition(650, 500);
+}
+
+Player UI::getPlayer() const
+{
+	return player;
 }
 
 /**
@@ -157,13 +165,23 @@ void UI::saveBestScore(std::string filename) const
  * Handles the game over state.
  * Checks if a new score has been achieved and saves it if necessary.
  */
-void UI::GameOverMessage() {
+void UI::GameOverMessage(u64 position) {
 	isGameOver = true;
+	if (position <= 20)
+		textGameOver.setString("Game Over\nYou reach top " + std::to_string(position));
+	else
+		textGameOver.setString("Game Over\nYou can't reach top 20");
+	subMessage.setString("Press Backspace to back to the main menu\n or press C to continue");
 }
 
-void UI::WinMessage()
+void UI::WinMessage(u64 position)
 {
 	isWin = true;
+	if (position <= 20)
+		textWin.setString("You Win\nYou reach top " + std::to_string(position));
+	else
+		textWin.setString("You Win\nYou can't reach top 20");
+	subMessage.setString("Press Backspace to back to the main menu\n or press C to continue");
 }
 
 /**
@@ -415,6 +433,9 @@ void UI::update(float deltaTime, Board& board, Login& login, PlayerList& playerL
 				std::cout << "Error in UI mode\n";
 			}
 
+			player.setUserName(login.getUsername());
+			player.setPassword(login.getPassword());
+
 			startTime = std::chrono::system_clock::now(); // Start time for the game
 		}
 
@@ -424,19 +445,19 @@ void UI::update(float deltaTime, Board& board, Login& login, PlayerList& playerL
 			login.setWarning(false);
 	}
 	else if (state == Game::PLAYING) {
+		/* Score */
 		score = board.score;
 		textScore.setString(std::to_string(score));
 		textScore.setOrigin(textScore.getGlobalBounds().width / 2, textScore.getGlobalBounds().height / 2);
+		player.setScore(score);
 
+		/* Best score */
 		if (score > bestScore) {
 			bestScore = score;
-			isNewBestScore = true;
+			this->saveBestScore("Data/best_score.dat");
 		}
 
-		if (isNewBestScore) 
-			this->saveBestScore("Data/best_score.dat");
-
-
+			
 
 		textBestScore.setString(std::to_string(bestScore));
 		textBestScore.setOrigin(textBestScore.getGlobalBounds().width / 2, textBestScore.getGlobalBounds().height / 2);
@@ -459,22 +480,36 @@ void UI::update(float deltaTime, Board& board, Login& login, PlayerList& playerL
 
 			login.clear();
 		}
+		/*else if (sf::Keyboard::isKeyPressed(sf::Keyboard::E) && pressTime <= 0.0f) {
+			pressTime = PRESS_DELAY;
+			state = Game::START_MENU;
+
+			board.canMove = true;
+			isCanCheckMove = true;
+			isWin = false;
+			isGameOver = false;
+
+			isCalculated = false;
+
+			login.clear();
+		}*/
 
 		if (board.isOver() || board.isWin()) {
+			endTime = std::chrono::system_clock::now();
+			std::chrono::duration<double> elapsed_seconds = endTime - startTime;
+			float elapsedSecondsFloat = static_cast<float>(elapsed_seconds.count());
+			player.setTime(elapsedSecondsFloat);
+
 			if (board.isOver()) 
-				GameOverMessage();
+				GameOverMessage(playerList.findPlayerPosition(score, elapsedSecondsFloat));
 			else 
-				WinMessage();
+				WinMessage(playerList.findPlayerPosition(score, elapsedSecondsFloat));
 
 			board.canMove = false;
 
 			if (!isCalculated) {
-				endTime = std::chrono::system_clock::now();
-				std::chrono::duration<double> elapsed_seconds = endTime - startTime;
-
-				float elapsedSecondsFloat = static_cast<float>(elapsed_seconds.count());
-				playerList.addPlayer(login.getUsername(), score, elapsedSecondsFloat, login.getPassword());
-
+				
+				playerList.addPlayer(player);
 
 				std::cout << "Time taken: " << elapsed_seconds.count() << "s\n";
 				isCalculated = true;
@@ -533,6 +568,10 @@ void UI::sendMessage(sf::RenderWindow& window)
 	else if (isWin) {
 		textWin.setOrigin(textWin.getGlobalBounds().width / 2, textWin.getGlobalBounds().height / 2);
 		window.draw(textWin);
+	}
+	if (isGameOver || isWin) {
+		subMessage.setOrigin(subMessage.getGlobalBounds().width / 2, subMessage.getGlobalBounds().height / 2);
+		window.draw(subMessage);
 	}
 
 }

@@ -106,10 +106,17 @@ int main() {
         while (window.pollEvent(event)) {
             // Handle window close event
             if (event.type == sf::Event::Closed) {
+                Player player = ui.getPlayer();
+                if (playerList.getPlayer(player.getName()) == nullptr && 
+                    player.getName() != "" && 
+                    player.getScore() != 0 &&
+                    player.getTime() != 0)
+                    playerList.addPlayer(player);
+                playerList.writeMaxScore("Data/best_score.dat");
                 playerList.saveData("Data/player_name.dat",
-                    "Data/player_score.dat",
-                    "Data/player_time.dat",
-                    "Data/player_password.dat");
+                                    "Data/player_score.dat",
+                                    "Data/player_time.dat",
+                                    "Data/player_password.dat");
                 window.close();
                 break;
             }

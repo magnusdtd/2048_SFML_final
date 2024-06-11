@@ -190,10 +190,8 @@ void Board::checkMove()
 	}
 	else if (isOver()) {
 		std::cout << "Game Over\n";
-	}
-	else {
-		std::cout << "Game Continue\n";
-	}
+	} else 
+		std::cout << "Game is playing\n";
 }
 
 /**
@@ -216,11 +214,12 @@ bool Board::newCell() {
 		return false;
 
 	int x, y;
+	u64 value = static_cast<u64>(Random<u32>(1, 2)) * 2;
 	while (true) {
 		x = rand() % size;
 		y = rand() % size;
 		if (this->cells[x][y].getValue() == 0) {
-			this->cells[x][y].setValue(2);
+			this->cells[x][y].setValue(value);
 			break;
 		}
 	}

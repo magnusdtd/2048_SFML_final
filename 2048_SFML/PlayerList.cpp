@@ -56,12 +56,64 @@ void PlayerList::addPlayer(std::string userName, u64 score, double timeToComplet
 			temp = temp->next;
 		}
 
-		prev->next = nullptr;
+		if (prev == nullptr) {
+			// The player to be removed is the head of the list
+			head = temp->next;
+		}
+		else {
+			prev->next = nullptr;
+		}
 		delete temp;
 		size--;
 	}
 }
 
+void PlayerList::addPlayer(Player player)
+{ 
+	Player* newPlayer = new Player(player); // Create a new Player object on the heap
+
+	if (head == nullptr || head->getScore() < newPlayer->getScore() || (head->getScore() == newPlayer->getScore() && head->getTime() > newPlayer->getTime())) {
+		newPlayer->next = head;
+		head = newPlayer;
+		size++;
+	}
+	else {
+		Player* temp = head, * prev = head;
+		while (temp != nullptr && temp->getScore() >= newPlayer->getScore()) {
+			prev = temp;
+			temp = temp->next;
+		}
+
+		while (temp != nullptr && temp->getScore() == newPlayer->getScore() && temp->getTime() <= newPlayer->getTime()) {
+			prev = temp;
+			temp = temp->next;
+		}
+
+		newPlayer->next = temp;
+		prev->next = newPlayer;
+
+		size++;
+	}
+
+	// If the size of the list is more than 20, remove the player with the lowest score
+	if (size > 20) {
+		Player* temp = head, * prev = nullptr;
+		while (temp->next != nullptr) {
+			prev = temp;
+			temp = temp->next;
+		}
+
+		if (prev == nullptr) {
+			// The player to be removed is the head of the list
+			head = temp->next;
+		}
+		else {
+			prev->next = nullptr;
+		}
+		delete temp;
+		size--;
+	}
+}
 
 /**
  * @brief Removes a player from the list.
@@ -102,20 +154,45 @@ bool PlayerList::findPlayer(std::string userName)
 	return false;
 }
 
-u32 PlayerList::findPlayerIndex(u64 score)
+u64 PlayerList::findPlayerPosition(u64 score, double time)
 {
 	Player* temp = head;
-	u32 index = 1;
+	u64 index = 1;
 
 	while (temp != nullptr && index <= 20) {
-		if (temp->getScore() > score)
-			return index;
+		if (score > temp->getScore() || (score == temp->getScore() && time < temp->getTime()))
+			return index - 1;
 		temp = temp->next;
 		index++;
 	}
 
-	return index;
+	return size + 1;
 }
+
+u64 PlayerList::getMaxScore()
+{
+	if (head == nullptr)
+		return 0;
+	else
+		return head->getScore();
+}
+
+void PlayerList::writeMaxScore(std::string bestScoreFile)
+{
+	std::ofstream output(bestScoreFile, std::ios::binary | std::ios::out);
+	if (!output.is_open()) {
+		std::cerr << "Error opening file ";
+		for (auto ch : bestScoreFile)
+			std::cout << ch;
+		std::cout << "\n";
+		return;
+	}
+	u64 maxScore = this->getMaxScore();
+	output.write(reinterpret_cast<char*>(&maxScore), sizeof(u64));
+
+	output.close();
+}
+
 
 /**
  * @brief Displays the top 20 players.

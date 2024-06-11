@@ -49,6 +49,12 @@ public:
 	void addPlayer(std::string userName, u64 score, double timeToComplete, std::string password);
 
 	/**
+	 * @brief Adds a player to the list.
+	 * @param A player object.
+	 */
+	void addPlayer(Player player);
+
+	/**
 	 * @brief Removes a player from the list.
 	 * @param userName The name of the player to be removed.
 	 */
@@ -73,7 +79,19 @@ public:
 	* @param Score of player.
 	* @return A position in top 20 list.
 	*/
-	u32 findPlayerIndex(u64 score);
+	u64 findPlayerPosition(u64 score, double time);
+
+	/**
+	* @brief Return the max score in the list.
+	* @return Max score in the list.
+	*/
+	u64 getMaxScore();
+
+	/**
+	* @brief Write the max score to the file.
+	* @param bestScoreFile The name of the file to save the max score.
+	*/
+	void writeMaxScore(std::string bestScoreFile);
 
 	/**
 	 * @brief Displays the top 20 players.

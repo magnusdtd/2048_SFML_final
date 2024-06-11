@@ -37,6 +37,27 @@ public:
         : userName(userName), score(score), timeToComplete(timeToComplete),
         password(password), next(nullptr) {}
 
+    /**
+    * @brief Set the player's name.
+	 * @param userName The player's name.
+	 */
+    void setUserName(const std::string& userName) { this->userName = userName; }
+
+    /**
+	 * @brief Set the player's score.
+	 * @param score The player's score.
+	 */
+    void setScore(u64 score) { this->score = score; }
+
+    /**
+    * @brief Set the time it took the player to complete the game.
+    */
+    void setTime(double timeToComplete) { this->timeToComplete = timeToComplete; }
+
+    /**
+    * @brief Set the player's password.
+    */
+    void setPassword(const std::string& password) { this->password = password; }
     
     /**
      * @brief Get the player's name.

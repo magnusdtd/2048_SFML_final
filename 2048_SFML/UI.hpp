@@ -52,23 +52,34 @@ private:
     sf::Text textScore;  // Text displaying the current score
     sf::Text textGameOver;  // Text displaying game over message
     sf::Text textWin;  // Text displaying win message
+    sf::Text subMessage;  // Sub message
     u64 bestScore = 0;  // Best score
     u64 score = 0;  // Current score
     bool newScore = false;  // Flag indicating if a new score has been achieved
     bool isGameOver = false;  // Flag indicating if the game is over
-    bool isWin = false;  // Flag indicating if the player has won
-    bool isNewBestScore = false;  // Flag indicating if a new best score has been achieved
+    bool isWin = false;  // Flag indicating if the player has wond
+
+    //
+    bool isCanUndo = true;  // Flag indicating if the player can undo a move
+    bool isCanCheckMove = true;  // Flag indicating if the game can check for a move
+    //
 
     bool isCalculated = false;  // Flag indicating if the time has been calculated
     std::chrono::system_clock::time_point startTime; ///< Start time for the game
     std::chrono::system_clock::time_point endTime; ///< Start time for the game
 
+    Player player;  // Player object
 public:
     /**
      * Constructor for the UI class.
      * Initializes the UI elements.
      */
     UI();
+
+    /**
+    * @return the player object for playlist to store it.
+    */
+    Player getPlayer() const;
 
     /**
      * Returns the current game state.
@@ -90,13 +101,13 @@ public:
      * Handles the game over state.
      * Checks if a new score has been achieved and saves it if necessary.
      */
-    void GameOverMessage();
+    void GameOverMessage(u64 position);
 
     /**
      * Handles the win state.
      * Checks if a new score has been achieved and saves it if necessary.
      */
-    void WinMessage();
+    void WinMessage(u64 position);
 
     /**
      * Updates the UI based on the current game state.
