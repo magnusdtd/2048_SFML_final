@@ -151,6 +151,7 @@
     <ClCompile Include="TextField.cpp" />
     <ClCompile Include="Top20List.cpp" />
     <ClCompile Include="UI.cpp" />
+    <ClCompile Include="utils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Board.hpp" />

@@ -108,6 +108,7 @@
     <ClCompile Include="testBoardStack.cpp" />
     <ClCompile Include="testScoreStack.cpp" />
     <ClCompile Include="testSecurity.cpp" />
+    <ClCompile Include="testUtils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

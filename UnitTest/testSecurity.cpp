@@ -39,3 +39,14 @@ TEST(SecurityTest, EncryptDecryptWithEmptyKey) {
     EXPECT_EQ(data, encrypted);
     EXPECT_EQ(data, decrypted);
 }
+
+TEST(SecurityTest, EncryptDecryptForNumber) {
+    std::string data = "123456789";
+    std::string key = "secret";
+
+    std::string encrypted = Security::encrypt(data, key);
+    std::string decrypted = Security::decrypt(encrypted, key);
+
+    EXPECT_NE(data, encrypted);
+    EXPECT_EQ(data, decrypted);
+}

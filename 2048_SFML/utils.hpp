@@ -31,4 +31,7 @@ inline T Random(T start, T end) {
     }
 }
 
+// Function for generating random strings
+std::string generateRandomString(u32 length);
+
 #endif
