@@ -11,6 +11,10 @@ class BigInteger {
 	void removeZeros(std::string& value) const;
 	std::string add(std::string num1, std::string num2) const;
 	std::string subtract(std::string num1, std::string num2) const;
+	std::string multiply(std::string num1, std::string num2) const;
+	std::string divide(std::string num1, std::string num2) const;
+	std::string modulus(std::string num1, std::string num2) const;
+	int compare(std::string num1, std::string num2) const;
 
 public:
 	
@@ -23,14 +27,18 @@ public:
 	}
 	BigInteger(std::string num);
 
-	std::string getValue() const { return value; }
+	std::string getValue() const {
+		if (value == "0")
+			return value;
+		return (negative) ? "-" + value : value; 
+	}
 
 	BigInteger operator + (const BigInteger& other) const;
 	BigInteger operator - (const BigInteger& other) const;
 	BigInteger operator * (const BigInteger& other) const;
 	BigInteger operator / (const BigInteger& other) const;
 	BigInteger operator % (const BigInteger& other) const;
-	BigInteger operator *= (const BigInteger& other) const;
+	BigInteger operator *= (const BigInteger& other);
 
 	bool operator == (const BigInteger& other) const;
 	bool operator >= (const BigInteger& other) const;

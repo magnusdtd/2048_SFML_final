@@ -57,8 +57,72 @@ std::string BigInteger::subtract(std::string num1, std::string num2) const
 	return result;
 }
 
-// ... rest of the code remains the same ...
+std::string BigInteger::multiply(std::string num1, std::string num2) const
+{
+	int len1 = (int)num1.size();
+	int len2 = (int)num2.size();
+	if (len1 == 0 || len2 == 0)
+		return "0";
 
+	std::string result(len1 + len2, '0');
+
+	for (int i = len1 - 1; i >= 0; i--)
+	{
+		for (int j = len2 - 1; j >= 0; j--)
+		{
+			int mul = (num1[i] - '0') * (num2[j] - '0');
+			int p1 = i + j, p2 = i + j + 1;
+			int sum = mul + (result[p2] - '0');
+
+			result[p1] += sum / 10;
+			result[p2] = (sum % 10) + '0';
+		}
+	}
+
+	size_t startpos = result.find_first_not_of("0");
+	if (std::string::npos != startpos) {
+		return result.substr(startpos);
+	}
+	return "0";
+}
+
+std::string BigInteger::divide(std::string num1, std::string num2) const
+{
+	int len1 = (int)num1.size();
+	int len2 = (int)num2.size();
+	if (len1 < len2 || len2 == 0)
+		return "0";
+	if (len1 == len2)
+		return (compare(num1, num2) < 0) ? "0" : "1";
+
+	std::string result;
+	std::string dividend = num1.substr(0, len2);
+	int idx = len2;
+
+	while (idx <= len1) {
+		int count = 0;
+		while (compare(dividend, num2) >= 0) {
+			dividend = subtract(dividend, num2);
+			count++;
+		}
+		result.push_back(count + '0');
+
+		if (idx < len1)
+			dividend += num1[idx];
+		idx++;
+	}
+
+	removeZeros(result);
+	return result;
+}
+
+std::string BigInteger::modulus(std::string num1, std::string num2) const
+{
+	std::string quotient = divide(num1, num2);
+	std::string product = multiply(quotient, num2);
+	std::string remainder = subtract(num1, product);
+	return remainder;
+}
 
 BigInteger::BigInteger(std::string num)
 {
@@ -67,6 +131,18 @@ BigInteger::BigInteger(std::string num)
 		num.erase(num.begin());
 	removeZeros(num);
 	this->value = num;
+}
+
+int BigInteger::compare(std::string num1, std::string num2) const
+{
+	if (num1.size() != num2.size())
+		return num1.size() > num2.size() ? 1 : -1;
+
+	for (int i = 0; i < num1.size(); i++)
+		if (num1[i] != num2[i])
+			return num1[i] > num2[i] ? 1 : -1;
+
+	return 0; // num1 and num2 are equal
 }
 
 BigInteger BigInteger::operator + (const BigInteger& other) const
@@ -116,25 +192,41 @@ BigInteger BigInteger::operator - (const BigInteger& other) const
 	return result;
 }
 
-
 BigInteger BigInteger::operator * (const BigInteger& other) const
 {
-	return BigInteger();
+	BigInteger result;
+	result.value = multiply(this->value, other.value);
+	result.negative = (this->negative != other.negative);
+	return result;
 }
 
 BigInteger BigInteger::operator / (const BigInteger& other) const
 {
-	return BigInteger();
+	if (other.value == "0")
+		throw std::invalid_argument("Division by zero is undefined.");
+
+	BigInteger result;
+	result.value = divide(this->value, other.value);
+	result.negative = (this->negative != other.negative);
+	return result;
 }
 
 BigInteger BigInteger::operator % (const BigInteger& other) const
 {
-	return BigInteger();
+	if (other.value == "0")
+		throw std::invalid_argument("Division by zero is undefined.");
+
+	BigInteger result;
+	result.value = modulus(this->value, other.value);
+	result.negative = this->negative;
+	return result;
 }
 
-BigInteger BigInteger::operator *= (const BigInteger& other) const
+BigInteger BigInteger::operator *= (const BigInteger& other)
 {
-	return BigInteger();
+	this->value = multiply(this->value, other.value);
+	this->negative = (this->negative != other.negative);
+	return *this;
 }
 
 bool BigInteger::operator == (const BigInteger& other) const
