@@ -51,16 +51,7 @@
     <ClCompile Include="ScoreStack.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RSA.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Container.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Login.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="BigInteger.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PlayerList.cpp">
@@ -73,6 +64,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Music.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="security.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -101,16 +95,7 @@
     <ClInclude Include="ScoreStack.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RSA.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Container.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Login.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="BigInteger.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PlayerList.hpp">
@@ -126,6 +111,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Music.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="security.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
