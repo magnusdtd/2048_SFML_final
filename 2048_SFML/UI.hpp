@@ -2,12 +2,15 @@
 #define UI_HPP
 
 #include <iostream>
-#include "Board.hpp"
 #include <chrono>
 #include <ctime>
+#include "Board.hpp"
 #include "Login.hpp"
 #include "PlayerList.hpp"
 #include "Resume.hpp"
+#include "Setting.hpp"
+#include "StartMenu.hpp"
+#include "Top20List.hpp"
 
 /**
  * UI class is responsible for managing the user interface of the game.
@@ -22,25 +25,16 @@ private:
     Game::State state = Game::START_MENU;  // Current game state
 
     /* Start Menu */
-    sf::Texture backgroundTextureStartMenu;  // Texture for start menu background
-    sf::Sprite backgroundStartMenu;  // Sprite for start menu background
-    u32 SELECT_BUTTON;  // Currently selected button in the start menu
-    sf::Text ButtonNewGame;  // New Game button
-    sf::Text ButtonSetting;  // Settings button
-    sf::Text ButtonTop20List;  // Top 20 List button
-    sf::Text ButtonResume;  // Resume button
+    StartMenu startMenu;
 
     /* Setting */
-    sf::Texture backgroundTextureSetting;  // Texture for settings background
-    sf::Sprite backgroundSetting;  // Sprite for settings background
-    u32 whichButton;  // Currently selected button in the settings
+    Setting setting;
 
-    Game::Mode mode;  // Current game mode (4x4, 5x5, 6x6, 7x7, 8x8, 9x9, 10x10)
-    u32 buttonMode;  // Currently selected mode button
-    sf::Text textMode;  // Text displaying the current mode
+    /* Register */
+    Login login;
 
-    u32 buttonOnOff;  // Button for turning on/off a feature
-    sf::Text textOnOff;  // Text displaying the on/off status
+    /* Resume */
+    Resume resume;
 
     /* Playing */
     sf::Texture backgroundTexturePlaying;  // Texture for playing background
@@ -65,7 +59,13 @@ private:
     std::chrono::system_clock::time_point startTime; ///< Start time for the game
     std::chrono::system_clock::time_point endTime; ///< Start time for the game
 
-    Player player;  // Player object
+    /* Top 20 List */
+    Top20List top20List;
+
+    Board board;
+
+    PlayerList playerList;  // PlayerList object
+    Player currentPlayer;  // Current player
 public:
     /**
      * Constructor for the UI class.
@@ -106,13 +106,15 @@ public:
      */
     void WinMessage(u64 position);
 
+    void handleEvent(float deltaTime, sf::Event event, sf::Vector2i position);
+
     /**
      * Updates the UI based on the current game state.
      * @param deltaTime Time since the last frame
      * @param board Reference to the game board
      * @param tf Reference to the text field
      */
-    void update(float deltaTime, Board& board, Login& login, PlayerList& playerList, Resume &resume);
+    void update(float deltaTime);
 
     /**
      * Draws the UI elements on the screen.
@@ -125,6 +127,8 @@ public:
     * Sends a message to the window.
     */
     void sendMessage(sf::RenderWindow& window);
+
+    void saveData();
 };
 
 #endif

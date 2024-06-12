@@ -35,20 +35,20 @@ void Login::setWarning(bool warning)
     isWarning = warning;
 }
 
-void Login::handleInput(sf::Event event, sf::RenderWindow& window, Game::State state, float deltaTime) {
+void Login::handleInput(sf::Event event, sf::Vector2i position, Game::State state, float deltaTime) {
     // Handle mouse button release event
     if (event.type == sf::Event::MouseButtonReleased) {
-        auto pos = sf::Mouse::getPosition(window);
+        
 
         usernameField.setFocus(false);
         passwordField.setFocus(false);
 
-        if (usernameField.contains(sf::Vector2f(pos))) {
+        if (usernameField.contains(sf::Vector2f(position))) {
             usernameField.setFocus(true);
             passwordField.setFocus(false);
         }
 
-        if (passwordField.contains(sf::Vector2f(pos))) {
+        if (passwordField.contains(sf::Vector2f(position))) {
             passwordField.setFocus(true);
             usernameField.setFocus(false);
         }

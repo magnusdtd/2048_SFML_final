@@ -148,6 +148,8 @@
     <ClCompile Include="Resume.cpp" />
     <ClCompile Include="ScoreStack.cpp" />
     <ClCompile Include="security.cpp" />
+    <ClCompile Include="Setting.cpp" />
+    <ClCompile Include="StartMenu.cpp" />
     <ClCompile Include="TextField.cpp" />
     <ClCompile Include="Top20List.cpp" />
     <ClCompile Include="UI.cpp" />
@@ -165,6 +167,8 @@
     <ClInclude Include="ResumeData.hpp" />
     <ClInclude Include="ScoreStack.hpp" />
     <ClInclude Include="security.hpp" />
+    <ClInclude Include="Setting.hpp" />
+    <ClInclude Include="StartMenu.hpp" />
     <ClInclude Include="TextField.hpp" />
     <ClInclude Include="Top20List.hpp" />
     <ClInclude Include="UI.hpp" />

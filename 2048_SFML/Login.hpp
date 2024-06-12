@@ -20,7 +20,7 @@ public:
 
     void setWarning(bool warning);
 
-    void handleInput(sf::Event event, sf::RenderWindow& window, Game::State state, float deltaTime);
+    void handleInput(sf::Event event, sf::Vector2i position, Game::State state, float deltaTime);
 
     std::string getUsername() const;
 

@@ -7,8 +7,13 @@
 #include "TextField.hpp"
 #include "layout.hpp"
 
-class Resume : public PlayerList {
-	static const int MAX_PLAYERS = 5;
+class Resume : public sf::Drawable {
+	float pressTime;  // Time since last key press
+	const float PRESS_DELAY = 0.4f;  // Delay between key presses
+
+	static const u32 MAX_PLAYERS = 5;
+	u32 size;
+
     sf::Texture backgroundTextureResume;  // Texture for resume background
     sf::Sprite backgroundResume;  // Sprite for resume background
     sf::Font font;  // Font used in the resume
@@ -25,9 +30,7 @@ class Resume : public PlayerList {
 	TextField userNameField;  // Username field
 	TextField passwordField;  // Password field
 
-	float pressTime;  // Time since last key press
-	const float PRESS_DELAY = 0.4f;  // Delay between key presses
-public:
+public: 
 	Resume();
 
 	Game::ResumeState getState() const {
@@ -40,13 +43,15 @@ public:
 
 	void handleInput(sf::Event event, sf::RenderWindow& window, Game::State state, float deltaTime);
 
-	void addPlayer(std::string userName, u64 score, double timeToComplete, std::string password) override;
+	void addPlayer(std::string userName, u64 score, double timeToComplete, std::string password);
 
-	void addPlayer(Player player) override;
+	void addPlayer(Player player);
 
 	void update(float deltaTime);
 
 	void draw(sf::RenderWindow& window);
+
+	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
 };
 

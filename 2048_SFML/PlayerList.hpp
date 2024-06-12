@@ -1,8 +1,9 @@
 #ifndef PLAYER_LIST_HPP
 #define PLAYER_LIST_HPP
 
-#include "Player.hpp"
 #include "SFML/Graphics.hpp"
+#include "Player.hpp"
+#include "security.hpp"
 #include <fstream>
 
 /**
@@ -12,31 +13,27 @@
  * This class provides methods to add, remove, retrieve players,
  * show top 20 players, load and save player data, and reverse the player list.
  */
-class PlayerList {
+class PlayerList : public sf::Drawable {
 	sf::Font font; ///< Font for displaying text.
-protected:
+	std::string key; ///< Key for encryption and decryption.
+
 	Player* head; ///< Pointer to the first player in the list.
 	u64 size; ///< Number of players in the list.
 public:
 	/**
 	 * @brief Default constructor. Initializes head to nullptr.
 	 */
-	PlayerList() : head(nullptr), size(0){
-		if (!font.loadFromFile("Fonts/arial.ttf"))
-			std::cout << "Could not load font\n";
-	}
+	PlayerList();
 
 	/**
 	 * @brief Destructor. Deletes all players in the list.
 	 */
-	~PlayerList() {
-		while (head != nullptr) {
-			Player* temp = head;
-			head = temp->next;
-			delete temp;
-		}
-	}
+	~PlayerList();
 
+	/**
+	 * @brief Returns the number of players in the list.
+	 * @return The number of players in the list.
+	 */
 	u64 getSize() const {
 		return size;
 	}
@@ -47,13 +44,13 @@ public:
 	 * @param score The score of the player.
 	 * @param timeToComplete The time taken by the player to complete the game.
 	 */
-	virtual void addPlayer(std::string userName, u64 score, double timeToComplete, std::string password);
+	void addPlayer(std::string userName, u64 score, double timeToComplete, std::string password);
 
 	/**
 	 * @brief Adds a player to the list.
 	 * @param A player object.
 	 */
-	virtual void addPlayer(Player player);
+	void addPlayer(Player player);
 
 	/**
 	 * @brief Removes a player from the list.
@@ -97,30 +94,32 @@ public:
 	/**
 	 * @brief Displays the top 20 players.
 	 */
-	virtual void showList(sf::RenderWindow& window, u64 n);
+	void showList(sf::RenderWindow& window, u64 n);
+
+	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
 	/**
 	* @brief clear all data in the file.
 	*/
-	void clearDataFile(std::string nameFile, std::string scoreFile, std::string timeFile, std::string passwordName);
+	void clearDataFile(std::string nameFile, std::string scoreFile, std::string timeFile, std::string passwordFile);
 
 	/**
 	 * @brief Loads player data from files.
 	 * @param fileName The name of the file containing player names.
 	 * @param fileScore The name of the file containing player scores.
 	 * @param fileTime The name of the file containing player completion times.
-	 * @param passwordName The name of the file containing player passwords.
+	 * @param passwordFile The name of the file containing player passwords.
 	 */
-	void loadData(std::string nameFile, std::string scoreFile, std::string timeFile, std::string passwordName);
+	void loadData(std::string nameFile, std::string scoreFile, std::string timeFile, std::string passwordFile);
 
 	/**
 	 * @brief Saves player data to files.
 	 * @param fileName The name of the file to save player names.
 	 * @param fileScore The name of the file to save player scores.
 	 * @param fileTime The name of the file to save player completion times.
-	 * @param passwordName The name of the file to save player passwords.
+	 * @param passwordFile The name of the file to save player passwords.
 	 */
-	void saveData(std::string nameFile, std::string scoreFile, std::string timeFile, std::string passwordName);
+	void saveData(std::string nameFile, std::string scoreFile, std::string timeFile, std::string passwordFile);
 };
 
 #endif

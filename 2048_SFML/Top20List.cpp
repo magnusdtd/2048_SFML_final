@@ -38,9 +38,8 @@ void Top20List::update(float deltaTime, PlayerList& playerList)
         view.setCenter(newPosition);
 }
 
-void Top20List::draw(sf::RenderWindow& window, PlayerList& playerList) const
+void Top20List::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-    window.setView(view);
-    window.draw(backgroundTop20List);
-    playerList.showList(window, 20);
+    target.setView(view);
+    target.draw(backgroundTop20List);
 }
