@@ -137,7 +137,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="BigInteger.cpp" />
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="BoardStack.cpp" />
     <ClCompile Include="Container.cpp" />
@@ -148,14 +147,13 @@
     <ClCompile Include="Music.cpp" />
     <ClCompile Include="PlayerList.cpp" />
     <ClCompile Include="Resume.cpp" />
-    <ClCompile Include="RSA.cpp" />
     <ClCompile Include="ScoreStack.cpp" />
+    <ClCompile Include="security.cpp" />
     <ClCompile Include="TextField.cpp" />
     <ClCompile Include="Top20List.cpp" />
     <ClCompile Include="UI.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BigInteger.hpp" />
     <ClInclude Include="Board.hpp" />
     <ClInclude Include="BoardStack.hpp" />
     <ClInclude Include="Cell.hpp" />
@@ -166,8 +164,8 @@
     <ClInclude Include="PlayerList.hpp" />
     <ClInclude Include="Resume.hpp" />
     <ClInclude Include="ResumeData.hpp" />
-    <ClInclude Include="RSA.hpp" />
     <ClInclude Include="ScoreStack.hpp" />
+    <ClInclude Include="security.hpp" />
     <ClInclude Include="TextField.hpp" />
     <ClInclude Include="Top20List.hpp" />
     <ClInclude Include="UI.hpp" />

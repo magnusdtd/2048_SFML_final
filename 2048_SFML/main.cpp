@@ -1,29 +1,7 @@
 #include "UI.hpp"
-#include "RSA.hpp"
-#include "BigInteger.hpp"
 #include "Top20List.hpp"
 #include "Resume.hpp"
 #include "Music.hpp"
-
-void test() {
-    RSA security(211, 199);
-
-    std::string msg = "Toi ten la";
-    u64* encrypted = security.encryptString(msg);
-    std::string decrypted = security.decryptString(encrypted, msg.size());
-
-    std::cout << "Encrypted: ";
-    for (u32 i = 0; i < msg.size(); i++) {
-        std::cout << encrypted[i] << ' ';
-    }
-    std::cout << "\n";
-
-    std::cout << "Decrypted: " << decrypted << "\n";
-
-
-    delete[] encrypted;
-    encrypted = nullptr;
-}
 
 void test3(PlayerList &playerList) {
     for (int i = 0; i < 10; i++) {
@@ -37,8 +15,6 @@ void test3(PlayerList &playerList) {
  * Entry point of the application.
  */
 int main() {
-
-    test();
 
     //// Load and set the application icon
     //sf::RenderWindow window(sf::VideoMode(Game::GAME_WIDTH, Game::GAME_HEIGHT), "2048",
