@@ -3,6 +3,7 @@
 
 #include "Player.hpp"
 #include "SFML/Graphics.hpp"
+#include "security.hpp"
 #include <fstream>
 
 /**
