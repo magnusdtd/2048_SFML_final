@@ -123,6 +123,28 @@ void Resume::handleEvent(float deltaTime, sf::Event event, sf::Vector2i position
 	}
 }
 
+void Resume::addData(Player player, u64** board)
+{
+	ResumeData* temp = head;
+
+	u64* tempBoard = new u64[size * size];
+	for (u32 i = 0; i < size; i++)
+		for (u32 j = 0; j < size; j++)
+			tempBoard[i * size + j] = board[i][j];
+
+	if (temp == nullptr) {
+		head = new ResumeData(player, tempBoard);
+		size++;
+		return;
+	}
+
+	while (temp->next != nullptr)
+		temp = temp->next;
+
+	temp->next = new ResumeData(player, tempBoard);
+	size++;
+}
+
 
 void Resume::update(float deltaTime)
 {
@@ -350,9 +372,6 @@ void Resume::update(float deltaTime)
 
 				state = Game::RESUME_CONTINUE_LOGIN;
 			}
-			else {
-
-			}
 
 
 		}
@@ -424,9 +443,4 @@ void Resume::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	}
 	else
 		std::cout << "Invalid state in Resume 2\n";
-}
-
-void Resume::saveData()
-{
-
 }

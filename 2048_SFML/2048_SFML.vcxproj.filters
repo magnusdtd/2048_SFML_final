@@ -148,6 +148,9 @@
     <None Include="player_password.dat">
       <Filter>Resource Files\Data</Filter>
     </None>
+    <None Include="..\README.md">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Font Include="Fonts\arial.ttf">

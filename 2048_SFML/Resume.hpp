@@ -64,6 +64,7 @@ public:
 
 	void handleEvent(float deltaTime, sf::Event event, sf::Vector2i position);
 
+	void addData(Player player, u64** board);
 	
 	void saveData(std::string nameFile, std::string scoreFile, std::string timeFile, std::string passwordFile);
 
@@ -80,8 +81,6 @@ public:
 	void update(float deltaTime);
 
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
-
-	void saveData();
 
 };
 

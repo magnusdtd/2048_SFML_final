@@ -119,6 +119,18 @@ Board::~Board() {
 	std::cout << "Succesful free memory in Board class !!!\n";
 }
 
+u64** Board::getBoardData() const
+{
+	u64** boardData = new u64 * [size];
+	for (u32 i = 0; i < size; i++) {
+		boardData[i] = new u64[size];
+		for (u32 j = 0; j < size; j++) {
+			boardData[i][j] = cells[i][j].getValue();
+		}
+	}
+	return boardData;
+}
+
 /**
  * @brief Checks if the board state is equal to the previous state.
  * @return True if the board state is equal to the previous state, false otherwise.

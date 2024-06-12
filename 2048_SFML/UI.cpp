@@ -41,6 +41,11 @@ UI::UI() {
 	subMessage.setFillColor(sf::Color(204, 0, 0));
 	subMessage.setPosition(650, 500);
 
+	saveDataMessage.setFont(font);
+	saveDataMessage.setCharacterSize(20);
+	saveDataMessage.setFillColor(sf::Color(204, 0, 0));
+	saveDataMessage.setPosition(650, 500);
+
 	/*playerList.clearDataFile("Data/player_name.dat",
 							"Data/player_score.dat",
 							"Data/player_time.dat",
@@ -133,6 +138,11 @@ void UI::WinMessage(u64 position)
 	else
 		textWin.setString("You Win\nYou can't reach top 20");
 	subMessage.setString("Press E to back to the main menu\n or press C to continue");
+}
+
+void UI::setSaveDataMessage(std::string str)
+{
+	saveDataMessage.setString(str);
 }
 
 void UI::handleEvent(float deltaTime, sf::Event event, sf::Vector2i position)
@@ -333,6 +343,37 @@ void UI::update(float deltaTime) {
 		textBestScore.setString(std::to_string(bestScore));
 		textBestScore.setOrigin(textBestScore.getGlobalBounds().width / 2, textBestScore.getGlobalBounds().height / 2);
 
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::E) && 
+			pressTime <= 0.0f && 
+			!board.isOver() 
+			&& !board.isWin()) {
+			pressTime = PRESS_DELAY;
+			board.canMove = false;
+			setSaveDataMessage("Do you want to save your data?\n\tPress Y continue");
+			saveDataFlag = true;
+		}
+
+		if (saveDataFlag) {
+			state = Game::START_MENU;
+			board.clearUndoBoardStack();
+			board.clearRedoBoardStack();
+			board.clearUndoScoreStack();
+			board.clearRedoScoreStack();
+			board.clear();
+			board.canMove = true;
+
+			isWin = false;
+			isGameOver = false;
+			isCalculated = false;
+
+			saveDataFlag = false;
+
+			u64** temp = board.getBoardData();
+			resume.addData(currentPlayer, temp);
+			board.clear();
+			delete[] temp;
+		}
+
 		if (board.isOver() || board.isWin()) {
 			endTime = std::chrono::system_clock::now();
 			std::chrono::duration<double> elapsed_seconds = endTime - startTime;
@@ -433,11 +474,9 @@ void UI::draw(sf::RenderTarget& rt, sf::RenderStates rs) const {
 		rt.draw(top20List, rs);
 		rt.draw(playerList, rs);
 	}
-	/////////////////////////////////
 	else if (state == Game::RESUME) {
 		rt.draw(resume, rs);
 	}
-	///////////////////////////////////
 	else if (state == Game::REGISTER) {
 		rt.clear(sf::Color(255, 255, 255));
 		rt.draw(login, rs);
@@ -473,6 +512,10 @@ void UI::sendMessage(sf::RenderWindow& window)
 		subMessage.setOrigin(subMessage.getGlobalBounds().width / 2, subMessage.getGlobalBounds().height / 2);
 		window.draw(subMessage);
 	}
+	if (saveDataMessage.getString() != "") {
+		saveDataMessage.setOrigin(saveDataMessage.getGlobalBounds().width / 2, saveDataMessage.getGlobalBounds().height / 2);
+		window.draw(saveDataMessage);
+	}
 
 }
 
@@ -495,5 +538,8 @@ void UI::saveData()
 						"Data/player_time.dat",
 						"Data/player_password.dat");
 
-	resume.saveData();
+
+	u64** temp = board.getBoardData();
+	resume.addData(currentPlayer, temp);
+	delete[] temp;
 }

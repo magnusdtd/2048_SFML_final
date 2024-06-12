@@ -175,6 +175,7 @@
     <ClInclude Include="utils.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\README.md" />
     <None Include="Data\best_score.dat" />
     <None Include="Data\player_name.dat" />
     <None Include="Data\player_score.dat" />

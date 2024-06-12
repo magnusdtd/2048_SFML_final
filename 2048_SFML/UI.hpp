@@ -51,6 +51,9 @@ private:
     sf::Text textGameOver;  // Text displaying game over message
     sf::Text textWin;  // Text displaying win message
     sf::Text subMessage;  // Sub message
+    sf::Text saveDataMessage; // Save data message
+    bool saveDataFlag = false; // Flag indicating if the data has been saved
+
     u64 bestScore = 0;  // Best score
     u64 score = 0;  // Current score
     bool newScore = false;  // Flag indicating if a new score has been achieved
@@ -107,6 +110,9 @@ public:
      * Checks if a new score has been achieved and saves it if necessary.
      */
     void WinMessage(u64 position);
+
+
+    void setSaveDataMessage(std::string str);
 
     void handleEvent(float deltaTime, sf::Event event, sf::Vector2i position);
 

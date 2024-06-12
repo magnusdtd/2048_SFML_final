@@ -49,6 +49,12 @@ public:
 	~Board();
 
 	/**
+	 * @brief Gets the board data.
+	 * @return The board data.
+	 */
+	u64** getBoardData() const;
+
+	/**
 	 * @brief Initializes the board.
 	 */
 	void init(	u32 width,
