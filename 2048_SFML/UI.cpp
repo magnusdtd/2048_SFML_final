@@ -137,7 +137,10 @@ void UI::WinMessage(u64 position)
 
 void UI::handleEvent(float deltaTime, sf::Event event, sf::Vector2i position)
 {
-	login.handleInput(event, position, state, deltaTime);
+	if (state == Game::REGISTER)
+		login.handleInput(event, position, state, deltaTime);
+	else if (state == Game::RESUME)
+		resume.handleEvent(deltaTime, event, position);
 }
 
 /**
@@ -181,34 +184,18 @@ void UI::update(float deltaTime) {
 			state = Game::START_MENU;
 	}
 	else if (state == Game::RESUME) {
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter) && 
-			(resume.getState() == Game::RESUME_RESGISTER || resume.getState() == Game::RESUME_PLAY_AGAIN) &&
-			resume.isMatchPassword() &&
-			pressTime + 1.f <= 0.f) {
+		
+		resume.update(deltaTime);
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::E) && 
+			(resume.state == Game::RESUME_PLAY) &&
+			pressTime <= 0.0f) {
 			pressTime = PRESS_DELAY;
 			state = Game::PLAYING;
-			///* Copy player form resume list to */
-			//if (resume.getState() == Game::RESUME_RESGISTER) {
-			//	// The scenario that there are not enough 5 account in the resume list
-			//	Player *temp = resume.getSelectedPlayer();
-			//	player.setUserName(temp->getName());
-			//	player.setPassword(temp->getPassword());
-			//	player.setScore(temp->getScore());
+			
+			resume.state = Game::RESUME_OPTION;
 
-			//}
-			//else if (resume.getState() == Game::RESUME_PLAY_AGAIN) {
-			//	// The scenario that there are enough 5 account in the resume list
-			//	Player* temp = resume.getSelectedPlayer();
-			//	player.setUserName(temp->getName());
-			//	player.setPassword(temp->getPassword());
-			//	player.setScore(temp->getScore());
-			//	//startTime += std::chrono::seconds(temp->getTime());
-			//}
 		}
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::E) && pressTime <= 0.f) {
-			pressTime = PRESS_DELAY;
-			state = Game::START_MENU;
-		}
+		
 	}
 	else if (state == Game::REGISTER) {
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter) && 
@@ -449,7 +436,6 @@ void UI::draw(sf::RenderTarget& rt, sf::RenderStates rs) const {
 	/////////////////////////////////
 	else if (state == Game::RESUME) {
 		rt.draw(resume, rs);
-		rt.draw(playerList, rs);
 	}
 	///////////////////////////////////
 	else if (state == Game::REGISTER) {
@@ -508,4 +494,6 @@ void UI::saveData()
 						"Data/player_score.dat",
 						"Data/player_time.dat",
 						"Data/player_password.dat");
+
+	resume.saveData();
 }

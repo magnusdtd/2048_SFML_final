@@ -92,10 +92,9 @@ public:
 	void writeMaxScore(std::string bestScoreFile);
 
 	/**
-	 * @brief Displays the top 20 players.
-	 */
-	void showList(sf::RenderWindow& window, u64 n);
-
+	* @brief Read the max score from the file.
+	* @param bestScoreFile The name of the file to read the max score.
+	*/
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
 	/**

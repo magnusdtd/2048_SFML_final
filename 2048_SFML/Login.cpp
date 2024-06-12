@@ -38,8 +38,6 @@ void Login::setWarning(bool warning)
 void Login::handleInput(sf::Event event, sf::Vector2i position, Game::State state, float deltaTime) {
     // Handle mouse button release event
     if (event.type == sf::Event::MouseButtonReleased) {
-        
-
         usernameField.setFocus(false);
         passwordField.setFocus(false);
 

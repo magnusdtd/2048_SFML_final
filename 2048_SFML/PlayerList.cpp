@@ -265,13 +265,10 @@ void PlayerList::writeMaxScore(std::string bestScoreFile)
 }
 
 /**
- * @brief Displays the top 20 players.
+ * @brief Draws the top 20 players to the window.
+ * @param target The window to draw the players to.
+ * @param states The render states to use.
  */
-void PlayerList::showList(sf::RenderWindow& window, u64 n)
-{
-	
-}
-
 void PlayerList::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	Player* temp = head;
@@ -396,7 +393,6 @@ void PlayerList::loadData(std::string nameFile, std::string scoreFile, std::stri
 	inputTimeToComplete.close();
 	inputPassword.close();
 }
-
 
 /**
 * @brief Saves player data to files.

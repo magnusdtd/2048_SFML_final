@@ -26,7 +26,7 @@ public:
 	Player getPlayer() const {
 		return player;
 	}
-	u64* getBoard() const {
+	u64* getBoard() {
 		return board;
 	}
 };

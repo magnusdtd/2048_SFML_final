@@ -44,9 +44,15 @@ namespace Game {
     };
 
     enum ResumeState {
-        OPTION, // The scenario that the player can choose to play again or register
-        RESUME_RESGISTER, // Add new account to the resume list
-        RESUME_PLAY_AGAIN, // Choose account to resume the game   
+        RESUME_OPTION, // The scenario that the player can choose to play again or register
+
+        RESUME_CHOOSE_ACCOUNT, // Add new account to the resume list
+        RESUME_REGISTER, // Register to the account when registering
+
+        RESUME_CONTINUE, // Choose account to resume the game   
+        RESUME_CONTINUE_LOGIN, // Login to the account when choosing to continue
+
+        RESUME_PLAY, // Play the game
     };
 
     // Game window dimensions
