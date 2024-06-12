@@ -17,16 +17,19 @@ Music::Music(const std::string& directory)
 
     // Load the .wav files into the tracks array
     int i = 0;
-    for (const auto& entry : std::filesystem::directory_iterator(directory)) {
-        if (entry.path().extension() == ".wav") {
-            if (!tracks[i].openFromFile(entry.path().string())) {
-                std::cout << "Failed to load " << entry.path() << "\n";
-                continue;
+    if (tracks != nullptr) {
+        for (const auto& entry : std::filesystem::directory_iterator(directory)) {
+            if (entry.path().extension() == ".wav") {
+                if (!tracks[i].openFromFile(entry.path().string())) {
+                    std::cout << "Failed to load " << entry.path() << "\n";
+                    continue;
+                }
+                i++;
             }
-            i++;
         }
     }
 }
+
 
 sf::SoundSource::Status Music::getStatus() const {
     if (trackCount > 0) {
@@ -74,4 +77,43 @@ void Music::setVolume(float volume)
 float Music::getVolume() const
 {
     return tracks[currentTrack].getVolume();
+}
+
+void Music::handleEvent(sf::Event event)
+{
+    if (event.type == sf::Event::KeyPressed) {
+        // If the current track has stopped playing, switch to the next track
+        if (this->getStatus() == sf::SoundSource::Status::Stopped) {
+            this->next();
+        }
+        if (event.key.code == sf::Keyboard::Slash) {
+            // Toggle play/pause when '/' is pressed
+            if (this->getStatus() == sf::Music::Playing)
+                this->pause();
+            else
+                this->play();
+        }
+        else if (event.key.code == sf::Keyboard::Comma)
+            // Switch to previous track when '<' (Comma key without Shift) is pressed
+            this->previous();
+        else if (event.key.code == sf::Keyboard::Period)
+            // Switch to next track when '>' (Period key without Shift) is pressed
+            this->next();
+        else if (event.key.code == sf::Keyboard::Add) {
+            // Increase volume when '+' is pressed
+            float volume = this->getVolume();
+            if (volume < 100.0f) {
+                volume += 10.0f;
+                this->setVolume(volume);
+            }
+        }
+        else if (event.key.code == sf::Keyboard::Subtract) {
+            // Decrease volume when '-' is pressed
+            float volume = this->getVolume();
+            if (volume > 0.0f) {
+                volume -= 10.0f;
+                this->setVolume(volume);
+            }
+        }
+        }
 }

@@ -2,51 +2,34 @@
 #include "../2048_SFML/security.hpp"
 #include "../2048_SFML/security.cpp"
 
-TEST(SecurityTest, EncryptDecrypt) {
-    std::string data = "Hello, World!";
-    std::string key = "secret";
+class SecurityTest : public ::testing::Test {
+protected:
+    Security security;
+};
 
-    std::string encrypted = Security::encrypt(data, key);
-    std::string decrypted = Security::decrypt(encrypted, key);
+TEST_F(SecurityTest, EncryptDecryptTest) {
+    std::string original = "Hello, World!";
+    std::string encrypted = security.encrypt(original);
+    std::string decrypted = security.decrypt(encrypted);
 
-    EXPECT_NE(data, encrypted);
-    EXPECT_EQ(data, decrypted);
+    EXPECT_NE(original, encrypted);
+    EXPECT_EQ(original, decrypted);
 }
 
-TEST(SecurityTest, EncryptEmptyData) {
-    std::string data = "";
-    std::string key = "secret";
+TEST_F(SecurityTest, EmptyStringTest) {
+    std::string original = "";
+    std::string encrypted = security.encrypt(original);
+    std::string decrypted = security.decrypt(encrypted);
 
-    std::string encrypted = Security::encrypt(data, key);
-    EXPECT_EQ(data, encrypted);
+    EXPECT_EQ(original, encrypted);
+    EXPECT_EQ(original, decrypted);
 }
 
-TEST(SecurityTest, DecryptEmptyData) {
-    std::string data = "";
-    std::string key = "secret";
+TEST_F(SecurityTest, EncryptDecryptWithSpecialCharactersTest) {
+    std::string original = "Hello, World!@#$%^&*()_+{}|:\"<>?`~";
+    std::string encrypted = security.encrypt(original);
+    std::string decrypted = security.decrypt(encrypted);
 
-    std::string decrypted = Security::decrypt(data, key);
-    EXPECT_EQ(data, decrypted);
-}
-
-TEST(SecurityTest, EncryptDecryptWithEmptyKey) {
-    std::string data = "Hello, World!";
-    std::string key = "";
-
-    std::string encrypted = Security::encrypt(data, key);
-    std::string decrypted = Security::decrypt(encrypted, key);
-
-    EXPECT_EQ(data, encrypted);
-    EXPECT_EQ(data, decrypted);
-}
-
-TEST(SecurityTest, EncryptDecryptForNumber) {
-    std::string data = "123456789";
-    std::string key = "secret";
-
-    std::string encrypted = Security::encrypt(data, key);
-    std::string decrypted = Security::decrypt(encrypted, key);
-
-    EXPECT_NE(data, encrypted);
-    EXPECT_EQ(data, decrypted);
+    EXPECT_NE(original, encrypted);
+    EXPECT_EQ(original, decrypted);
 }

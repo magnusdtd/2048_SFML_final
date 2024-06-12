@@ -15,7 +15,12 @@ Board::Board() {
 	if (!font.loadFromFile("Fonts/Heavitas.ttf"))
 		std::cout << "Error loading font from Fonts/Heavitas.ttf\n";
 
-	borderTexture.loadFromFile("Texture/border.png");
+	if (!backgroundTexturePlaying.loadFromFile("Texture/background.png"))
+		std::cout << "Error loading texture from Texture/background.png\n";
+	backgroundPlaying.setTexture(backgroundTexturePlaying);
+
+	if (!borderTexture.loadFromFile("Texture/border.png"))
+		std::cout << "Error loading texture from Texture/border.png\n";
 	border.setTexture(borderTexture);
 	
 	this->cells = nullptr;
@@ -631,6 +636,7 @@ void Board::clearNewCells()
  * @param rs The render states to use.
  */
 void Board::draw(sf::RenderTarget& rt, sf::RenderStates rs) const {
+	rt.draw(backgroundPlaying, rs); // Draw background
 	rt.draw(border, rs); // Draw table
 
 	for (u32 i = 0; i < size; i++)

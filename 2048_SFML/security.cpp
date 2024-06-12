@@ -1,7 +1,6 @@
 #include "security.hpp"
 
-
-std::string Security::encrypt(std::string data, std::string key) {
+std::string Security::encrypt(std::string data) {
     if (key.empty())
         return data;
 
@@ -12,6 +11,6 @@ std::string Security::encrypt(std::string data, std::string key) {
     return result;
 }
 
-std::string Security::decrypt(const std::string& data, const std::string& key) {
-    return encrypt(data, key);
+std::string Security::decrypt(const std::string& data) {
+    return encrypt(data);
 }

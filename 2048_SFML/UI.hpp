@@ -37,8 +37,6 @@ private:
     Resume resume;
 
     /* Playing */
-    sf::Texture backgroundTexturePlaying;  // Texture for playing background
-    sf::Sprite backgroundPlaying;  // Sprite for playing background
     sf::Text textBestScore;  // Text displaying the best score
     sf::Text textScore;  // Text displaying the current score
     sf::Text textGameOver;  // Text displaying game over message

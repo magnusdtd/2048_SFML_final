@@ -11,18 +11,7 @@ UI::UI() {
 	state = Game::START_MENU;
 	pressTime = PRESS_DELAY;
 
-	/* Start Menu */
-	
-
-	/* Setting */
-    
-
-
-	/* Playing*/
-	// Initialize playing and register elements...
-	backgroundTexturePlaying.loadFromFile("Texture/background.png");
-	backgroundPlaying.setTexture(backgroundTexturePlaying);
-	
+	/* Score */	
 	bestScore = playerList.getMaxScore();
 
 	textBestScore.setFont(font);
@@ -330,6 +319,8 @@ void UI::update(float deltaTime) {
 			currentPlayer.setPassword(login.getPassword());
 
 			startTime = std::chrono::system_clock::now(); // Start time for the game
+
+			login.clear();
 		}
 
 		if (login.getUsername().size() != 0 && playerList.findPlayer(login.getUsername()))
@@ -350,44 +341,10 @@ void UI::update(float deltaTime) {
 		if (score > bestScore) {
 			bestScore = score;
 			this->saveBestScore("Data/best_score.dat");
-		}
-
-			
+		}		
 
 		textBestScore.setString(std::to_string(bestScore));
 		textBestScore.setOrigin(textBestScore.getGlobalBounds().width / 2, textBestScore.getGlobalBounds().height / 2);
-
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::E) && pressTime <= 0.0f) {
-			pressTime = PRESS_DELAY;
-			state = Game::START_MENU;
-
-			board.clearUndoBoardStack();
-			board.clearRedoBoardStack();
-			board.clearUndoScoreStack();
-			board.clearRedoScoreStack();
-			board.clear();
-			board.canMove = true;
-
-			isWin = false;
-			isGameOver = false;
-
-			isCalculated = false;
-
-			login.clear();
-		}
-		/*else if (sf::Keyboard::isKeyPressed(sf::Keyboard::E) && pressTime <= 0.0f) {
-			pressTime = PRESS_DELAY;
-			state = Game::START_MENU;
-
-			board.canMove = true;
-			isCanCheckMove = true;
-			isWin = false;
-			isGameOver = false;
-
-			isCalculated = false;
-
-			login.clear();
-		}*/
 
 		if (board.isOver() || board.isWin()) {
 			endTime = std::chrono::system_clock::now();
@@ -409,6 +366,35 @@ void UI::update(float deltaTime) {
 				std::cout << "Time taken: " << elapsed_seconds.count() << "s\n";
 				isCalculated = true;
 			}
+
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::E) && pressTime <= 0.0f) {
+				pressTime = PRESS_DELAY;
+				state = Game::START_MENU;
+
+				board.clearUndoBoardStack();
+				board.clearRedoBoardStack();
+				board.clearUndoScoreStack();
+				board.clearRedoScoreStack();
+				board.clear();
+				board.canMove = true;
+
+				isWin = false;
+				isGameOver = false;
+				isCalculated = false;
+			}
+			/*else if (sf::Keyboard::isKeyPressed(sf::Keyboard::E) && pressTime <= 0.0f) {
+				pressTime = PRESS_DELAY;
+				state = Game::START_MENU;
+
+				board.canMove = true;
+				isCanCheckMove = true;
+				isWin = false;
+				isGameOver = false;
+
+				isCalculated = false;
+
+				login.clear();
+			}*/
 		}
 	}
 }
@@ -444,14 +430,12 @@ void UI::draw(sf::RenderTarget& rt, sf::RenderStates rs) const {
 		rt.draw(login, rs);
 	}
 	else if (state == Game::PLAYING) {
-		rt.draw(backgroundPlaying, rs);
-
 		rt.draw(board, rs);
 		rt.draw(textBestScore, rs);
 		rt.draw(textScore, rs);
 	}
 	else
-		rt.clear(sf::Color::White);
+		std::cout << "Invalid state in UI\n";
 }
 
 /**

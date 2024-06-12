@@ -20,6 +20,8 @@ private:
 	const float PRESS_DELAY = 0.3f; ///< Delay between key presses
 	float pressTime; ///< Time since last key press
 
+	sf::Texture backgroundTexturePlaying;  // Texture for playing background
+	sf::Sprite backgroundPlaying;  // Sprite for playing background
 	sf::Texture borderTexture; ///< Texture for the border
 	sf::Sprite border; ///< Sprite for the border
 
@@ -35,6 +37,7 @@ public:
 	u32 size; ///< Size of the board
 	bool OnOffStack; ///< Boolean to check if undo/redo is on or off
 	bool canMove; ///< Boolean to pause the game
+
 	/**
 	 * @brief Default constructor for Board.
 	 */

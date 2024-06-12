@@ -15,7 +15,7 @@
  */
 class PlayerList : public sf::Drawable {
 	sf::Font font; ///< Font for displaying text.
-	std::string key; ///< Key for encryption and decryption.
+	Security security; ///< Security object for encrypting and decrypting passwords.
 
 	Player* head; ///< Pointer to the first player in the list.
 	u64 size; ///< Number of players in the list.

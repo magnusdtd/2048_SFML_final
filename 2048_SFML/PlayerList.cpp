@@ -21,7 +21,6 @@ Player* PlayerList::getPlayer(std::string userName)
 PlayerList::PlayerList() : head(nullptr), size(0) {
 	if (!font.loadFromFile("Fonts/arial.ttf"))
 		std::cout << "Could not load font\n";
-	key = generateRandomString(16);
 }
 
 /**
@@ -217,6 +216,9 @@ bool PlayerList::findPlayer(std::string userName)
 u64 PlayerList::findPlayerPosition(u64 score, double time)
 {
 	Player* temp = head;
+	if (head == nullptr)
+		return 1;
+
 	u64 index = 1;
 
 	while (temp != nullptr && index <= 20) {
@@ -256,7 +258,7 @@ void PlayerList::writeMaxScore(std::string bestScoreFile)
 		return;
 	}
 	std::string maxScoreStr = std::to_string(this->getMaxScore());
-	maxScoreStr = Security::encrypt(maxScoreStr, key);
+	maxScoreStr = security.encrypt(maxScoreStr);
 	output.write(maxScoreStr.c_str(), maxScoreStr.size());
 
 	output.close();
@@ -361,7 +363,7 @@ void PlayerList::loadData(std::string nameFile, std::string scoreFile, std::stri
 		inputName.read(reinterpret_cast<char*>(&size), sizeof(size_t));
 		userName.resize(size);
 		inputName.read(&userName[0], size);
-		userName = Security::decrypt(userName, key);
+		userName = security.decrypt(userName);
 
 		if (inputName.eof() || inputScore.eof() || inputTimeToComplete.eof())
 			break;  // Check for EOF after trying to read
@@ -371,20 +373,20 @@ void PlayerList::loadData(std::string nameFile, std::string scoreFile, std::stri
 		inputScore.read(reinterpret_cast<char*>(&size), sizeof(size_t));
 		encryptedScore.resize(size);
 		inputScore.read(&encryptedScore[0], size);
-		score = std::stoull(Security::decrypt(encryptedScore, key));
+		score = std::stoull(security.decrypt(encryptedScore));
 
 		/* Read time */
 		std::string encryptedTime;
 		inputTimeToComplete.read(reinterpret_cast<char*>(&size), sizeof(size_t));
 		encryptedTime.resize(size);
 		inputTimeToComplete.read(&encryptedTime[0], size);
-		timeToComplete = std::stod(Security::decrypt(encryptedTime, key));
+		timeToComplete = std::stod(security.decrypt(encryptedTime));
 
 		/* Read password */
 		inputPassword.read(reinterpret_cast<char*>(&size), sizeof(size_t));
 		password.resize(size);
 		inputPassword.read(&password[0], size);
-		password = Security::decrypt(password, key);
+		password = security.decrypt(password);
 
 		this->addPlayer(userName, score, timeToComplete, password);
 	}
@@ -442,25 +444,25 @@ void PlayerList::saveData(std::string nameFile, std::string scoreFile, std::stri
 	Player* temp = head;
 	while (temp != nullptr) {
 		/* Name */
-		std::string encryptedName = Security::encrypt(temp->getName(), key);
+		std::string encryptedName = security.encrypt(temp->getName());
 		size_t size = encryptedName.size();
 		outputName.write(reinterpret_cast<char*>(&size), sizeof(size_t));
 		outputName.write(encryptedName.c_str(), size);
 
 		/* Score */
-		std::string encryptedScore = Security::encrypt(std::to_string(temp->getScore()), key);
+		std::string encryptedScore = security.encrypt(std::to_string(temp->getScore()));
 		size = encryptedScore.size();
 		outputScore.write(reinterpret_cast<char*>(&size), sizeof(size_t));
 		outputScore.write(encryptedScore.c_str(), size);
 
 		/* Time */
-		std::string encryptedTime = Security::encrypt(std::to_string(temp->getTime()), key);
+		std::string encryptedTime = security.encrypt(std::to_string(temp->getTime()));
 		size = encryptedTime.size();
 		outputTimeToComplete.write(reinterpret_cast<char*>(&size), sizeof(size_t));
 		outputTimeToComplete.write(encryptedTime.c_str(), size);
 
 		/* Password */
-		std::string encryptedPassword = Security::encrypt(temp->getPassword(), key);
+		std::string encryptedPassword = security.encrypt(temp->getPassword());
 		size = encryptedPassword.size();
 		outputPassword.write(reinterpret_cast<char*>(&size), sizeof(size_t));
 		outputPassword.write(encryptedPassword.c_str(), size);
