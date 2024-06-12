@@ -62,6 +62,7 @@ private:
     /* Top 20 List */
     Top20List top20List;
 
+    /* Board */
     Board board;
 
     PlayerList playerList;  // PlayerList object

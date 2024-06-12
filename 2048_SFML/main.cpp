@@ -78,16 +78,8 @@ int main() {
             ui.handleEvent(deltaTime, event, pos);
         }
 
-        auto state = ui.getState();
-        if (state == Game::TOP20LIST)
-            ui.update(deltaTime);
-        else {
-            window.setView(window.getDefaultView());
-            ui.update(deltaTime);
-            window.draw(ui);
-        }
-
-
+        ui.update(deltaTime);
+        window.draw(ui);
         ui.sendMessage(window);
 
         window.display();

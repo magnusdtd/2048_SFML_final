@@ -3,6 +3,9 @@
 Setting::Setting() : 
 	whichButton(0), mode(Game::MODE_4), buttonOnOff(0), buttonMode(0) {
 	// Initialize setting elements...
+	if (!font.loadFromFile("Fonts/Heavitas.ttf"))
+		std::cout << "Can't load Fonts/Heavitas.ttf";
+
 	backgroundTextureSetting.loadFromFile("Texture/Setting.png");
 	backgroundSetting.setTexture(backgroundTextureSetting);
 
@@ -10,13 +13,13 @@ Setting::Setting() :
 	textMode.setString(std::to_string(mode));
 	textMode.setCharacterSize(64);
 	textMode.setFillColor(sf::Color(0, 0, 0));
-	textMode.setPosition(816.f, 342.f);
+	textMode.setPosition(816.f, 332.f);
 
 	textOnOff.setFont(font);
 	textOnOff.setString("Off"); // Default for Undo/Redo function
 	textOnOff.setCharacterSize(64);
 	textOnOff.setFillColor(sf::Color(0, 0, 0));
-	textOnOff.setPosition(829.f, 518.f);
+	textOnOff.setPosition(829.f, 508.f);
 
 	pressTime = PRESS_DELAY;
 	canUndoRedo = false; // Default;
@@ -24,6 +27,7 @@ Setting::Setting() :
 
 void Setting::update(float deltaTime)
 {
+	pressTime -= deltaTime;
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && pressTime <= 0.f) {
 		whichButton = (whichButton + 1) % 2;
 		pressTime = PRESS_DELAY;

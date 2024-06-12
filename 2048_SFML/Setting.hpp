@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include "utils.hpp"
 #include "layout.hpp"
+#include <iostream>
 
 class Setting : public sf::Drawable {
     sf::Texture backgroundTextureSetting;  // Texture for settings background
@@ -27,7 +28,7 @@ public:
 
     void update(float deltaTime);
 
-    void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+    void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 };
 
 #endif

@@ -3,7 +3,8 @@
 Top20List::Top20List()
     : view(sf::FloatRect(0, 0, (float)Game::GAME_WIDTH, (float)Game::GAME_HEIGHT)) {
     viewBoundary = sf::FloatRect(0, 0, (float)Game::GAME_WIDTH, (float)Game::GAME_HEIGHT);
-    backgroundTextureTop20List.loadFromFile("Texture/Top20List.png");
+    if (!backgroundTextureTop20List.loadFromFile("Texture/Top20List.png"))
+        std::cout << "Can't load Texture/Top20List.png";
     backgroundTop20List.setTexture(backgroundTextureTop20List);
 }
 

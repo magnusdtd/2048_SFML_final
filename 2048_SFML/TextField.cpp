@@ -9,7 +9,7 @@ TextField::TextField(u32 maxChars, float width, float height) :
     hasfocus(false)
 {
     pressTime = 0.0f;
-    if (!font.loadFromFile("Fonts/arial.ttf"))
+    if (!font.loadFromFile("Fonts/Arial.ttf"))
         std::cout << "Error loading font\n";
     rect.setOutlineThickness(2);
     rect.setFillColor(sf::Color::White);

@@ -4,8 +4,8 @@ Resume::Resume() : size(0), userNameField(), passwordField() {
 
 	pressTime = PRESS_DELAY;
 
-	if (!font.loadFromFile("Fonts/arial.ttf"))
-		std::cout << "Could not load font\n";
+	if (!font.loadFromFile("Fonts/Arial.ttf"))
+		std::cout << "Could not load Fonts/Arial.ttf\n";
 	if (!backgroundTextureResume.loadFromFile("Texture/Resume.png"))
 		std::cout << "Could not load background texture\n";
 	backgroundResume.setTexture(backgroundTextureResume);

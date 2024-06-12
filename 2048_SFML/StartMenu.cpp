@@ -3,7 +3,12 @@
 StartMenu::StartMenu()
 {
 	// Initialize start menu elements...
-	backgroundTextureStartMenu.loadFromFile("Texture/StartMenu.png");
+	if (!font.loadFromFile("Fonts/Heavitas.ttf"))
+		std::cout << "Can't load Fonts/Heavitas.ttf";
+
+
+	if (!backgroundTextureStartMenu.loadFromFile("Texture/StartMenu.png"))\
+		std::cout << "Can't load Texture/StartMenu.png";
 	backgroundStartMenu.setTexture(backgroundTextureStartMenu);
 	SELECT_BUTTON = Game::StartMenuButton::NewGame;
 
@@ -36,6 +41,8 @@ StartMenu::StartMenu()
 
 void StartMenu::update(float deltaTime)
 {
+	pressTime -= deltaTime;
+
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && pressTime <= 0.f) {
 		(SELECT_BUTTON += (Game::NUMBER_OF_BUTTONS - 1)) %= Game::NUMBER_OF_BUTTONS;
 		pressTime = PRESS_DELAY;

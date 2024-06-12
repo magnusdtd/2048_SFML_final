@@ -4,6 +4,7 @@
 #include "SFML/Graphics.hpp"
 #include "utils.hpp"
 #include "layout.hpp"
+#include <iostream>
 
 class StartMenu : public sf::Drawable{
     sf::Texture backgroundTextureStartMenu;  // Texture for start menu background
@@ -24,7 +25,7 @@ public:
 
     void update(float deltaTime);
 
-    void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+    void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 };
 
 

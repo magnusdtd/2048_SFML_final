@@ -12,8 +12,8 @@ Board::Board() {
 	isRedo = false;
 	canMove = true;
 
-	if (!font.loadFromFile("Fonts/font.ttf"))
-		std::cout << "Error loading font\n";
+	if (!font.loadFromFile("Fonts/Heavitas.ttf"))
+		std::cout << "Error loading font from Fonts/Heavitas.ttf\n";
 
 	borderTexture.loadFromFile("Texture/border.png");
 	border.setTexture(borderTexture);

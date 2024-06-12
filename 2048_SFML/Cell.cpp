@@ -19,11 +19,11 @@ void Cell::updateCell()
 }
 
 // Default constructor
-Cell::Cell() : value(0) {
-    if (font.getInfo().family == "") { // Load the font only once (static member
-        font.loadFromFile("Fonts/font.ttf");
-        std::cout << "Check font for one cell\n";
-    }
+Cell::Cell() : value(0), sizeOfNewText(0), alignNewText(0.f) {
+    if (font.getInfo().family == "")    // Load the font only once (static member
+        if (!font.loadFromFile("Fonts/Heavitas.ttf"))
+			std::cout << "Cannot load font for cell from Fonts/Heavitas.ttf\n";
+
     text.setFillColor(Color::colors[0]);
     text.setString(std::to_string(value));
 

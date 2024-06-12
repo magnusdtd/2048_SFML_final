@@ -6,10 +6,10 @@
  */
 UI::UI() {
 	/* Common */
-	if (!font.loadFromFile("Fonts/font.ttf"))
-		std::cout << "Error loading font\n";
+	if (!font.loadFromFile("Fonts/Heavitas.ttf"))
+		std::cout << "Error loading font Fonts/Heavitas.ttf\n";
 	state = Game::START_MENU;
-	pressTime = 0.f;
+	pressTime = PRESS_DELAY;
 
 	/* Start Menu */
 	
@@ -222,120 +222,120 @@ void UI::update(float deltaTime) {
 		}
 	}
 	else if (state == Game::REGISTER) {
-		//if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter) && 
-		//	login.getUsername().size() != 0 &&
-		//	login.getPassword().size() != 0 && 
-		//	!playerList.findPlayer(login.getUsername()) &&
-		//	pressTime + 2.f <= 0.0f) {
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter) && 
+			login.getUsername().size() != 0 &&
+			login.getPassword().size() != 0 && 
+			!playerList.findPlayer(login.getUsername()) &&
+			pressTime + 2.f <= 0.0f) {
 
-		//	pressTime = PRESS_DELAY;
-		//	state = Game::PLAYING;
-		//	switch (setting.mode) {
-		//	case Game::MODE_4:
-		//		board.init(	Game::GAME_WIDTH,
-		//					Game::GAME_HEIGHT,
-		//					LAYOUT::LAYOUT_4.boardSize,
-		//					LAYOUT::LAYOUT_4.sizeOfEachCell,
-		//					LAYOUT::LAYOUT_4.distanceBetweenEachCell,
-		//					LAYOUT::LAYOUT_4.distanceBetweenCellAndBorder,
-		//					LAYOUT::LAYOUT_4.alignX,
-		//					LAYOUT::LAYOUT_4.alignY,
-		//					LAYOUT::LAYOUT_4.sizeOfValue, 
-		//					LAYOUT::LAYOUT_4.alignNextText, 
-		//					LAYOUT::LAYOUT_4.sizeOfNextText );
-		//		break;
-		//	case Game::MODE_5:
-		//		board.init(	Game::GAME_WIDTH,
-		//					Game::GAME_HEIGHT,
-		//					LAYOUT::LAYOUT_5.boardSize,
-		//					LAYOUT::LAYOUT_5.sizeOfEachCell,
-		//					LAYOUT::LAYOUT_5.distanceBetweenEachCell,
-		//					LAYOUT::LAYOUT_5.distanceBetweenCellAndBorder,
-		//					LAYOUT::LAYOUT_5.alignX,
-		//					LAYOUT::LAYOUT_5.alignY,
-		//					LAYOUT::LAYOUT_5.sizeOfValue,
-		//					LAYOUT::LAYOUT_5.alignNextText,
-		//					LAYOUT::LAYOUT_5.sizeOfNextText);
-		//		break;
-		//	case Game::MODE_6:
-		//		board.init(	Game::GAME_WIDTH,
-		//					Game::GAME_HEIGHT,
-		//					LAYOUT::LAYOUT_6.boardSize,
-		//					LAYOUT::LAYOUT_6.sizeOfEachCell,
-		//					LAYOUT::LAYOUT_6.distanceBetweenEachCell,
-		//					LAYOUT::LAYOUT_6.distanceBetweenCellAndBorder,
-		//					LAYOUT::LAYOUT_6.alignX,
-		//					LAYOUT::LAYOUT_6.alignY,
-		//					LAYOUT::LAYOUT_6.sizeOfValue, 
-		//					LAYOUT::LAYOUT_6.alignNextText,
-		//					LAYOUT::LAYOUT_6.sizeOfNextText);
-		//		break;
-		//	case Game::MODE_7:
-		//		board.init(	Game::GAME_WIDTH,
-		//					Game::GAME_HEIGHT,
-		//					LAYOUT::LAYOUT_7.boardSize,
-		//					LAYOUT::LAYOUT_7.sizeOfEachCell,
-		//					LAYOUT::LAYOUT_7.distanceBetweenEachCell,
-		//					LAYOUT::LAYOUT_7.distanceBetweenCellAndBorder,
-		//					LAYOUT::LAYOUT_7.alignX,
-		//					LAYOUT::LAYOUT_7.alignY,
-		//					LAYOUT::LAYOUT_7.sizeOfValue, 
-		//					LAYOUT::LAYOUT_7.alignNextText,
-		//					LAYOUT::LAYOUT_7.sizeOfNextText);
-		//				break;
-		//	case Game::MODE_8:
-		//		board.init(	Game::GAME_WIDTH,
-		//					Game::GAME_HEIGHT,
-		//					LAYOUT::LAYOUT_8.boardSize,
-		//					LAYOUT::LAYOUT_8.sizeOfEachCell,
-		//					LAYOUT::LAYOUT_8.distanceBetweenEachCell,
-		//					LAYOUT::LAYOUT_8.distanceBetweenCellAndBorder, 
-		//					LAYOUT::LAYOUT_8.alignX,
-		//					LAYOUT::LAYOUT_8.alignY,
-		//					LAYOUT::LAYOUT_8.sizeOfValue, 
-		//					LAYOUT::LAYOUT_8.alignNextText,
-		//					LAYOUT::LAYOUT_8.sizeOfNextText);
-		//		break;
-		//	case Game::MODE_9:
-		//		board.init(	Game::GAME_WIDTH,
-		//					Game::GAME_HEIGHT,
-		//					LAYOUT::LAYOUT_9.boardSize,
-		//					LAYOUT::LAYOUT_9.sizeOfEachCell,
-		//					LAYOUT::LAYOUT_9.distanceBetweenEachCell,
-		//					LAYOUT::LAYOUT_9.distanceBetweenCellAndBorder, 
-		//					LAYOUT::LAYOUT_9.alignX,
-		//					LAYOUT::LAYOUT_9.alignY,
-		//					LAYOUT::LAYOUT_9.sizeOfValue, 
-		//					LAYOUT::LAYOUT_9.alignNextText,
-		//					LAYOUT::LAYOUT_9.sizeOfNextText);
-		//				break;
-		//	case Game::MODE_10:
-		//		board.init(	Game::GAME_WIDTH,
-		//					Game::GAME_HEIGHT,
-		//					LAYOUT::LAYOUT_10.boardSize,
-		//					LAYOUT::LAYOUT_10.sizeOfEachCell,
-		//					LAYOUT::LAYOUT_10.distanceBetweenEachCell,
-		//					LAYOUT::LAYOUT_10.distanceBetweenCellAndBorder, 
-		//					LAYOUT::LAYOUT_10.alignX,
-		//					LAYOUT::LAYOUT_10.alignY,
-		//					LAYOUT::LAYOUT_10.sizeOfValue, 
-		//					LAYOUT::LAYOUT_10.alignNextText,
-		//					LAYOUT::LAYOUT_10.sizeOfNextText);
-		//		break;
-		//	default:
-		//		std::cout << "Error in UI mode\n";
-		//	}
+			pressTime = PRESS_DELAY;
+			state = Game::PLAYING;
+			switch (setting.mode) {
+			case Game::MODE_4:
+				board.init(	Game::GAME_WIDTH,
+							Game::GAME_HEIGHT,
+							LAYOUT::LAYOUT_4.boardSize,
+							LAYOUT::LAYOUT_4.sizeOfEachCell,
+							LAYOUT::LAYOUT_4.distanceBetweenEachCell,
+							LAYOUT::LAYOUT_4.distanceBetweenCellAndBorder,
+							LAYOUT::LAYOUT_4.alignX,
+							LAYOUT::LAYOUT_4.alignY,
+							LAYOUT::LAYOUT_4.sizeOfValue, 
+							LAYOUT::LAYOUT_4.alignNextText, 
+							LAYOUT::LAYOUT_4.sizeOfNextText );
+				break;
+			case Game::MODE_5:
+				board.init(	Game::GAME_WIDTH,
+							Game::GAME_HEIGHT,
+							LAYOUT::LAYOUT_5.boardSize,
+							LAYOUT::LAYOUT_5.sizeOfEachCell,
+							LAYOUT::LAYOUT_5.distanceBetweenEachCell,
+							LAYOUT::LAYOUT_5.distanceBetweenCellAndBorder,
+							LAYOUT::LAYOUT_5.alignX,
+							LAYOUT::LAYOUT_5.alignY,
+							LAYOUT::LAYOUT_5.sizeOfValue,
+							LAYOUT::LAYOUT_5.alignNextText,
+							LAYOUT::LAYOUT_5.sizeOfNextText);
+				break;
+			case Game::MODE_6:
+				board.init(	Game::GAME_WIDTH,
+							Game::GAME_HEIGHT,
+							LAYOUT::LAYOUT_6.boardSize,
+							LAYOUT::LAYOUT_6.sizeOfEachCell,
+							LAYOUT::LAYOUT_6.distanceBetweenEachCell,
+							LAYOUT::LAYOUT_6.distanceBetweenCellAndBorder,
+							LAYOUT::LAYOUT_6.alignX,
+							LAYOUT::LAYOUT_6.alignY,
+							LAYOUT::LAYOUT_6.sizeOfValue, 
+							LAYOUT::LAYOUT_6.alignNextText,
+							LAYOUT::LAYOUT_6.sizeOfNextText);
+				break;
+			case Game::MODE_7:
+				board.init(	Game::GAME_WIDTH,
+							Game::GAME_HEIGHT,
+							LAYOUT::LAYOUT_7.boardSize,
+							LAYOUT::LAYOUT_7.sizeOfEachCell,
+							LAYOUT::LAYOUT_7.distanceBetweenEachCell,
+							LAYOUT::LAYOUT_7.distanceBetweenCellAndBorder,
+							LAYOUT::LAYOUT_7.alignX,
+							LAYOUT::LAYOUT_7.alignY,
+							LAYOUT::LAYOUT_7.sizeOfValue, 
+							LAYOUT::LAYOUT_7.alignNextText,
+							LAYOUT::LAYOUT_7.sizeOfNextText);
+						break;
+			case Game::MODE_8:
+				board.init(	Game::GAME_WIDTH,
+							Game::GAME_HEIGHT,
+							LAYOUT::LAYOUT_8.boardSize,
+							LAYOUT::LAYOUT_8.sizeOfEachCell,
+							LAYOUT::LAYOUT_8.distanceBetweenEachCell,
+							LAYOUT::LAYOUT_8.distanceBetweenCellAndBorder, 
+							LAYOUT::LAYOUT_8.alignX,
+							LAYOUT::LAYOUT_8.alignY,
+							LAYOUT::LAYOUT_8.sizeOfValue, 
+							LAYOUT::LAYOUT_8.alignNextText,
+							LAYOUT::LAYOUT_8.sizeOfNextText);
+				break;
+			case Game::MODE_9:
+				board.init(	Game::GAME_WIDTH,
+							Game::GAME_HEIGHT,
+							LAYOUT::LAYOUT_9.boardSize,
+							LAYOUT::LAYOUT_9.sizeOfEachCell,
+							LAYOUT::LAYOUT_9.distanceBetweenEachCell,
+							LAYOUT::LAYOUT_9.distanceBetweenCellAndBorder, 
+							LAYOUT::LAYOUT_9.alignX,
+							LAYOUT::LAYOUT_9.alignY,
+							LAYOUT::LAYOUT_9.sizeOfValue, 
+							LAYOUT::LAYOUT_9.alignNextText,
+							LAYOUT::LAYOUT_9.sizeOfNextText);
+						break;
+			case Game::MODE_10:
+				board.init(	Game::GAME_WIDTH,
+							Game::GAME_HEIGHT,
+							LAYOUT::LAYOUT_10.boardSize,
+							LAYOUT::LAYOUT_10.sizeOfEachCell,
+							LAYOUT::LAYOUT_10.distanceBetweenEachCell,
+							LAYOUT::LAYOUT_10.distanceBetweenCellAndBorder, 
+							LAYOUT::LAYOUT_10.alignX,
+							LAYOUT::LAYOUT_10.alignY,
+							LAYOUT::LAYOUT_10.sizeOfValue, 
+							LAYOUT::LAYOUT_10.alignNextText,
+							LAYOUT::LAYOUT_10.sizeOfNextText);
+				break;
+			default:
+				std::cout << "Error in UI mode\n";
+			}
 
-		//	currentPlayer.setUserName(login.getUsername());
-		//	currentPlayer.setPassword(login.getPassword());
+			currentPlayer.setUserName(login.getUsername());
+			currentPlayer.setPassword(login.getPassword());
 
-		//	startTime = std::chrono::system_clock::now(); // Start time for the game
-		//}
+			startTime = std::chrono::system_clock::now(); // Start time for the game
+		}
 
-		//if (login.getUsername().size() != 0 && playerList.findPlayer(login.getUsername()))
-		//	login.setWarning(true);
-		//else 
-		//	login.setWarning(false);
+		if (login.getUsername().size() != 0 && playerList.findPlayer(login.getUsername()))
+			login.setWarning(true);
+		else 
+			login.setWarning(false);
 	}
 	else if (state == Game::PLAYING) {
 		/* Score */
@@ -419,6 +419,9 @@ void UI::update(float deltaTime) {
  * @param rs Current render states
  */
 void UI::draw(sf::RenderTarget& rt, sf::RenderStates rs) const {
+	rt.clear(sf::Color::White);
+	rt.setView(rt.getDefaultView());
+
 	// Draw UI elements based on the current game state...
 	if (state == Game::START_MENU) {
 		rt.draw(startMenu, rs);
@@ -430,6 +433,12 @@ void UI::draw(sf::RenderTarget& rt, sf::RenderStates rs) const {
 		rt.draw(top20List, rs);
 		rt.draw(playerList, rs);
 	}
+	/////////////////////////////////
+	else if (state == Game::RESUME) {
+		rt.draw(resume, rs);
+		rt.draw(playerList, rs);
+	}
+	///////////////////////////////////
 	else if (state == Game::REGISTER) {
 		rt.clear(sf::Color(255, 255, 255));
 		rt.draw(login, rs);
@@ -465,6 +474,9 @@ void UI::sendMessage(sf::RenderWindow& window)
 
 }
 
+/**
+*@brief Saves the player data to a file.
+*/
 void UI::saveData()
 {
 	Player player = this->getPlayer();
@@ -481,4 +493,3 @@ void UI::saveData()
 						"Data/player_time.dat",
 						"Data/player_password.dat");
 }
-
