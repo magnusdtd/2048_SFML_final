@@ -223,7 +223,7 @@ u64 PlayerList::findPlayerPosition(u64 score, double time)
 
 	while (temp != nullptr && index <= 20) {
 		if (score > temp->getScore() || (score == temp->getScore() && time < temp->getTime()))
-			return index - 1;
+			return index;
 		temp = temp->next;
 		index++;
 	}

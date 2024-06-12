@@ -19,7 +19,8 @@ namespace Game {
         REGISTER,
         TOP20LIST,
         PLAYING,
-        RESUME
+        RESUME,
+        INF 
     };
 
     // Enum representing the different modes of the game

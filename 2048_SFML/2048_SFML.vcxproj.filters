@@ -186,4 +186,15 @@
       <Filter>Resource Files\Texture</Filter>
     </Image>
   </ItemGroup>
+  <ItemGroup>
+    <Media Include="Music\24-7, 365.wav">
+      <Filter>Resource Files\Music</Filter>
+    </Media>
+    <Media Include="Music\Seven.wav">
+      <Filter>Resource Files\Music</Filter>
+    </Media>
+    <Media Include="Music\wherever_u_r.wav">
+      <Filter>Resource Files\Music</Filter>
+    </Media>
+  </ItemGroup>
 </Project>

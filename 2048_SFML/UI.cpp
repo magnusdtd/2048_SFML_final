@@ -12,8 +12,6 @@ UI::UI() {
 	pressTime = PRESS_DELAY;
 
 	/* Score */	
-	bestScore = playerList.getMaxScore();
-
 	textBestScore.setFont(font);
 	textBestScore.setString(std::to_string(bestScore));
 	textBestScore.setCharacterSize(32);
@@ -43,18 +41,20 @@ UI::UI() {
 	subMessage.setFillColor(sf::Color(204, 0, 0));
 	subMessage.setPosition(650, 500);
 
-	playerList.clearDataFile("Data/player_name.dat",
-		"Data/player_score.dat",
-		"Data/player_time.dat",
-		"Data/player_password.dat");
+	/*playerList.clearDataFile("Data/player_name.dat",
+							"Data/player_score.dat",
+							"Data/player_time.dat",
+							"Data/player_password.dat");*/
 	playerList.loadData("Data/player_name.dat",
-		"Data/player_score.dat",
-		"Data/player_time.dat",
-		"Data/player_password.dat");
+						"Data/player_score.dat",
+						"Data/player_time.dat",
+						"Data/player_password.dat");
 	/*for (int i = 0; i < 10; i++) {
 		playerList.addPlayer("Player" + std::to_string(i), (u64)Random<int>(0, 1000), Random<double>(0, 1000), "password");
 	}
 	std::cout << "Size: " << playerList.getSize() << "\n";*/
+
+	bestScore = playerList.getMaxScore();
 }
 
 Player UI::getPlayer() const
@@ -352,20 +352,24 @@ void UI::update(float deltaTime) {
 			float elapsedSecondsFloat = static_cast<float>(elapsed_seconds.count());
 			currentPlayer.setTime(elapsedSecondsFloat);
 
+			
+
 			if (board.isOver()) 
-				GameOverMessage(playerList.findPlayerPosition(score, elapsedSecondsFloat));
+				GameOverMessage(position);
 			else 
-				WinMessage(playerList.findPlayerPosition(score, elapsedSecondsFloat));
+				WinMessage(position);
 
 			board.canMove = false;
 
 			if (!isCalculated) {
-				
+				position = playerList.findPlayerPosition(score, elapsedSecondsFloat);
 				playerList.addPlayer(currentPlayer);
 
 				std::cout << "Time taken: " << elapsed_seconds.count() << "s\n";
 				isCalculated = true;
 			}
+
+			
 
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::E) && pressTime <= 0.0f) {
 				pressTime = PRESS_DELAY;
@@ -382,9 +386,9 @@ void UI::update(float deltaTime) {
 				isGameOver = false;
 				isCalculated = false;
 			}
-			/*else if (sf::Keyboard::isKeyPressed(sf::Keyboard::E) && pressTime <= 0.0f) {
+			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::C) && pressTime <= 0.0f) {
 				pressTime = PRESS_DELAY;
-				state = Game::START_MENU;
+				state = Game::INF;
 
 				board.canMove = true;
 				isCanCheckMove = true;
@@ -392,11 +396,34 @@ void UI::update(float deltaTime) {
 				isGameOver = false;
 
 				isCalculated = false;
-
-				login.clear();
-			}*/
+			}
 		}
 	}
+	else if (state == Game::INF) {
+		/* Score */
+		board.update(deltaTime);
+
+		score = board.score;
+		textScore.setString(std::to_string(score));
+		textScore.setOrigin(textScore.getGlobalBounds().width / 2, textScore.getGlobalBounds().height / 2);
+		currentPlayer.setScore(score);
+
+		/* Best score */
+		if (score > bestScore) {
+			bestScore = score;
+			this->saveBestScore("Data/best_score.dat");
+		}
+
+		textBestScore.setString(std::to_string(bestScore));
+		textBestScore.setOrigin(textBestScore.getGlobalBounds().width / 2, textBestScore.getGlobalBounds().height / 2);
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::E) && pressTime <= 0.0f) {
+			pressTime = PRESS_DELAY;
+			state = Game::START_MENU;
+		}
+	}
+	else
+		std::cout << "Invalid state in UI\n";
 }
 
 /**
@@ -430,6 +457,11 @@ void UI::draw(sf::RenderTarget& rt, sf::RenderStates rs) const {
 		rt.draw(login, rs);
 	}
 	else if (state == Game::PLAYING) {
+		rt.draw(board, rs);
+		rt.draw(textBestScore, rs);
+		rt.draw(textScore, rs);
+	}
+	else if (state == Game::INF) {
 		rt.draw(board, rs);
 		rt.draw(textBestScore, rs);
 		rt.draw(textScore, rs);

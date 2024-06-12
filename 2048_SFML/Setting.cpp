@@ -56,11 +56,11 @@ void Setting::update(float deltaTime)
 		pressTime = PRESS_DELAY;
 	}
 	// Button mode
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && !whichButton && pressTime <= 0.f) {
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && !whichButton && pressTime <= 0.f) {
 		buttonMode = (buttonMode + 6) % 7;
 		pressTime = PRESS_DELAY;
 	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && !whichButton && pressTime <= 0.f) {
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && !whichButton && pressTime <= 0.f) {
 		buttonMode = (buttonMode + 1) % 7;
 		pressTime = PRESS_DELAY;
 	}

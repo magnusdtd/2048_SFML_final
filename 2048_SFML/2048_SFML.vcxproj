@@ -196,6 +196,11 @@
     <Image Include="Texture\tile.png" />
     <Image Include="Texture\Top20List.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Media Include="Music\24-7, 365.wav" />
+    <Media Include="Music\Seven.wav" />
+    <Media Include="Music\wherever_u_r.wav" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="..\packages\googletest.redist.1.8.3\build\native\googletest.redist.targets" Condition="Exists('..\packages\googletest.redist.1.8.3\build\native\googletest.redist.targets')" />

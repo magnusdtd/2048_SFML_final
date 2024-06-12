@@ -36,6 +36,15 @@ private:
     /* Resume */
     Resume resume;
 
+    /* Top 20 List */
+    Top20List top20List;
+
+    /* Board */
+    Board board;
+
+    PlayerList playerList;  // PlayerList object
+    Player currentPlayer;  // Current player
+
     /* Playing */
     sf::Text textBestScore;  // Text displaying the best score
     sf::Text textScore;  // Text displaying the current score
@@ -57,14 +66,8 @@ private:
     std::chrono::system_clock::time_point startTime; ///< Start time for the game
     std::chrono::system_clock::time_point endTime; ///< Start time for the game
 
-    /* Top 20 List */
-    Top20List top20List;
-
-    /* Board */
-    Board board;
-
-    PlayerList playerList;  // PlayerList object
-    Player currentPlayer;  // Current player
+    u64 position = 0;  // Position of the player in the player list when winning or losing
+    
 public:
     /**
      * Constructor for the UI class.
