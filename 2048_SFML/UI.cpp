@@ -64,11 +64,6 @@ UI::UI() {
 	buttonOnOff = 0;
 	buttonMode = 0;
 
-	/* Resume */
-	// Initialize register elements...
-	backgroundTextureResume.loadFromFile("Texture/Resume.png");
-	backgroundResume.setTexture(backgroundTextureResume);
-
 
 	/* Playing*/
 	// Initialize playing and register elements...
@@ -171,7 +166,7 @@ void UI::GameOverMessage(u64 position) {
 		textGameOver.setString("Game Over\nYou reach top " + std::to_string(position));
 	else
 		textGameOver.setString("Game Over\nYou can't reach top 20");
-	subMessage.setString("Press Backspace to back to the main menu\n or press C to continue");
+	subMessage.setString("Press E to back to the main menu\n or press C to continue");
 }
 
 void UI::WinMessage(u64 position)
@@ -181,7 +176,7 @@ void UI::WinMessage(u64 position)
 		textWin.setString("You Win\nYou reach top " + std::to_string(position));
 	else
 		textWin.setString("You Win\nYou can't reach top 20");
-	subMessage.setString("Press Backspace to back to the main menu\n or press C to continue");
+	subMessage.setString("Press E to back to the main menu\n or press C to continue");
 }
 
 /**
@@ -190,7 +185,7 @@ void UI::WinMessage(u64 position)
  * @param board Reference to the game board
  * @param tf Reference to the text field
  */
-void UI::update(float deltaTime, Board& board, Login& login, PlayerList& playerList) {
+void UI::update(float deltaTime, Board& board, Login& login, PlayerList& playerList, Resume& resume) {
 	// Update UI based on the current game state...
 	pressTime -= deltaTime;
 	if (state == Game::START_MENU) {
@@ -314,18 +309,42 @@ void UI::update(float deltaTime, Board& board, Login& login, PlayerList& playerL
 		}
 		
 
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::BackSpace)) {
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::E)) {
 			state = Game::START_MENU;
 		}
 	}
 	else if (state == Game::TOP20LIST) {
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::BackSpace))
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
 			state = Game::START_MENU;
 	}
 	else if (state == Game::RESUME) {
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter) && pressTime + 1.f <= 0.f) {
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter) && 
+			(resume.getState() == Game::RESUME_RESGISTER || resume.getState() == Game::RESUME_PLAY_AGAIN) &&
+			resume.isMatchPassword() &&
+			pressTime + 1.f <= 0.f) {
 			pressTime = PRESS_DELAY;
 			state = Game::PLAYING;
+			///* Copy player form resume list to */
+			//if (resume.getState() == Game::RESUME_RESGISTER) {
+			//	// The scenario that there are not enough 5 account in the resume list
+			//	Player *temp = resume.getSelectedPlayer();
+			//	player.setUserName(temp->getName());
+			//	player.setPassword(temp->getPassword());
+			//	player.setScore(temp->getScore());
+
+			//}
+			//else if (resume.getState() == Game::RESUME_PLAY_AGAIN) {
+			//	// The scenario that there are enough 5 account in the resume list
+			//	Player* temp = resume.getSelectedPlayer();
+			//	player.setUserName(temp->getName());
+			//	player.setPassword(temp->getPassword());
+			//	player.setScore(temp->getScore());
+			//	//startTime += std::chrono::seconds(temp->getTime());
+			//}
+		}
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::E) && pressTime <= 0.f) {
+			pressTime = PRESS_DELAY;
+			state = Game::START_MENU;
 		}
 	}
 	else if (state == Game::REGISTER) {
@@ -462,7 +481,7 @@ void UI::update(float deltaTime, Board& board, Login& login, PlayerList& playerL
 		textBestScore.setString(std::to_string(bestScore));
 		textBestScore.setOrigin(textBestScore.getGlobalBounds().width / 2, textBestScore.getGlobalBounds().height / 2);
 
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::BackSpace) && pressTime <= 0.0f) {
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::E) && pressTime <= 0.0f) {
 			pressTime = PRESS_DELAY;
 			state = Game::START_MENU;
 
@@ -532,21 +551,14 @@ void UI::draw(sf::RenderTarget& rt, sf::RenderStates rs) const {
 		rt.draw(ButtonSetting, rs);
 		rt.draw(ButtonTop20List, rs);
 		rt.draw(ButtonResume, rs);
-
 	}
 	else if (state == Game::SETTING) {
 		rt.draw(backgroundSetting, rs);
 		rt.draw(textMode, rs);
 		rt.draw(textOnOff, rs);
 	}
-	else if (state == Game::TOP20LIST) {
-
-	}
 	else if (state == Game::REGISTER) {
 		rt.clear(sf::Color(255, 255, 255));
-	}
-	else if (state == Game::RESUME) {
-		rt.draw(backgroundResume, rs);
 	}
 	else if (state == Game::PLAYING) {
 		rt.draw(backgroundPlaying, rs);
@@ -554,6 +566,8 @@ void UI::draw(sf::RenderTarget& rt, sf::RenderStates rs) const {
 		rt.draw(textBestScore, rs);
 		rt.draw(textScore, rs);
 	}
+	else
+		rt.clear(sf::Color::White);
 }
 
 /**

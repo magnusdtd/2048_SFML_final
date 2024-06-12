@@ -13,8 +13,9 @@
  * show top 20 players, load and save player data, and reverse the player list.
  */
 class PlayerList {
-	Player* head; ///< Pointer to the first player in the list.
 	sf::Font font; ///< Font for displaying text.
+protected:
+	Player* head; ///< Pointer to the first player in the list.
 	u64 size; ///< Number of players in the list.
 public:
 	/**
@@ -46,13 +47,13 @@ public:
 	 * @param score The score of the player.
 	 * @param timeToComplete The time taken by the player to complete the game.
 	 */
-	void addPlayer(std::string userName, u64 score, double timeToComplete, std::string password);
+	virtual void addPlayer(std::string userName, u64 score, double timeToComplete, std::string password);
 
 	/**
 	 * @brief Adds a player to the list.
 	 * @param A player object.
 	 */
-	void addPlayer(Player player);
+	virtual void addPlayer(Player player);
 
 	/**
 	 * @brief Removes a player from the list.
@@ -96,7 +97,7 @@ public:
 	/**
 	 * @brief Displays the top 20 players.
 	 */
-	void showList(sf::RenderWindow& window, u64 n);
+	virtual void showList(sf::RenderWindow& window, u64 n);
 
 	/**
 	* @brief clear all data in the file.

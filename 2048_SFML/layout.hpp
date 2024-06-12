@@ -42,6 +42,12 @@ namespace Game {
         NUMBER_OF_BUTTONS
     };
 
+    enum ResumeState {
+        OPTION, // The scenario that the player can choose to play again or register
+        RESUME_RESGISTER, // Add new account to the resume list
+        RESUME_PLAY_AGAIN, // Choose account to resume the game   
+    };
+
     // Game window dimensions
     static u32 GAME_WIDTH = 1200;
     static u32 GAME_HEIGHT = 800;

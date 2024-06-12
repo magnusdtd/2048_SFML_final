@@ -23,6 +23,18 @@ Player* PlayerList::getPlayer(std::string userName)
  */
 void PlayerList::addPlayer(std::string userName, u64 score, double timeToComplete, std::string password)
 {
+	Player* existingPlayer = getPlayer(userName);
+	if (existingPlayer != nullptr) {
+		// If a player with the same name already exists and has a higher score or the same score but a lower time, don't add the new player
+		if (existingPlayer->getScore() > score || (existingPlayer->getScore() == score && existingPlayer->getTime() <= timeToComplete)) {
+			return;
+		}
+		// If a player with the same name already exists and has a lower score or the same score but a higher time, remove the existing player
+		else {
+			removePlayer(userName);
+		}
+	}
+
 	Player* newPlayer = new Player(userName, score, timeToComplete, password);
 
 	if (head == nullptr || head->getScore() < score || (head->getScore() == score && head->getTime() > timeToComplete)) {
@@ -68,8 +80,21 @@ void PlayerList::addPlayer(std::string userName, u64 score, double timeToComplet
 	}
 }
 
+
 void PlayerList::addPlayer(Player player)
-{ 
+{
+	Player* existingPlayer = getPlayer(player.getName());
+	if (existingPlayer != nullptr) {
+		// If a player with the same name already exists and has a higher score or the same score but a lower time, don't add the new player
+		if (existingPlayer->getScore() > player.getScore() || (existingPlayer->getScore() == player.getScore() && existingPlayer->getTime() <= player.getTime())) {
+			return;
+		}
+		// If a player with the same name already exists and has a lower score or the same score but a higher time, remove the existing player
+		else {
+			removePlayer(player.getName());
+		}
+	}
+
 	Player* newPlayer = new Player(player); // Create a new Player object on the heap
 
 	if (head == nullptr || head->getScore() < newPlayer->getScore() || (head->getScore() == newPlayer->getScore() && head->getTime() > newPlayer->getTime())) {
@@ -114,6 +139,7 @@ void PlayerList::addPlayer(Player player)
 		size--;
 	}
 }
+
 
 /**
  * @brief Removes a player from the list.
@@ -193,7 +219,6 @@ void PlayerList::writeMaxScore(std::string bestScoreFile)
 	output.close();
 }
 
-
 /**
  * @brief Displays the top 20 players.
  */
@@ -222,6 +247,9 @@ void PlayerList::showList(sf::RenderWindow& window, u64 n)
 	}
 }
 
+/**
+* @brief clear all data in the file.
+*/
 void PlayerList::clearDataFile(std::string nameFile, std::string scoreFile, std::string timeFile, std::string passwordName)
 {
 	std::ofstream outputName(nameFile, std::ios::trunc);
@@ -229,7 +257,6 @@ void PlayerList::clearDataFile(std::string nameFile, std::string scoreFile, std:
 	std::ofstream outputTimeToComplete(timeFile, std::ios::trunc);
 	std::ofstream outputPassword(passwordName, std::ios::trunc);
 }
-
 
 /**
 * @brief Loads player data from files.

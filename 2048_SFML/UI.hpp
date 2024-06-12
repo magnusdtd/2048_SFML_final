@@ -7,6 +7,7 @@
 #include <ctime>
 #include "Login.hpp"
 #include "PlayerList.hpp"
+#include "Resume.hpp"
 
 /**
  * UI class is responsible for managing the user interface of the game.
@@ -40,10 +41,6 @@ private:
 
     u32 buttonOnOff;  // Button for turning on/off a feature
     sf::Text textOnOff;  // Text displaying the on/off status
-
-    /* Resume */
-    sf::Texture backgroundTextureResume;  // Texture for resume background
-    sf::Sprite backgroundResume;  // Sprite for resume background
 
     /* Playing */
     sf::Texture backgroundTexturePlaying;  // Texture for playing background
@@ -115,7 +112,7 @@ public:
      * @param board Reference to the game board
      * @param tf Reference to the text field
      */
-    void update(float deltaTime, Board& board, Login& login, PlayerList& playerList);
+    void update(float deltaTime, Board& board, Login& login, PlayerList& playerList, Resume &resume);
 
     /**
      * Draws the UI elements on the screen.

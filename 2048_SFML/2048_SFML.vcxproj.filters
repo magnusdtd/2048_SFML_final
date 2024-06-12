@@ -66,6 +66,9 @@
     <ClCompile Include="Top20List.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Resume.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utils.hpp">
@@ -108,6 +111,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Top20List.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Resume.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

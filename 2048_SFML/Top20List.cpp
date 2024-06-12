@@ -41,7 +41,6 @@ void Top20List::update(float deltaTime, PlayerList& playerList)
 void Top20List::draw(sf::RenderWindow& window, PlayerList& playerList) const
 {
     window.setView(view);
-    window.clear(sf::Color::White);
     window.draw(backgroundTop20List);
     playerList.showList(window, 20);
 }
