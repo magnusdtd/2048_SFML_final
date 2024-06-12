@@ -3,6 +3,7 @@
 #include "BigInteger.hpp"
 #include "Top20List.hpp"
 #include "Resume.hpp"
+#include "Music.hpp"
 
 void test() {
     RSA security(211, 199);
@@ -82,6 +83,7 @@ int main() {
     sf::Clock clock;
 
     // Initialize game objects
+    Music music("Music");
     Board board;
     UI ui;
     Login login;
@@ -119,6 +121,41 @@ int main() {
                                     "Data/player_password.dat");
                 window.close();
                 break;
+            }
+            else if (event.type == sf::Event::KeyPressed) {
+                // If the current track has stopped playing, switch to the next track
+                if (music.getStatus() == sf::SoundSource::Status::Stopped) {
+                    music.next();
+                }
+                if (event.key.code == sf::Keyboard::Slash) {
+                    // Toggle play/pause when '/' is pressed
+                    if (music.getStatus() == sf::Music::Playing)
+                        music.pause();
+                    else
+                        music.play();
+                }
+                else if (event.key.code == sf::Keyboard::Comma)
+                    // Switch to previous track when '<' (Comma key without Shift) is pressed
+                    music.previous();
+                else if (event.key.code == sf::Keyboard::Period)
+                    // Switch to next track when '>' (Period key without Shift) is pressed
+                    music.next();
+                else if (event.key.code == sf::Keyboard::Add) {
+                    // Increase volume when '+' is pressed
+                    float volume = music.getVolume();
+                    if (volume < 100.0f) {
+                        volume += 10.0f;
+                        music.setVolume(volume);
+                    }
+                }
+                else if (event.key.code == sf::Keyboard::Subtract) {
+                    // Decrease volume when '-' is pressed
+                    float volume = music.getVolume();
+                    if (volume > 0.0f) {
+                        volume -= 10.0f;
+                        music.setVolume(volume);
+                    }
+                }
             }
             login.handleInput(event, window, ui.getState(), deltaTime);
             resume.handleInput(event, window, ui.getState(), deltaTime);

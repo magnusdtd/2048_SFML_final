@@ -22,6 +22,9 @@
     <Filter Include="Resource Files\Texture">
       <UniqueIdentifier>{8daec78b-2507-4aa9-a7a5-0d022a66fa39}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Music">
+      <UniqueIdentifier>{96f0ab2c-c7cc-4709-b351-166ae45e3284}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -69,6 +72,9 @@
     <ClCompile Include="Resume.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Music.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utils.hpp">
@@ -114,6 +120,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Resume.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ResumeData.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Music.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

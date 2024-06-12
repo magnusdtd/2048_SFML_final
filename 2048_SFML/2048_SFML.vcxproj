@@ -145,6 +145,7 @@
     <ClCompile Include="Login.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Cell.cpp" />
+    <ClCompile Include="Music.cpp" />
     <ClCompile Include="PlayerList.cpp" />
     <ClCompile Include="Resume.cpp" />
     <ClCompile Include="RSA.cpp" />
@@ -160,9 +161,11 @@
     <ClInclude Include="Cell.hpp" />
     <ClInclude Include="Container.hpp" />
     <ClInclude Include="Login.hpp" />
+    <ClInclude Include="Music.hpp" />
     <ClInclude Include="Player.hpp" />
     <ClInclude Include="PlayerList.hpp" />
     <ClInclude Include="Resume.hpp" />
+    <ClInclude Include="ResumeData.hpp" />
     <ClInclude Include="RSA.hpp" />
     <ClInclude Include="ScoreStack.hpp" />
     <ClInclude Include="TextField.hpp" />
