@@ -75,4 +75,4 @@ Follow the guide at [SFML Setup](https://www.sfml-dev.org/tutorials/2.5/start-vc
 
 # Evaluation Table
 
-![EvaluationTable.png](https://github.com/magnusdtd/2048_SFML_final/blob/master/2048_SFML/EvaluationTable.png)
+![EvaluationTable.png](https://github.com/magnusdtd/2048_SFML_final/blob/master/EvaluationTable.png)
