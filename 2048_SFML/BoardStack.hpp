@@ -22,6 +22,10 @@ public:
         this->dataSize = dataSize;
         this->next = nullptr;
     }
+
+    u32 getDataSize() const {
+		return dataSize;
+	}
 };
 
 
@@ -35,9 +39,16 @@ public:
     BoardStack(const BoardStack& other);
 
     void push(u64* data, u32 n);
+
     void pop();
+
     u64* top();
 
+    void clear();
+
+    u32 getSizeOfBoard() const {
+		return head->getDataSize();
+	}
 
     bool empty() {
         return (head == nullptr) ? true : false;

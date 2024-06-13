@@ -34,11 +34,16 @@ public:
     ~ScoreStack();
 
     void push(u64 score);
+
     void pop();
+
     u64 top();
+
     bool empty() {
         return (head == nullptr) ? true : false;
     }
+
+    void clear();
 
     void print() {
         std::cout << "---------------SCORE STACK-------------\n";

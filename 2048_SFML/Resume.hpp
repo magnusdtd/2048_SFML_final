@@ -57,6 +57,8 @@ public:
 	 */
 	~Resume() {}
 
+	ResumeNode* getSelectedResumeData();
+
 	bool isNoAccountResume() const { return isNoAccount; }
 
 	void handleEvent(float deltaTime, sf::Event event, sf::Vector2i position);
@@ -66,6 +68,8 @@ public:
 	void saveData(const std::string& nameFile, const std::string& scoreFile, const std::string& passwordFile, const std::string& boardStackFile, const std::string& scoreStackFile);
 
 	void loadData(const std::string& nameFile, const std::string& scoreFile, const std::string& passwordFile, const std::string& boardStackFile, const std::string& scoreStackFile);
+
+	void clearData(const std::string& nameFile, const std::string& scoreFile, const std::string& passwordFile, const std::string& boardStackFile, const std::string& scoreStackFile);
 
 	void update(float deltaTime);
 

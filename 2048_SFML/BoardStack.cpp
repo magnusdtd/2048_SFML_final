@@ -64,6 +64,12 @@ u64* BoardStack::top()
     return head->data;
 }
 
+void BoardStack::clear()
+{
+    while (head != nullptr)
+		pop();
+}
+
 void BoardStack::writeToBinaryFile(const std::string& filename)
 {
     std::ofstream outFile(filename, std::ios::binary);

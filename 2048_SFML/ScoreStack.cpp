@@ -51,6 +51,13 @@ u64 ScoreStack::top()
 	return head->data;
 }
 
+void ScoreStack::clear()
+{
+	while (head != nullptr) {
+		pop();
+	}
+}
+
 void ScoreStack::writeToBinaryFile(const std::string& filename) {
 	std::ofstream outFile(filename, std::ios::binary);
 	if (!outFile.is_open()) {

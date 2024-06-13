@@ -61,6 +61,11 @@ Resume::Resume() :
 	alertText.setString("Username exist!!!");
 }
 
+ResumeNode* Resume::getSelectedResumeData()
+{
+	return resumeList.getData(userSelected);
+}
+
 void Resume::handleEvent(float deltaTime, sf::Event event, sf::Vector2i position)
 {
 	if (state == Game::RESUME_LOGIN) {
@@ -94,6 +99,11 @@ void Resume::loadData(const std::string& nameFile, const std::string& scoreFile,
 	resumeList.readFromFiles(nameFile, scoreFile, passwordFile, boardStackFile, scoreStackFile);
 }
 
+void Resume::clearData(const std::string& nameFile, const std::string& scoreFile, const std::string& passwordFile, const std::string& boardStackFile, const std::string& scoreStackFile)
+{
+	resumeList.clearDataFiles(nameFile, scoreFile, passwordFile, boardStackFile, scoreStackFile);
+}
+
 
 
 void Resume::update(float deltaTime)
@@ -110,6 +120,7 @@ void Resume::update(float deltaTime)
 		else {
 			account1.setString("No account to resume \npress E to turn back");
 			isNoAccount = true;
+			return;
 		}
 
 		if (temp != nullptr) {

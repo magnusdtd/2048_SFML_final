@@ -5,6 +5,7 @@
 #include "BoardStack.hpp"
 #include "ScoreStack.hpp"
 #include "Cell.hpp"
+#include "ResumeList.hpp"
 
 /**
  * @class Board
@@ -175,6 +176,8 @@ public:
 	 * @param rs The render states to use.
 	 */
 	void draw(sf::RenderTarget& rt, sf::RenderStates rs) const override;
+
+	void loadResumeData(ResumeNode *data);
 
 	BoardStack getUndoBoardStack() const;
 

@@ -35,6 +35,7 @@ private:
 
     /* Resume */
     Resume resume;
+    bool isResume;  // Flag indicating if the resume is active
 
     /* Top 20 List */
     Top20List top20List;

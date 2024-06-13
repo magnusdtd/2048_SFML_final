@@ -18,6 +18,15 @@ public:
 	Player getPlayer() const {
 		return player;
 	}
+
+	BoardStack getBoardStack() const {
+		return boardStack;
+	}
+
+	ScoreStack getScoreStack() const {
+		return scoreStack;
+	}
+
 };
 
 class ResumeList {
@@ -41,6 +50,7 @@ public:
 
 	void readFromFiles(const std::string& nameFile, const std::string& scoreFile, const std::string& passwordFile, const std::string& boardStackFile, const std::string& scoreStackFile);
 
+	void clearDataFiles(const std::string& nameFile, const std::string& scoreFile, const std::string& passwordFile, const std::string& boardStackFile, const std::string& scoreStackFile);
 };
 
 #endif

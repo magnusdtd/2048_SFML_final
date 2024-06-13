@@ -656,6 +656,30 @@ void Board::draw(sf::RenderTarget& rt, sf::RenderStates rs) const {
 			rt.draw(this->cells[i][j], rs); // Draw this->cells
 }
 
+
+void Board::loadResumeData(ResumeNode* data)
+{
+	if (data == nullptr) {
+		std::cout << "Data is nullptr\n";
+		return;
+	}
+
+	
+	size = data->getBoardStack().getSizeOfBoard();
+	score = data->getPlayer().getScore();
+	u64* temp = data->boardStack.top();
+	for (u32 i = 0; i < size; i++)
+		for (u32 j = 0; j < size; j++)
+			this->cells[i][j].setValue(temp[i * size + j]);
+
+	undoBoardStack.clear();
+	undoScoreStack.clear();
+
+	undoBoardStack = data->getBoardStack();
+	undoScoreStack = data->getScoreStack();
+
+}
+
 BoardStack Board::getUndoBoardStack() const
 {
 	return undoBoardStack;

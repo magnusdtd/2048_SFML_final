@@ -167,3 +167,12 @@ void ResumeList::readFromFiles(const std::string& nameFile, const std::string& s
     passwordIn.close();
 }
 
+void ResumeList::clearDataFiles(const std::string& nameFile, const std::string& scoreFile, const std::string& passwordFile, const std::string& boardStackFile, const std::string& scoreStackFile)
+{
+    std::ofstream outputName(nameFile, std::ios::trunc);
+    std::ofstream outputScore(scoreFile, std::ios::trunc);
+    std::ofstream outputPassword(passwordFile, std::ios::trunc);
+    std::ofstream outputBoardStack(boardStackFile, std::ios::trunc);
+    std::ofstream outputScoreStack(scoreStackFile, std::ios::trunc);
+}
+
