@@ -146,6 +146,7 @@
     <ClCompile Include="Music.cpp" />
     <ClCompile Include="PlayerList.cpp" />
     <ClCompile Include="Resume.cpp" />
+    <ClCompile Include="ResumeList.cpp" />
     <ClCompile Include="ScoreStack.cpp" />
     <ClCompile Include="security.cpp" />
     <ClCompile Include="Setting.cpp" />
@@ -164,7 +165,7 @@
     <ClInclude Include="Player.hpp" />
     <ClInclude Include="PlayerList.hpp" />
     <ClInclude Include="Resume.hpp" />
-    <ClInclude Include="ResumeData.hpp" />
+    <ClInclude Include="ResumeList.hpp" />
     <ClInclude Include="ScoreStack.hpp" />
     <ClInclude Include="security.hpp" />
     <ClInclude Include="Setting.hpp" />
@@ -196,11 +197,6 @@
     <Image Include="Texture\StartMenu.png" />
     <Image Include="Texture\tile.png" />
     <Image Include="Texture\Top20List.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Media Include="Music\24-7, 365.wav" />
-    <Media Include="Music\Seven.wav" />
-    <Media Include="Music\wherever_u_r.wav" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

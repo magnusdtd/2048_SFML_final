@@ -3,6 +3,7 @@
 
 #include "utils.hpp"
 #include <iostream>
+#include <fstream>
 
 class ScoreNode {
 public:
@@ -28,13 +29,13 @@ public:
         head = nullptr;
     }
 
+    ScoreStack(const ScoreStack& other);
+
     ~ScoreStack();
 
     void push(u64 score);
     void pop();
     u64 top();
-
-
     bool empty() {
         return (head == nullptr) ? true : false;
     }
@@ -49,6 +50,13 @@ public:
 		}
         std::cout << "---------------------------------------\n";
 	}
+
+    void writeToBinaryFile(const std::string& filename);
+
+    void readFromBinaryFile(const std::string& filename);
+
+    void reverse();
+
 };
 
 #endif

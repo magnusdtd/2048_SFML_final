@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "../2048_SFML/PlayerList.hpp"
+#include "../2048_SFML/PlayerList.cpp"
 
 // Test the default constructor
 TEST(PlayerListTest, DefaultConstructor) {

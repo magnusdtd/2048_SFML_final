@@ -6,7 +6,7 @@
 #include "PlayerList.hpp"
 #include "TextField.hpp"
 #include "layout.hpp"
-#include "ResumeData.hpp"
+#include "ResumeList.hpp"
 #include "security.hpp"
 
 class Resume : public sf::Drawable {
@@ -21,31 +21,24 @@ class Resume : public sf::Drawable {
     sf::Font textFont;  // Font used in the resume
 	sf::Font titleFont;  // Font used in the resume
 
-	/* RESUME_REGISTER and RESUME_CONTINUE */
+	/* RESUME_OPTION */
 	sf::Text account1;  // Text displaying the first account
 	sf::Text account2;  // Text displaying the second account
 	sf::Text account3;  // Text displaying the third account
 	sf::Text account4;  // Text displaying the fourth account
 	sf::Text account5;  // Text displaying the fifth account
 
-	/* RESUME_OPTION */
-	sf::Text resumeOption1;  // Text displaying the resume option1
-	sf::Text resumeOption2;  // Text displaying the resume option2
-
 	/* RESUME_CONTINUE */
 	sf::Texture backgroundTextureResumeContinueLogin;  // Texture for resume background
-	sf::Sprite backgroundResumeContinueLogin;  // Sprite for resume background
+	sf::Sprite backgroundResumeLogin;  // Sprite for resume background
 
-	TextField usernameField;  // Username field
 	TextField passwordField;  // Password field
-	sf::Text alertText;
-	bool isWarning = false;
+	sf::Text alertText;  // Text displaying alert message
+	bool isWarning = false;  // Flag indicating if a warning message should be displayed
 
 	u32 SELECT_BUTTON;  // Currently selected button in the resume
 
-	ResumeData* head;  // Head of the resume list
-	Player currentPlayer;  // Current player
-	u64** boardData;  // Board data
+	ResumeList resumeList;  // List of players in the resume
 
 	Security security;  // Security object for encrypting and decrypting passwords
 
@@ -69,14 +62,6 @@ public:
 	void saveData(std::string nameFile, std::string scoreFile, std::string timeFile, std::string passwordFile);
 
 	void loadData(std::string nameFile, std::string scoreFile, std::string timeFile, std::string passwordFile);
-
-
-	/**
-	* @brief Returns the current players in the resume.
-	*/
-	Player getPlayer() { return currentPlayer; }
-
-	u64** getBoardData() { return boardData; }
 
 	void update(float deltaTime);
 

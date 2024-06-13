@@ -3,19 +3,23 @@
 
 #include "utils.hpp"
 #include <iostream>
+#include <fstream>
 
 class BoardNode {
 public:
     u64* data;
     BoardNode* next;
+    u32 dataSize;
 
     BoardNode() {
         data = nullptr;
+        dataSize = 0;
         next = nullptr;
     }
 
-    BoardNode(u64* data) {
+    BoardNode(u64* data, u32 dataSize) {
         this->data = data;
+        this->dataSize = dataSize;
         this->next = nullptr;
     }
 };
@@ -24,11 +28,11 @@ public:
 class BoardStack {
     BoardNode* head;
 public:
-    BoardStack() {
-        head = nullptr;
-    }
+    BoardStack() : head(nullptr) {}
 
     ~BoardStack();
+
+    BoardStack(const BoardStack& other);
 
     void push(u64* data, u32 n);
     void pop();
@@ -53,6 +57,13 @@ public:
         }
         std::cout << "---------------------------------------\n";
     }
+
+    void writeToBinaryFile(const std::string& filename);
+
+    void readFromBinaryFile(const std::string& filename);
+
+    void reverse();
+
 };
 
 #endif

@@ -1,6 +1,6 @@
 #include "Resume.hpp"
 
-Resume::Resume() : size(0), usernameField(), passwordField(), head(nullptr), boardData(nullptr) {
+Resume::Resume() : size(0), passwordField(), head(nullptr), boardData(nullptr) {
 
 	pressTime = PRESS_DELAY;
 
@@ -43,27 +43,11 @@ Resume::Resume() : size(0), usernameField(), passwordField(), head(nullptr), boa
 	account5.setPosition(400, 240);
 
 
-	resumeOption1.setFont(titleFont);
-	resumeOption1.setCharacterSize(50);
-	resumeOption1.setFillColor(sf::Color::Red);
-	resumeOption1.setPosition(400, 350);
-	resumeOption1.setString("New account");
-
-	resumeOption2.setFont(titleFont);
-	resumeOption2.setCharacterSize(50);
-	resumeOption2.setFillColor(sf::Color::Black);
-	resumeOption2.setPosition(450, 410);
-	resumeOption2.setString("Continue");
-
 	if (!backgroundTextureResumeContinueLogin.loadFromFile("Texture/Login.png"))
 		std::cout << "Could not load background texture\n";
-	backgroundResumeContinueLogin.setTexture(backgroundTextureResumeContinueLogin);
-	backgroundResumeContinueLogin.setPosition(0, 0);
+	backgroundResumeLogin.setTexture(backgroundTextureResumeContinueLogin);
+	backgroundResumeLogin.setPosition(0, 0);
 
-	usernameField.setPosition(350.f, 364.f);
-	usernameField.setFocus(true);
-	usernameField.instruction = "Enter your name";
-	usernameField.warning = "Name must only contain number \n0 - 9, letter A - Z, a - z, and NO space!!!";
 
 	passwordField.setPosition(350.f, 550.f);
 	passwordField.setHide(true);
@@ -91,35 +75,14 @@ Resume::~Resume()
 
 void Resume::handleEvent(float deltaTime, sf::Event event, sf::Vector2i position)
 {
-	if (state == Game::RESUME_CONTINUE_LOGIN) {
+	if (state == Game::RESUME_LOGIN) {
 		if (event.type == sf::Event::MouseButtonReleased) {
-			usernameField.setFocus(false);
+			passwordField.setFocus(false);
 			if (passwordField.contains(sf::Vector2f(position)))
 				passwordField.setFocus(true);
 		}
 		else if (event.type == sf::Event::TextEntered)
 			passwordField.handleInput(event, deltaTime);
-	}
-	else if (state == Game::RESUME_REGISTER) {
-		if (event.type == sf::Event::MouseButtonReleased) {
-			usernameField.setFocus(false);
-			passwordField.setFocus(false);
-
-			if (usernameField.contains(sf::Vector2f(position))) {
-				usernameField.setFocus(true);
-				passwordField.setFocus(false);
-			}
-
-			if (passwordField.contains(sf::Vector2f(position))) {
-				passwordField.setFocus(true);
-				usernameField.setFocus(false);
-			}
-		}
-		// Handle text input event
-		else if (event.type == sf::Event::TextEntered) {
-			usernameField.handleInput(event, deltaTime);
-			passwordField.handleInput(event, deltaTime);
-		}
 	}
 }
 
@@ -150,129 +113,6 @@ void Resume::update(float deltaTime)
 {
 	pressTime -= deltaTime;
 	if (state == Game::RESUME_OPTION) {
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && pressTime <= 0.f) {
-			pressTime = PRESS_DELAY;
-			if (SELECT_BUTTON > 0)
-				SELECT_BUTTON--;
-		}
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && pressTime <= 0.f) {
-			pressTime = PRESS_DELAY;
-			if (SELECT_BUTTON < 1)
-				SELECT_BUTTON++;
-		}
-
-		if (SELECT_BUTTON == 0) {
-			resumeOption1.setFillColor(sf::Color::Red);
-			resumeOption2.setFillColor(sf::Color::Black);
-		}
-		else {
-			resumeOption1.setFillColor(sf::Color::Black);
-			resumeOption2.setFillColor(sf::Color::Red);
-		}
-
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter) && pressTime <= 0.f)
-			if (SELECT_BUTTON == 0) // Add or remove player
-				state = Game::RESUME_REGISTER;
-			else // Continue the game SELECT_BUTTON == 1
-				state = Game::RESUME_CONTINUE;
-	} 
-	else if (state == Game::RESUME_REGISTER) {
-
-		ResumeData* temp = head;
-		if (temp != nullptr) {
-			account1.setString("1. " + temp->getPlayer().getName());
-			temp = temp->next;
-		}
-		if (temp != nullptr) {
-			account2.setString("2. " + temp->getPlayer().getName());
-			temp = temp->next;
-		}
-		if (temp != nullptr) {
-			account3.setString("3. " + temp->getPlayer().getName());
-			temp = temp->next;
-		}
-		if (temp != nullptr) {
-			account4.setString("4. " + temp->getPlayer().getName());
-			temp = temp->next;
-		}
-		if (temp != nullptr) {
-			account5.setString("5. " + temp->getPlayer().getName());
-			temp = temp->next;
-		}
-
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && pressTime <= 0.f) {
-			pressTime = PRESS_DELAY;
-			if (SELECT_BUTTON > 0)
-				SELECT_BUTTON--;
-		}
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && pressTime <= 0.f) {
-			pressTime = PRESS_DELAY;
-			if (SELECT_BUTTON < 4)
-				SELECT_BUTTON++;
-		}
-
-		switch (SELECT_BUTTON) {
-		case 0:
-			account1.setFillColor(sf::Color::Red);
-			account2.setFillColor(sf::Color::Black);
-			account3.setFillColor(sf::Color::Black);
-			account4.setFillColor(sf::Color::Black);
-			account5.setFillColor(sf::Color::Black);
-			break;
-		case 1:
-			account1.setFillColor(sf::Color::Black);
-			account2.setFillColor(sf::Color::Red);
-			account3.setFillColor(sf::Color::Black);
-			account4.setFillColor(sf::Color::Black);
-			account5.setFillColor(sf::Color::Black);
-			break;
-		case 2:
-			account1.setFillColor(sf::Color::Black);
-			account2.setFillColor(sf::Color::Black);
-			account3.setFillColor(sf::Color::Red);
-			account4.setFillColor(sf::Color::Black);
-			account5.setFillColor(sf::Color::Black);
-			break;
-		case 3:
-			account1.setFillColor(sf::Color::Black);
-			account2.setFillColor(sf::Color::Black);
-			account3.setFillColor(sf::Color::Black);
-			account4.setFillColor(sf::Color::Red);
-			account5.setFillColor(sf::Color::Black);
-			break;
-		case 4:
-			account1.setFillColor(sf::Color::Black);
-			account2.setFillColor(sf::Color::Black);
-			account3.setFillColor(sf::Color::Black);
-			account4.setFillColor(sf::Color::Black);
-			account5.setFillColor(sf::Color::Red);
-			break;
-		}
-		
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter) && pressTime <= 0.f) {
-			pressTime = PRESS_DELAY;
-			if (SELECT_BUTTON == 0) {
-				
-			}
-			else if (SELECT_BUTTON == 1) {
-				
-			}
-			else if (SELECT_BUTTON == 2) {
-				
-			}
-			else if (SELECT_BUTTON == 3) {
-				
-			}
-			else if (SELECT_BUTTON == 4) {
-				
-			}
-		}
-
-
-
-		std::cout << "This is the resume register\n";
-	} 
-	else if (state == Game::RESUME_CONTINUE) {
 		ResumeData* temp = head;
 		if (temp != nullptr) {
 			account1.setString("1. " + temp->getPlayer().getName());
@@ -370,14 +210,14 @@ void Resume::update(float deltaTime)
 					}
 				}
 
-				state = Game::RESUME_CONTINUE_LOGIN;
+				state = Game::RESUME_LOGIN;
 			}
 
 
 		}
 	} 
-	else if (state == Game::RESUME_CONTINUE_LOGIN) {
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter) && 
+	else if (state == Game::RESUME_LOGIN) {
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter) &&
 			passwordField.getText() == currentPlayer.getPassword() &&
 			pressTime <= 0.f) {
 			pressTime = PRESS_DELAY;
@@ -387,7 +227,9 @@ void Resume::update(float deltaTime)
 			alertText.setString("Wrong password!!!");
 			isWarning = true;
 		}
-
+	} 
+	else if (state == Game::RESUME_PLAY) {
+		
 	}
 	else
 		std::cout << "Invalid state in Resume\n";
@@ -397,11 +239,6 @@ void Resume::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	if (state == Game::RESUME_OPTION) {
 		target.draw(backgroundResume, states);
-		target.draw(resumeOption1, states);
-		target.draw(resumeOption2, states);
-	}
-	else if (state == Game::RESUME_CHOOSE_ACCOUNT) {
-		target.draw(backgroundResume, states);
 		if (account1.getString() != "")
 			target.draw(account1, states);
 		if (account2.getString() != "")
@@ -413,26 +250,8 @@ void Resume::draw(sf::RenderTarget& target, sf::RenderStates states) const
 		if (account5.getString() != "")
 			target.draw(account5, states);
 	}
-	else if (state == Game::RESUME_REGISTER) {
-		target.draw(backgroundResumeContinueLogin, states);
-		target.draw(passwordField, states);
-		target.draw(usernameField, states);
-	}
-	else if (state == Game::RESUME_CONTINUE) {
-		target.draw(backgroundResume, states);
-		if (account1.getString() != "")
-			target.draw(account1, states);
-		if (account2.getString() != "")
-			target.draw(account2, states);
-		if (account3.getString() != "")
-			target.draw(account3, states);
-		if (account4.getString() != "")
-			target.draw(account4, states);
-		if (account5.getString() != "")
-			target.draw(account5, states);
-	}
-	else if (state == Game::RESUME_CONTINUE_LOGIN) {
-		target.draw(backgroundResumeContinueLogin, states);
+	else if (state == Game::RESUME_LOGIN) {
+		target.draw(backgroundResumeLogin, states);
 		target.draw(passwordField, states);
 
 		if (isWarning)

@@ -78,6 +78,9 @@
     <ClCompile Include="StartMenu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ResumeList.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utils.hpp">
@@ -116,7 +119,7 @@
     <ClInclude Include="Resume.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ResumeData.hpp">
+    <ClInclude Include="ResumeList.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Music.hpp">
@@ -188,16 +191,5 @@
     <Image Include="Texture\Resume.png">
       <Filter>Resource Files\Texture</Filter>
     </Image>
-  </ItemGroup>
-  <ItemGroup>
-    <Media Include="Music\24-7, 365.wav">
-      <Filter>Resource Files\Music</Filter>
-    </Media>
-    <Media Include="Music\Seven.wav">
-      <Filter>Resource Files\Music</Filter>
-    </Media>
-    <Media Include="Music\wherever_u_r.wav">
-      <Filter>Resource Files\Music</Filter>
-    </Media>
   </ItemGroup>
 </Project>

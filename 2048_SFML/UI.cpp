@@ -196,6 +196,7 @@ void UI::update(float deltaTime) {
 	else if (state == Game::RESUME) {
 		
 		resume.update(deltaTime);
+
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::E) && 
 			(resume.state == Game::RESUME_PLAY) &&
 			pressTime <= 0.0f) {
@@ -353,8 +354,10 @@ void UI::update(float deltaTime) {
 			saveDataFlag = true;
 		}
 
-		if (saveDataFlag) {
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter) && pressTime <= 0.f && saveDataFlag) {
+			pressTime = PRESS_DELAY;
 			state = Game::START_MENU;
+
 			board.clearUndoBoardStack();
 			board.clearRedoBoardStack();
 			board.clearUndoScoreStack();
@@ -374,6 +377,7 @@ void UI::update(float deltaTime) {
 			delete[] temp;
 		}
 
+		/* Game over or win */
 		if (board.isOver() || board.isWin()) {
 			endTime = std::chrono::system_clock::now();
 			std::chrono::duration<double> elapsed_seconds = endTime - startTime;
@@ -485,6 +489,8 @@ void UI::draw(sf::RenderTarget& rt, sf::RenderStates rs) const {
 		rt.draw(board, rs);
 		rt.draw(textBestScore, rs);
 		rt.draw(textScore, rs);
+
+		rt.draw(saveDataMessage, rs);
 	}
 	else if (state == Game::INF) {
 		rt.draw(board, rs);
