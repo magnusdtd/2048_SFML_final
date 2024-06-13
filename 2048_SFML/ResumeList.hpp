@@ -14,6 +14,10 @@ public:
 	ResumeNode *next;
 
 	ResumeNode() : next(nullptr) {}
+
+	Player getPlayer() const {
+		return player;
+	}
 };
 
 class ResumeList {
@@ -34,6 +38,9 @@ public:
 	u32 getSize() const;
 
 	void writeToFiles(const std::string& nameFile, const std::string& scoreFile, const std::string& passwordFile, const std::string& boardStackFile, const std::string& scoreStackFile);
+
+	void readFromFiles(const std::string& nameFile, const std::string& scoreFile, const std::string& passwordFile, const std::string& boardStackFile, const std::string& scoreStackFile);
+
 };
 
 #endif

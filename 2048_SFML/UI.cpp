@@ -198,11 +198,21 @@ void UI::update(float deltaTime) {
 		resume.update(deltaTime);
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::E) && 
-			(resume.state == Game::RESUME_PLAY) &&
+			resume.state == Game::RESUME_PLAY &&
 			pressTime <= 0.0f) {
 			pressTime = PRESS_DELAY;
+
 			state = Game::PLAYING;
-			
+			resume.state = Game::RESUME_OPTION;
+
+		}
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::E) &&
+			resume.state == Game::RESUME_OPTION &&
+			resume.isNoAccountResume() &&
+			pressTime <= 0.0f) {
+
+			state = Game::PLAYING;
 			resume.state = Game::RESUME_OPTION;
 
 		}
@@ -372,7 +382,7 @@ void UI::update(float deltaTime) {
 			saveDataFlag = false;
 
 			u64** temp = board.getBoardData();
-			resume.addData(currentPlayer, temp);
+			resume.addData(currentPlayer, board.getUndoBoardStack(), board.getUndoScoreStack());
 			board.clear();
 			delete[] temp;
 		}
@@ -546,6 +556,6 @@ void UI::saveData()
 
 
 	u64** temp = board.getBoardData();
-	resume.addData(currentPlayer, temp);
+	resume.addData(currentPlayer, board.getUndoBoardStack(), board.getUndoScoreStack());
 	delete[] temp;
 }

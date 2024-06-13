@@ -1,9 +1,11 @@
 #include "Resume.hpp"
 
-Resume::Resume() : size(0), passwordField(), head(nullptr), boardData(nullptr) {
-
-	pressTime = PRESS_DELAY;
-
+Resume::Resume() : 
+	size(0),			passwordField(),		security(),				
+	SELECT_BUTTON(0),	userSelected(0),		resumeList(),	
+	isWarning(false),	pressTime(PRESS_DELAY), state(Game::RESUME_OPTION),
+	isNoAccount(false)
+{
 	if (!textFont.loadFromFile("Fonts/Arial.ttf"))
 		std::cout << "Could not load Fonts/Arial.ttf\n";
 
@@ -14,8 +16,6 @@ Resume::Resume() : size(0), passwordField(), head(nullptr), boardData(nullptr) {
 		std::cout << "Could not load background texture\n";
 	backgroundResume.setTexture(backgroundTextureResume);
 	backgroundResume.setPosition(0, 0);
-
-	SELECT_BUTTON = 0;
 
 	account1.setFont(textFont);
 	account1.setCharacterSize(30);
@@ -59,18 +59,6 @@ Resume::Resume() : size(0), passwordField(), head(nullptr), boardData(nullptr) {
 	alertText.setFillColor(sf::Color::Red);
 	alertText.setPosition(454, 665);
 	alertText.setString("Username exist!!!");
-
-}
-
-Resume::~Resume()
-{
-	ResumeData* temp = head;
-	while (temp != nullptr) {
-		ResumeData* next = temp->next;
-		delete temp;
-		temp = next;
-		size--;
-	}
 }
 
 void Resume::handleEvent(float deltaTime, sf::Event event, sf::Vector2i position)
@@ -86,48 +74,44 @@ void Resume::handleEvent(float deltaTime, sf::Event event, sf::Vector2i position
 	}
 }
 
-void Resume::addData(Player player, u64** board)
+void Resume::addData(Player player, BoardStack boardStack, ScoreStack scoreStack)
 {
-	ResumeData* temp = head;
-
-	u64* tempBoard = new u64[size * size];
-	for (u32 i = 0; i < size; i++)
-		for (u32 j = 0; j < size; j++)
-			tempBoard[i * size + j] = board[i][j];
-
-	if (temp == nullptr) {
-		head = new ResumeData(player, tempBoard);
-		size++;
+	if (size == MAX_PLAYERS) {
+		std::cout << "Resume is full\n";
 		return;
 	}
-
-	while (temp->next != nullptr)
-		temp = temp->next;
-
-	temp->next = new ResumeData(player, tempBoard);
+	resumeList.addData(player, boardStack, scoreStack);
 	size++;
 }
+
+void Resume::saveData(const std::string& nameFile, const std::string& scoreFile, const std::string& passwordFile, const std::string& boardStackFile, const std::string& scoreStackFile)
+{
+	resumeList.writeToFiles(nameFile, scoreFile, passwordFile, boardStackFile, scoreStackFile);
+}
+
+void Resume::loadData(const std::string& nameFile, const std::string& scoreFile, const std::string& passwordFile, const std::string& boardStackFile, const std::string& scoreStackFile)
+{
+	resumeList.readFromFiles(nameFile, scoreFile, passwordFile, boardStackFile, scoreStackFile);
+}
+
 
 
 void Resume::update(float deltaTime)
 {
 	pressTime -= deltaTime;
 	if (state == Game::RESUME_OPTION) {
-		ResumeData* temp = head;
+
+		ResumeNode* temp = resumeList.getData(0);
 		if (temp != nullptr) {
 			account1.setString("1. " + temp->getPlayer().getName());
+			isNoAccount = false;
 			temp = temp->next;
 		}
 		else {
 			account1.setString("No account to resume \npress E to turn back");
-
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::E) && pressTime <= 0.f) {
-				pressTime = PRESS_DELAY;
-				state = Game::RESUME_OPTION;
-			}
-
-			return;
+			isNoAccount = true;
 		}
+
 		if (temp != nullptr) {
 			account2.setString("2. " + temp->getPlayer().getName());
 			temp = temp->next;
@@ -194,31 +178,34 @@ void Resume::update(float deltaTime)
 			break;
 		}
 
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::E) && pressTime <= 0.f && isNoAccount) {
+			pressTime = PRESS_DELAY;
+			state = Game::RESUME_OPTION;
+		}
+
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter) && pressTime <= 0.f) {
 			pressTime = PRESS_DELAY;
-			temp = head; s32 cnt = (s32)SELECT_BUTTON;
-			while (temp != nullptr && cnt > 0)
-				temp = temp->next;
-
-			if (temp != nullptr) {
-				u64* tempBoard = temp->getBoard();
-				this->boardData = new u64 * [size];
-				for (u32 i = 0; i < size; i++) {
-					this->boardData[i] = new u64[size];
-					for (u32 j = 0; j < size; j++) {
-						this->boardData[i][j] = tempBoard[i * size + j];
-					}
-				}
-
-				state = Game::RESUME_LOGIN;
+			state = Game::RESUME_LOGIN;
+			switch (SELECT_BUTTON) {
+			case 0:
+				userSelected = 0;
+				break;
+			case 1:
+				userSelected = 1;
+				break;
+			case 2:
+				userSelected = 2;
+				break;
+			case 3:
+				userSelected = 3;
+				break;
 			}
-
 
 		}
 	} 
 	else if (state == Game::RESUME_LOGIN) {
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter) &&
-			passwordField.getText() == currentPlayer.getPassword() &&
+			passwordField.getText() == resumeList.getData(userSelected)->getPlayer().getPassword() &&
 			pressTime <= 0.f) {
 			pressTime = PRESS_DELAY;
 			state = Game::RESUME_PLAY;

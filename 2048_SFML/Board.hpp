@@ -175,6 +175,10 @@ public:
 	 * @param rs The render states to use.
 	 */
 	void draw(sf::RenderTarget& rt, sf::RenderStates rs) const override;
+
+	BoardStack getUndoBoardStack() const;
+
+	ScoreStack getUndoScoreStack() const;
 };
 
 #endif

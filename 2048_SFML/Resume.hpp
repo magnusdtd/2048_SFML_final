@@ -27,6 +27,7 @@ class Resume : public sf::Drawable {
 	sf::Text account3;  // Text displaying the third account
 	sf::Text account4;  // Text displaying the fourth account
 	sf::Text account5;  // Text displaying the fifth account
+	bool isNoAccount;  // Flag indicating if there are no accounts to resume
 
 	/* RESUME_CONTINUE */
 	sf::Texture backgroundTextureResumeContinueLogin;  // Texture for resume background
@@ -34,9 +35,10 @@ class Resume : public sf::Drawable {
 
 	TextField passwordField;  // Password field
 	sf::Text alertText;  // Text displaying alert message
-	bool isWarning = false;  // Flag indicating if a warning message should be displayed
+	bool isWarning;  // Flag indicating if a warning message should be displayed
 
 	u32 SELECT_BUTTON;  // Currently selected button in the resume
+	u32 userSelected;  // Currently selected user in the resume
 
 	ResumeList resumeList;  // List of players in the resume
 
@@ -51,17 +53,19 @@ public:
 	Resume();
 
 	/**
-	 * @brief Destructor. Deletes all players in the resume.
+	 * @brief Destructor. Frees memory allocated for the resume class.
 	 */
-	~Resume();
+	~Resume() {}
+
+	bool isNoAccountResume() const { return isNoAccount; }
 
 	void handleEvent(float deltaTime, sf::Event event, sf::Vector2i position);
-
-	void addData(Player player, u64** board);
 	
-	void saveData(std::string nameFile, std::string scoreFile, std::string timeFile, std::string passwordFile);
+	void addData(Player player, BoardStack, ScoreStack);
 
-	void loadData(std::string nameFile, std::string scoreFile, std::string timeFile, std::string passwordFile);
+	void saveData(const std::string& nameFile, const std::string& scoreFile, const std::string& passwordFile, const std::string& boardStackFile, const std::string& scoreStackFile);
+
+	void loadData(const std::string& nameFile, const std::string& scoreFile, const std::string& passwordFile, const std::string& boardStackFile, const std::string& scoreStackFile);
 
 	void update(float deltaTime);
 

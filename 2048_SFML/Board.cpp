@@ -655,3 +655,13 @@ void Board::draw(sf::RenderTarget& rt, sf::RenderStates rs) const {
 		for (u32 j = 0; j < size; j++)
 			rt.draw(this->cells[i][j], rs); // Draw this->cells
 }
+
+BoardStack Board::getUndoBoardStack() const
+{
+	return undoBoardStack;
+}
+
+ScoreStack Board::getUndoScoreStack() const
+{
+	return undoScoreStack;
+}
