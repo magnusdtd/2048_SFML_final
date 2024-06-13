@@ -42,36 +42,28 @@ UI::UI() : isResume(false) {
 	subMessage.setPosition(650, 500);
 
 	saveDataMessage.setFont(font);
-	saveDataMessage.setCharacterSize(20);
+	saveDataMessage.setCharacterSize(40);
 	saveDataMessage.setFillColor(sf::Color(204, 0, 0));
-	saveDataMessage.setPosition(650, 500);
+	saveDataMessage.setPosition(550, 450);
 
-	/*playerList.clearDataFile("Data/player_name.dat",
-							"Data/player_score.dat",
-							"Data/player_time.dat",
-							"Data/player_password.dat");*/
-	playerList.loadData("Data/player_name.dat",
-						"Data/player_score.dat",
-						"Data/player_time.dat",
-						"Data/player_password.dat");
-	/*for (int i = 0; i < 10; i++) {
+	/*playerList.clearDataFile("Data/player_name.bin",
+							"Data/player_score.bin",
+							"Data/player_time.bin",
+							"Data/player_password.bin");*/
+	playerList.loadData("Data/player_name.bin",
+						"Data/player_score.bin",
+						"Data/player_time.bin",
+						"Data/player_password.bin");
+
+	for (int i = 0; i < 20; i++) {
 		playerList.addPlayer("Player" + std::to_string(i), (u64)Random<int>(0, 1000), Random<double>(0, 1000), "password");
 	}
-	std::cout << "Size: " << playerList.getSize() << "\n";*/
 
 	bestScore = playerList.getMaxScore();
 
-	resume.clearData("ResumeData/resume_name.dat",
-						"ResumeData/resume_score.dat",
-						"ResumeData/resume_password.dat",
-						"ResumeData/resume_boardStack.dat",
-						"ResumeData/resume_scoreStack.dat");
+	/*resume.clearData();*/
 
-	resume.loadData("ResumeData/resume_name.dat",
-					"ResumeData/resume_score.dat",
-					"ResumeData/resume_password.dat",
-					"ResumeData/resume_boardStack.dat",
-					"ResumeData/resume_scoreStack.dat");
+	resume.loadData();
 }
 
 Player UI::getPlayer() const
@@ -210,7 +202,7 @@ void UI::update(float deltaTime) {
 		
 		resume.update(deltaTime);
 
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::E) && 
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter) && 
 			resume.state == Game::RESUME_PLAY &&
 			pressTime <= 0.0f) {
 			pressTime = PRESS_DELAY;
@@ -327,6 +319,14 @@ void UI::update(float deltaTime) {
 			resume.state == Game::RESUME_OPTION &&
 			resume.isNoAccountResume() &&
 			pressTime <= 0.0f) {
+
+			state = Game::START_MENU;
+			resume.state = Game::RESUME_OPTION;
+			isResume = false;
+		}
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::E) &&
+			resume.state == Game::RESUME_GO_BACK) {
 
 			state = Game::START_MENU;
 			resume.state = Game::RESUME_OPTION;
@@ -464,7 +464,7 @@ void UI::update(float deltaTime) {
 		/* Best score */
 		if (score > bestScore) {
 			bestScore = score;
-			this->saveBestScore("Data/best_score.dat");
+			this->saveBestScore("Data/best_score.bin");
 		}		
 
 		textBestScore.setString(std::to_string(bestScore));
@@ -476,7 +476,7 @@ void UI::update(float deltaTime) {
 			&& !board.isWin()) {
 			pressTime = PRESS_DELAY;
 			board.canMove = false;
-			setSaveDataMessage("Do you want to save your data?\n\tPress y continue");
+			setSaveDataMessage("Do you want to save your data?\nPress Y(Yes) or N(No) to continue");
 			saveDataFlag = true;
 		}
 
@@ -497,10 +497,34 @@ void UI::update(float deltaTime) {
 
 			saveDataFlag = false;
 
+			endTime = std::chrono::system_clock::now();
+			std::chrono::duration<double> elapsed_seconds = endTime - startTime;
+			float elapsedSecondsFloat = static_cast<float>(elapsed_seconds.count());
+			currentPlayer.setTime(elapsedSecondsFloat);
+			playerList.addPlayer(currentPlayer);
+
 			u64** temp = board.getBoardData();
 			resume.addData(currentPlayer, board.getUndoBoardStack(), board.getUndoScoreStack());
 			board.clear();
 			delete[] temp;
+		}
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::N) && pressTime <= 0.f && saveDataFlag) {
+			pressTime = PRESS_DELAY;
+			state = Game::START_MENU;
+
+			board.clearUndoBoardStack();
+			board.clearRedoBoardStack();
+			board.clearUndoScoreStack();
+			board.clearRedoScoreStack();
+			board.clear();
+			board.canMove = true;
+
+			isWin = false;
+			isGameOver = false;
+			isCalculated = false;
+
+			saveDataFlag = false;
 		}
 
 		/* Game over or win */
@@ -521,9 +545,7 @@ void UI::update(float deltaTime) {
 
 			if (!isCalculated) {
 				position = playerList.findPlayerPosition(score, elapsedSecondsFloat);
-				playerList.addPlayer(currentPlayer);
-
-				std::cout << "Time taken: " << elapsed_seconds.count() << "s\n";
+				
 				isCalculated = true;
 			}
 
@@ -532,6 +554,12 @@ void UI::update(float deltaTime) {
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::E) && pressTime <= 0.0f) {
 				pressTime = PRESS_DELAY;
 				state = Game::START_MENU;
+
+				endTime = std::chrono::system_clock::now();
+				elapsed_seconds = endTime - startTime;
+				elapsedSecondsFloat = static_cast<float>(elapsed_seconds.count());
+				currentPlayer.setTime(elapsedSecondsFloat);
+				playerList.addPlayer(currentPlayer);
 
 				board.clearUndoBoardStack();
 				board.clearRedoBoardStack();
@@ -569,7 +597,7 @@ void UI::update(float deltaTime) {
 		/* Best score */
 		if (score > bestScore) {
 			bestScore = score;
-			this->saveBestScore("Data/best_score.dat");
+			this->saveBestScore("Data/best_score.bin");
 		}
 
 		textBestScore.setString(std::to_string(bestScore));
@@ -633,23 +661,24 @@ void UI::draw(sf::RenderTarget& rt, sf::RenderStates rs) const {
 */
 void UI::sendMessage(sf::RenderWindow& window)
 {
-	if (isGameOver) {
-		textGameOver.setOrigin(textGameOver.getGlobalBounds().width / 2, textGameOver.getGlobalBounds().height / 2);
-		window.draw(textGameOver);
+	if (state == Game::PLAYING) {
+		if (isGameOver) {
+			textGameOver.setOrigin(textGameOver.getGlobalBounds().width / 2, textGameOver.getGlobalBounds().height / 2);
+			window.draw(textGameOver);
+		}
+		else if (isWin) {
+			textWin.setOrigin(textWin.getGlobalBounds().width / 2, textWin.getGlobalBounds().height / 2);
+			window.draw(textWin);
+		}
+		if (isGameOver || isWin) {
+			subMessage.setOrigin(subMessage.getGlobalBounds().width / 2, subMessage.getGlobalBounds().height / 2);
+			window.draw(subMessage);
+		}
+		if (saveDataMessage.getString() != "") {
+			saveDataMessage.setOrigin(saveDataMessage.getGlobalBounds().width / 2, saveDataMessage.getGlobalBounds().height / 2);
+			window.draw(saveDataMessage);
+		}
 	}
-	else if (isWin) {
-		textWin.setOrigin(textWin.getGlobalBounds().width / 2, textWin.getGlobalBounds().height / 2);
-		window.draw(textWin);
-	}
-	if (isGameOver || isWin) {
-		subMessage.setOrigin(subMessage.getGlobalBounds().width / 2, subMessage.getGlobalBounds().height / 2);
-		window.draw(subMessage);
-	}
-	if (saveDataMessage.getString() != "") {
-		saveDataMessage.setOrigin(saveDataMessage.getGlobalBounds().width / 2, saveDataMessage.getGlobalBounds().height / 2);
-		window.draw(saveDataMessage);
-	}
-
 }
 
 /**
@@ -664,12 +693,12 @@ void UI::saveData()
 		player.getTime() != 0)
 		playerList.addPlayer(player);
 
-	playerList.writeMaxScore("Data/best_score.dat");
+	playerList.writeMaxScore("Data/best_score.bin");
 
-	playerList.saveData("Data/player_name.dat",
-						"Data/player_score.dat",
-						"Data/player_time.dat",
-						"Data/player_password.dat");
+	playerList.saveData("Data/player_name.bin",
+						"Data/player_score.bin",
+						"Data/player_time.bin",
+						"Data/player_password.bin");
 
 
 	u64** temp = board.getBoardData();
@@ -677,9 +706,5 @@ void UI::saveData()
 	delete[] temp;
 
 	if (!resume.isNoAccountResume())
-		resume.saveData("ResumeData/resume_name.dat",
-						"ResumeData/resume_score.dat",
-						"ResumeData/resume_password.dat",
-						"ResumeData/resume_boardStack.dat",
-						"ResumeData/resume_scoreStack.dat");
+		resume.saveData();
 }

@@ -49,6 +49,8 @@ namespace Game {
         RESUME_LOGIN, // Login to the account when choosing to continue
 
         RESUME_PLAY, // Play the game
+
+        RESUME_GO_BACK // Go back to the start menu
     };
 
     // Game window dimensions

@@ -58,7 +58,7 @@ void ScoreStack::clear()
 	}
 }
 
-void ScoreStack::writeToBinaryFile(const std::string& filename) {
+void ScoreStack::writeToBinaryFile(std::string filename) {
 	std::ofstream outFile(filename, std::ios::binary);
 	if (!outFile.is_open()) {
 		std::cerr << "Failed to open file for writing: ";
@@ -90,7 +90,7 @@ void ScoreStack::reverse() {
 	head = prev;
 }
 
-void ScoreStack::readFromBinaryFile(const std::string& filename) {
+void ScoreStack::readFromBinaryFile(std::string filename) {
 	std::ifstream inFile(filename, std::ios::binary);
 	if (!inFile.is_open()) {
 		std::cerr << "Failed to open file for reading: ";

@@ -25,6 +25,9 @@
     <Filter Include="Resource Files\Music">
       <UniqueIdentifier>{96f0ab2c-c7cc-4709-b351-166ae45e3284}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\ResumeData">
+      <UniqueIdentifier>{d86e9e81-d065-4330-a0bf-90f4f9204197}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -154,6 +157,21 @@
     <None Include="..\README.md">
       <Filter>Source Files</Filter>
     </None>
+    <None Include="ResumeData\1.dat">
+      <Filter>Resource Files\ResumeData</Filter>
+    </None>
+    <None Include="ResumeData\2.dat">
+      <Filter>Resource Files\ResumeData</Filter>
+    </None>
+    <None Include="ResumeData\3.dat">
+      <Filter>Resource Files\ResumeData</Filter>
+    </None>
+    <None Include="ResumeData\4.dat">
+      <Filter>Resource Files\ResumeData</Filter>
+    </None>
+    <None Include="ResumeData\5.dat">
+      <Filter>Resource Files\ResumeData</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Font Include="Fonts\arial.ttf">
@@ -190,6 +208,9 @@
     </Image>
     <Image Include="Texture\Resume.png">
       <Filter>Resource Files\Texture</Filter>
+    </Image>
+    <Image Include="EvaluationTable.png">
+      <Filter>Source Files</Filter>
     </Image>
   </ItemGroup>
 </Project>

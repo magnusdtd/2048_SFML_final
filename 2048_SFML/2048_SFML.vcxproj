@@ -182,12 +182,18 @@
     <None Include="Data\player_score.dat" />
     <None Include="Data\player_time.dat" />
     <None Include="player_password.dat" />
+    <None Include="ResumeData\1.dat" />
+    <None Include="ResumeData\2.dat" />
+    <None Include="ResumeData\3.dat" />
+    <None Include="ResumeData\4.dat" />
+    <None Include="ResumeData\5.dat" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="Fonts\arial.ttf" />
     <Font Include="Fonts\font.ttf" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="EvaluationTable.png" />
     <Image Include="Texture\appIcon.png" />
     <Image Include="Texture\background.png" />
     <Image Include="Texture\border.png" />

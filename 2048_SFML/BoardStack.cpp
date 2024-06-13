@@ -70,7 +70,7 @@ void BoardStack::clear()
 		pop();
 }
 
-void BoardStack::writeToBinaryFile(const std::string& filename)
+void BoardStack::writeToBinaryFile(std::string filename)
 {
     std::ofstream outFile(filename, std::ios::binary);
     if (!outFile.is_open()) {
@@ -83,8 +83,14 @@ void BoardStack::writeToBinaryFile(const std::string& filename)
 
     BoardNode* current = head;
     while (current != nullptr) {
-        outFile.write(reinterpret_cast<const char*>(&current->dataSize), sizeof(current->dataSize));
-        outFile.write(reinterpret_cast<const char*>(current->data), current->dataSize * sizeof(u64));
+        if (!outFile.write(reinterpret_cast<const char*>(&current->dataSize), sizeof(current->dataSize))) {
+            std::cerr << "Failed to write dataSize to file: " << filename << "\n";
+            return; // Early return on write failure
+        }
+        if (!outFile.write(reinterpret_cast<const char*>(current->data), current->dataSize * sizeof(u64))) {
+            std::cerr << "Failed to write data to file: " << filename << "\n";
+            return; // Early return on write failure
+        }
         current = current->next;
     }
 
@@ -104,7 +110,7 @@ void BoardStack::reverse() {
     head = prev;
 }
 
-void BoardStack::readFromBinaryFile(const std::string& filename) {
+void BoardStack::readFromBinaryFile(std::string filename) {
     std::ifstream inFile(filename, std::ios::binary);
     if (!inFile.is_open()) {
         std::cerr << "Failed to open file for reading: ";

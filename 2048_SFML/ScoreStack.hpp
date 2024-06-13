@@ -56,9 +56,9 @@ public:
         std::cout << "---------------------------------------\n";
 	}
 
-    void writeToBinaryFile(const std::string& filename);
+    void writeToBinaryFile(std::string filename);
 
-    void readFromBinaryFile(const std::string& filename);
+    void readFromBinaryFile(std::string filename);
 
     void reverse();
 

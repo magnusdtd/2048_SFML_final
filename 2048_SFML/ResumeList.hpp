@@ -31,7 +31,7 @@ public:
 
 class ResumeList {
 private:
-	ResumeNode *head;
+	ResumeNode* head;
 	u32 size;
 public:
 	ResumeList() : head(nullptr), size(0) {}
@@ -46,11 +46,11 @@ public:
 
 	u32 getSize() const;
 
-	void writeToFiles(const std::string& nameFile, const std::string& scoreFile, const std::string& passwordFile, const std::string& boardStackFile, const std::string& scoreStackFile);
+	void writeToFiles();
 
-	void readFromFiles(const std::string& nameFile, const std::string& scoreFile, const std::string& passwordFile, const std::string& boardStackFile, const std::string& scoreStackFile);
+	void readFromFiles();
 
-	void clearDataFiles(const std::string& nameFile, const std::string& scoreFile, const std::string& passwordFile, const std::string& boardStackFile, const std::string& scoreStackFile);
+	void clearDataFiles();
 };
 
 #endif

@@ -35,6 +35,9 @@ int main() {
 
             // Handle window close event
             if (event.type == sf::Event::Closed) {
+                if (ui.getState() == Game::State::PLAYING || ui.getState() == Game::State::RESUME) {
+                    continue;
+				}
                 ui.saveData();
                 window.close();
                 break;

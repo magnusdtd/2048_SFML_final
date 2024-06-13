@@ -65,11 +65,11 @@ public:
 	
 	void addData(Player player, BoardStack, ScoreStack);
 
-	void saveData(const std::string& nameFile, const std::string& scoreFile, const std::string& passwordFile, const std::string& boardStackFile, const std::string& scoreStackFile);
+	void saveData();
 
-	void loadData(const std::string& nameFile, const std::string& scoreFile, const std::string& passwordFile, const std::string& boardStackFile, const std::string& scoreStackFile);
+	void loadData();
 
-	void clearData(const std::string& nameFile, const std::string& scoreFile, const std::string& passwordFile, const std::string& boardStackFile, const std::string& scoreStackFile);
+	void clearData();
 
 	void update(float deltaTime);
 
